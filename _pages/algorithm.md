@@ -4,7 +4,11 @@ permalink: /categories/알고리즘/
 layout: category
 author_profile: true
 <<<<<<< HEAD
+<<<<<<< HEAD
 taxonomy: algorithm
+=======
+taxonomy: 알고리즘
+>>>>>>> parent of a5d67a4... [fix] fix categories directory
 =======
 taxonomy: 알고리즘
 >>>>>>> parent of a5d67a4... [fix] fix categories directory
