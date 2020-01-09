@@ -1,9 +1,9 @@
 ---
-title: "알고리즘"
-permalink: /categories/알고리즘/
+title: "Algorithm"
+permalink: /categories/algorithm/
 layout: category
 author_profile: true
-taxonomy: 알고리즘
+taxonomy: Algorithm
 ---
 
 알고리즘 꾸울잼
