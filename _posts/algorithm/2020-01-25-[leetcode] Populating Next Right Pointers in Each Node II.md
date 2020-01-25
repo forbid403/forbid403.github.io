@@ -1,3 +1,9 @@
+---
+title: "[leetcode] Populating Next Right Pointers in Each Node II"
+date: 2020-01-25
+categories: algorithm
+---
+
 # Populating Next Right Pointers in Each Node II
 
 Algorithm: 트리
