@@ -11,7 +11,7 @@ Tags: dev
 
 ### 전체 뷰
 
-![../images/Untitled.png](../images/Untitled.png)
+![Untitled](https://user-images.githubusercontent.com/41617388/73274466-f2ed8980-4228-11ea-8865-f6edb05ce8db.png)
 
 - Youtube 동영상 밑에 있는 Table의 Row를 클릭 시에 Highlighting 하는 기능을 설명한다.
 - 다른 Row 클릭 시 클릭된 Row만 highlighting 된다.
@@ -94,7 +94,7 @@ RawItem.js
 - 이제 부모에게서 받은 값을 props로 접근할 수 있다.
 - <p>태그로 한 번 찍어보겠다!
 
-![../images/Untitled 1.png](../images/Untitled 1.png)
+![Untitled 1](https://user-images.githubusercontent.com/41617388/73274441-e79a5e00-4228-11ea-94ad-f1cdc8c7abc4.png)
 
 - 인덱스를 잘 받아온 것을 알 수 있다.
 - 이제 이 cell들을 클릭 시, 부모에게 클릭 한 cell의 인덱스를 보내 줄 것이다.
