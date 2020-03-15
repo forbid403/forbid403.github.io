@@ -72,6 +72,7 @@ Return *the minimum cost* to make the grid have at least one valid path.
 
 ---
 ```c++
+{% raw %}
     class Solution {
     public:
         int dir[4][2] = {{0, 1}, {0, -1}, {1, 0}, { -1, 0}};
@@ -115,6 +116,8 @@ Return *the minimum cost* to make the grid have at least one valid path.
             dfs(grid, x + dir[next_dir][0], y + dir[next_dir][1], cost, m, n, dp);
         }
     };
+    {% endraw %}
+
 ```
 - 문제풀이
 
