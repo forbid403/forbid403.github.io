@@ -1,0 +1,174 @@
+---
+title: "[TIL] 네이버 D2 PWA 세미나 요약"
+date: 2020-04-02
+categories: til
+---
+
+# 네이버 D2 PWA 세미나 요약
+
+## PWA
+
+- Progressive Web App
+- **Reliable**
+    - 빠른 로딩
+    - 오프라인 작동
+    - 불안정한 네트워크에서도 작동
+- **Fast**
+    - 빠른 반응
+    - 어떤 input, Event에도 반응
+    - 재방문시에도 빠른 반응
+- **Engaging**
+    - 홈 화면에 추가 가능
+    - full screen
+    - ui 유지
+    - push 알림
+
+## OFFLINE
+
+- 서비스워커 사용
+
+<img width="482" alt="1" src="https://user-images.githubusercontent.com/41617388/78258642-7df34480-7536-11ea-9334-42c0571477a7.png">
+
+- PWA의 기본적인 조건은?
+    - https상에서 작동
+    - 태블릿, 모바일 상에서 반응형으로 작동
+    - 최소 시작 URL은 offline으로 작동
+    - 홈 화면에 추가 시 metadata 제공
+    - 3G상에서도 빠르게 작동
+    - cross-browser
+    - 페이지 변환에 네트워크가 영향을 끼치지 않는듯이 작용
+    - 각각의 페이지가 URL을 가지고 있음
+
+⇒ [LightHouse](https://developers.google.com/web/tools/lighthouse?hl=ko)로 PWA인지 확인하고, 관리할 수 있음
+
+- 그래서 어떻게 시작해?
+    - 처음부터 PWA시작 or 조금씩 변경 or single feature(오프라인)
+    - App-shell (프론트)
+
+- 서비스워커 life cycle
+    - App-like 라이프사이클
+    - System Events에만 받음
+    - OS가 명령할 때만 작동
+    <img width="615" alt="2" src="https://user-images.githubusercontent.com/41617388/78258654-83e92580-7536-11ea-95e7-408b1e51d789.png">
+
+    - Simple Example
+
+    <img width="579" alt="3" src="https://user-images.githubusercontent.com/41617388/78258671-877cac80-7536-11ea-8d76-2f7001e0287c.png">
+    ```javascript
+        self.addEventListener('fetch', e=>{ event.respondWith(fetch(e.request)); }
+    ```
+    <img width="748" alt="4" src="https://user-images.githubusercontent.com/41617388/78258769-aa0ec580-7536-11ea-9e3a-12d90cb809a5.png">
+
+        ```javascript
+        self.addEventListener(‘fetch’, 
+        	event =>{ event.respondWith( caches.open(‘my-cache’).then(cache => {
+        		return cache.match(event.request).then(cacheResponse => {
+        			const fetchPromise = fetch(event.request).then(networkResponse =>{
+        				cache.put(event.request, networkResponse.clone());
+        				return networkResponse;
+        		return cacheResponse || fetchPromise;} })}
+        ```
+    ### [WorkBox](https://developers.google.com/web/tools/workbox)
+
+    - 사용하면 좀 더 편리하다
+    - version 관리
+    - pre-caching
+
+    <img width="563" alt="5" src="https://user-images.githubusercontent.com/41617388/78258766-a9762f00-7536-11ea-8c7f-4b6579de0347.png">
+
+    ---
+
+    - **cache-first**
+        - 설치할 때 캐시를 모두 저장
+
+    - Fast-Navigation
+
+        <img width="529" alt="6" src="https://user-images.githubusercontent.com/41617388/78258763-a8dd9880-7536-11ea-8566-1bd3de3e1d16.png">
+
+        - 자주 변경되는 건 network와 직접 통신 (blacklist)
+        - 아닌건 cache에 저장해서 빠른 접근
+        - 로직을 서비스워커가 담당한다
+        - flexible integration
+
+        ---
+
+    ## 실사용 서비스들
+
+    ### Wired
+
+    <img width="704" alt="7" src="https://user-images.githubusercontent.com/41617388/78258760-a7ac6b80-7536-11ea-81bb-1911c6132b9e.png">
+
+    - cache size는 설계를 잘 해야됨
+    - offline article listing
+
+    <img width="457" alt="8" src="https://user-images.githubusercontent.com/41617388/78258753-a54a1180-7536-11ea-9625-a377d10c2602.png">
+
+    - 기타 우버, 에어비앤비, 틴더 등등
+
+    ---
+
+## PWA in Production
+
+### 퍼포먼스 조건 설정
+
+- 최초 뷰를 우선적으로 처리해야 함
+    - 3초 이내 로딩
+
+### Simple
+
+- 이미지, css, 폰트, lazy loading
+
+### Not Simple
+
+- 3rd 파티 라이브러리, JS 최적화
+
+### More Not Simple
+
+- 퍼포먼스 유지
+
+### PWA Indexability
+
+- polyfills, metadata, ssr, be progressive
+
+### 서비스워커 kill switch
+
+- typlically 'kill header' 사용
+
+### 언제 서비스워커를 설치 하는지 고려
+
+### Offline Analytics
+
+- workbox 사용
+
+### Service Worker Scope
+
+- sub-directory까지
+
+### 캐시 관리는 설계자가
+
+### CORS Caching & Opaque Response
+
+- workbox는 기본적으로 캐싱 X
+
+### PWA를 기존의 웹사이트에 적용할때 리팩토링 VS NEW
+
+- New is the best
+- Simple site 이상은 완전한 PWA가 힘들다
+
+### ~~프레임워크에서 PWA 어떻게 사용?
+
+- [hnpwa.com](http://hnpwa.com) 참고
+
+### CDN, Broswer, 서비스 워커 내의 캐시 상호작용 고려
+
+### buile process가 복잡하지만, worth it.
+
+### Offline UX
+
+- 사용자 입장에서 어떤 것이 좋은지 고려하기
+
+### Desktop PWA도 신경쓰기
+
+### 웹 뷰 안에 PWA?
+
+- Yes, 캐시 부분만
