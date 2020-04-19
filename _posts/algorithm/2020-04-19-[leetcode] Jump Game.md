@@ -1,6 +1,6 @@
 ---
 title: "[leetcode] Jump Game"
-date: 2020-03-19
+date: 2020-04-19
 categories: algorithm
 ---
 # Jump Game
