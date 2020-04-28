@@ -4,6 +4,7 @@
 ```
 _posts/
     algorithm/
+    graphql/
     os/
     react/
     til/
