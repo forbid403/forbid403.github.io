@@ -19,4 +19,4 @@ categories: til
 - `determine what it is` 그것이 어떤 것인지 정의하는 것이다.
 - ex) `google.com`을 검색하게 되면 Ip address가 쿼리 되는데, 이것은 매번 똑같은 게 아니라 바뀔 수도 있다.
 - ex) `resolve package dependencies`의 의미는 missing 패키지를 설치하는 것이다. 이 때 설치 되지 않은 것들의 이름이 아닌, contents에 접근하여 설치 하는 것이다. 이 때 contents들은 not predictable(예상 불가능)하다.
-- 즉, `resolve`는 name만으로는 알 수 없는, name에 관련된 repository나 contents에 접근하여 `재정의`하는 것이라고 말할 수 있다.
+- 즉, `resolve`는 name만으로는 알 수 없는, name에 관련된 repository나 contents에 접근하여 target을 `재정의`하는 것이라고 말할 수 있다.
