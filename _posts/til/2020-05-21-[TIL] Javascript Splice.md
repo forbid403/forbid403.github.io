@@ -25,6 +25,8 @@ var removed = myFish.splice(3, 1);
 
 
 - js30에서 입력받은 것이 secretcode와 일치하는지 확인하는 기능을 구현했다.
+
+
 ```js
 const secretcode = "wesbos";
 const pushed = [];
