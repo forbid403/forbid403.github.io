@@ -8,8 +8,6 @@ categories: til
 
 ## Component란?
 - 재사용이 가능한 최소 단위
-  
----
 
 ## 단방향 & 양방향
 <image src="https://user-images.githubusercontent.com/41617388/92496044-97f62900-f232-11ea-966e-1432af599089.png" width=500><br>
@@ -23,7 +21,6 @@ parent &#8594; child 방향으로 바인딩이 되고, 이 때 전달되는 prop
 값 변경 시에는 setState()를 호출함으로서 동기화를 해 주어야 한다.<br>
 child에서 parent로 전달 하고 싶을 때에는 event로 전달 해 주어야 한다.<br>
 
----
 
 ## Angular
 - TS 기반 &#8594; 대규모 팀과 협업에 적합
@@ -42,8 +39,6 @@ child에서 parent로 전달 하고 싶을 때에는 event로 전달 해 주어�
 - 단, 양방향 바인딩 모두 지원
 - 컴포넌트 기반
 
----
-
 ## Conclusion
 
 |-|React|Vue|Angular|
@@ -53,3 +48,4 @@ child에서 parent로 전달 하고 싶을 때에는 event로 전달 해 주어�
 |가상 DOM|O|O|X|
 |템플릿|X|O|O|
 |공통점||컴포넌트 기반|
+
