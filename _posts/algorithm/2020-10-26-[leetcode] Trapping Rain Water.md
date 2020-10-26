@@ -3,7 +3,7 @@ title: "[leetcode] Trapping Rain Water"
 date: 2020-10-26
 categories: algorithm
 ---
-## [leetcode] Remove Duplicate Letters
+## [leetcode] Trapping Rain Water
 [문제 링크](https://leetcode.com/problems/trapping-rain-water/)
 
 ```c++
