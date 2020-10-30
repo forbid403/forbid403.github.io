@@ -3,7 +3,7 @@ title: "[leetcode] Intersection of Two Linked Lists"
 date: 2020-10-28
 categories: algorithm
 ---
-## [leetcode] Champagne Tower
+## [leetcode] Intersection of Two Linked Lists
 [문제 링크](https://leetcode.com/problems/intersection-of-two-linked-lists/)
 
 ```c++
