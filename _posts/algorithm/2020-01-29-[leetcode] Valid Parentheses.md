@@ -5,46 +5,7 @@ categories: algorithm
 ---
 # Valid Parentheses
 
-Algorithm: 스택
-Type: LeetCode
-level: 1
-link: https://leetcode.com/problems/valid-parentheses/
-
-Given a string containing just the characters `'('`, `')'`, `'{'`, `'}'`, `'['` and `']'`, determine if the input string is valid.
-
-An input string is valid if:
-
-1. Open brackets must be closed by the same type of brackets.
-2. Open brackets must be closed in the correct order.
-
-Note that an empty string is also considered valid.
-
-**Example 1:**
-
-    Input: "()"
-    Output: true
-
-**Example 2:**
-
-    Input: "()[]{}"
-    Output: true
-
-**Example 3:**
-
-    Input: "(]"
-    Output: false
-
-**Example 4:**
-
-    Input: "([)]"
-    Output: false
-
-**Example 5:**
-
-    Input: "{[]}"
-    Output: true
-
----
+[문제링크](https://leetcode.com/problems/valid-parentheses/)
 
 ### First Solution
 ```c++
@@ -108,6 +69,27 @@ Note that an empty string is also considered valid.
             return st.empty();
         }
     };
+```
+
+### Javascript
+```js
+var isValid = function(s) {
+    const stack = [];
+    const map = {
+        '(' : ')',
+        '[' : ']',
+        '{' : '}'
+    };
+    
+    for(let i = 0; i < s.length; i++) {
+        let c = s[i];
+        
+        if(map[c]) stack.push(map[c]); // open bracket
+        else if (c !== stack.pop()) return false;
+    }
+    
+    return !stack.length;
+};
 ```
 - 문제풀이
 
