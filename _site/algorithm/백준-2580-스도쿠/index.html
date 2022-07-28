@@ -1,0 +1,673 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>[백준][2580] 스도쿠 - Forbid403 개발 블로그</title>
+<meta name="description" content="[2580] 스도쿠">
+
+
+  <meta name="author" content="forbid403">
+  
+  <meta property="article:author" content="forbid403">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Forbid403 개발 블로그">
+<meta property="og:title" content="[백준][2580] 스도쿠">
+<meta property="og:url" content="http://localhost:4000/algorithm/%EB%B0%B1%EC%A4%80-2580-%EC%8A%A4%EB%8F%84%EC%BF%A0/">
+
+
+  <meta property="og:description" content="[2580] 스도쿠">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2020-01-28T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/algorithm/%EB%B0%B1%EC%A4%80-2580-%EC%8A%A4%EB%8F%84%EC%BF%A0/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "forbid403",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Forbid403 개발 블로그 Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Forbid403 개발 블로그
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="https://forbid403.github.io/">Main</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/">Categories</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <meta itemprop="headline" content="[백준][2580] 스도쿠">
+    
+    <meta itemprop="description" content="[2580] 스도쿠">
+    
+    
+    <meta itemprop="datePublished" content="2020-01-28T00:00:00+09:00">
+    
+
+    <div class="page__inner-wrap">
+      
+      <header>
+        <h1 id="page-title" class="page__title p-name" itemprop="headline">
+          <a href="http://localhost:4000/algorithm/%EB%B0%B1%EC%A4%80-2580-%EC%8A%A4%EB%8F%84%EC%BF%A0/" class="u-url" itemprop="url"><p>[백준][2580] 스도쿠
+</a>
+        </h1>
+        
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+      </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <h1 id="2580-스도쿠">[2580] 스도쿠</h1>
+
+<p>Algorithm: 백트래킹
+Created: Jan 28, 2020 5:42 PM
+DoubleChk: No
+Type: 백준
+link: https://www.acmicpc.net/problem/2580</p>
+
+<h2 id="문제">문제</h2>
+
+<p>스도쿠는 18세기 스위스 수학자가 만든 ‘라틴 사각형’이랑 퍼즐에서 유래한 것으로 현재 많은 인기를 누리고 있다. 이 게임은 아래 그림과 같이 가로, 세로 각각 9개씩 총 81개의 작은 칸으로 이루어진 정사각형 판 위에서 이뤄지는데, 게임 시작 전 몇 몇 칸에는 1부터 9까지의 숫자 중 하나가 쓰여 있다.</p>
+
+<p><img src="https://www.acmicpc.net/upload/images/jF1kwmQaGGRM3t9ESvpTvW34kCnB2.png" alt="https://www.acmicpc.net/upload/images/jF1kwmQaGGRM3t9ESvpTvW34kCnB2.png" /></p>
+
+<p>나머지 빈 칸을 채우는 방식은 다음과 같다.</p>
+
+<ol>
+  <li>각각의 가로줄과 세로줄에는 1부터 9까지의 숫자가 한 번씩만 나타나야 한다.</li>
+  <li>굵은 선으로 구분되어 있는 3x3 정사각형 안에도 1부터 9까지의 숫자가 한 번씩만 나타나야 한다.</li>
+</ol>
+
+<p>위의 예의 경우, 첫째 줄에는 1을 제외한 나머지 2부터 9까지의 숫자들이 이미 나타나 있으므로 첫째 줄 빈칸에는 1이 들어가야 한다.</p>
+
+<p><img src="https://www.acmicpc.net/upload/images/iWqN5AZPf4h.png" alt="https://www.acmicpc.net/upload/images/iWqN5AZPf4h.png" /></p>
+
+<p>또한 위쪽 가운데 위치한 3x3 정사각형의 경우에는 3을 제외한 나머지 숫자들이 이미 쓰여있으므로 가운데 빈 칸에는 3이 들어가야 한다.</p>
+
+<p><img src="https://www.acmicpc.net/upload/images/A9FWbU92T9v2Fjr9U6Qsg.png" alt="https://www.acmicpc.net/upload/images/A9FWbU92T9v2Fjr9U6Qsg.png" /></p>
+
+<p>이와 같이 빈 칸을 차례로 채워 가면 다음과 같은 최종 결과를 얻을 수 있다.</p>
+
+<p><img src="https://www.acmicpc.net/upload/images/fjCQBE3QI9BMGeiClrtwkHy3jeGPNi.png" alt="https://www.acmicpc.net/upload/images/fjCQBE3QI9BMGeiClrtwkHy3jeGPNi.png" /></p>
+
+<p>게임 시작 전 스도쿠 판에 쓰여 있는 숫자들의 정보가 주어질 때 모든 빈 칸이 채워진 최종 모습을 출력하는 프로그램을 작성하시오.</p>
+
+<h2 id="입력">입력</h2>
+
+<p>아홉 줄에 걸쳐 한 줄에 9개씩 게임 시작 전 스도쿠판 각 줄에 쓰여 있는 숫자가 한 칸씩 띄워서 차례로 주어진다. 스도쿠 판의 빈 칸의 경우에는 0이 주어진다. 스도쿠 판을 규칙대로 채울 수 없는 경우의 입력은 주어지지 않는다.</p>
+
+<h2 id="출력">출력</h2>
+
+<p>모든 빈 칸이 채워진 스도쿠 판의 최종 모습을 아홉줄에 걸쳐 한 줄에 9개씩 한 칸씩 띄워서 출력한다.</p>
+
+<p>스도쿠 판을 채우는 방법이 여럿인 경우는 그 중 하나만을 출력한다.</p>
+
+<h2 id="예제-입력-1">예제 입력 1</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0 3 5 4 6 9 2 7 8
+7 8 2 1 0 5 6 0 9
+0 6 0 2 7 8 1 3 5
+3 2 1 0 4 6 8 9 7
+8 0 4 9 1 3 5 0 6
+5 9 6 8 2 0 4 1 3
+9 1 7 6 5 2 0 8 0
+6 0 3 7 0 1 9 5 2
+2 5 8 3 9 4 7 6 0
+</code></pre></div></div>
+
+<h2 id="예제-출력-1">예제 출력 1</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1 3 5 4 6 9 2 7 8
+7 8 2 1 3 5 6 4 9
+4 6 9 2 7 8 1 3 5
+3 2 1 5 4 6 8 9 7
+8 7 4 9 1 3 5 2 6
+5 9 6 8 2 7 4 1 3
+9 1 7 6 5 2 3 8 4
+6 4 3 7 8 1 9 5 2
+2 5 8 3 9 4 7 6 1
+</code></pre></div></div>
+
+<hr />
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span>    <span class="cp">#include</span> <span class="cpf">&lt;algorithm&gt;</span><span class="cp">
+</span>    <span class="cp">#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp">
+</span>    <span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp">
+</span>    <span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">sudoku</span><span class="p">[</span><span class="mi">10</span><span class="p">][</span><span class="mi">10</span><span class="p">];</span>
+    <span class="kt">int</span> <span class="n">checkRow</span><span class="p">[</span><span class="mi">10</span><span class="p">][</span><span class="mi">10</span><span class="p">];</span>
+    <span class="kt">int</span> <span class="n">checkCol</span><span class="p">[</span><span class="mi">10</span><span class="p">][</span><span class="mi">10</span><span class="p">];</span>
+    <span class="kt">int</span> <span class="n">checkSquare</span><span class="p">[</span><span class="mi">10</span><span class="p">][</span><span class="mi">10</span><span class="p">];</span>
+    <span class="kt">int</span> <span class="n">cnt</span><span class="p">;</span>
+    <span class="kt">void</span> <span class="nf">print</span><span class="p">(){</span>
+    
+        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">9</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">j</span><span class="o">&lt;</span><span class="mi">9</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">){</span>
+                <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">sudoku</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="sc">' '</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="p">}</span>
+    
+    <span class="p">}</span>
+    
+    <span class="kt">bool</span> <span class="nf">valid</span><span class="p">(</span><span class="kt">int</span> <span class="n">row</span><span class="p">,</span> <span class="kt">int</span> <span class="n">col</span><span class="p">,</span> <span class="kt">int</span> <span class="n">num</span><span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">checkRow</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">num</span><span class="p">]</span> <span class="o">||</span> 
+    				<span class="n">checkCol</span><span class="p">[</span><span class="n">num</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">||</span> 
+    				<span class="n">checkSquare</span><span class="p">[</span><span class="n">row</span><span class="o">/</span><span class="mi">3</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">col</span><span class="o">/</span><span class="mi">3</span><span class="p">][</span><span class="n">num</span><span class="p">])</span> <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="kt">void</span> <span class="nf">solve</span><span class="p">(</span><span class="kt">int</span> <span class="n">cnt</span><span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">cnt</span> <span class="o">&gt;=</span> <span class="mi">81</span><span class="p">){</span>
+            <span class="n">print</span><span class="p">();</span>
+            <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+        <span class="p">}</span>
+    
+        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">9</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">j</span><span class="o">&lt;</span><span class="mi">9</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">){</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">sudoku</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+                    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span> <span class="n">k</span><span class="o">&lt;</span><span class="mi">10</span><span class="p">;</span> <span class="n">k</span><span class="o">++</span><span class="p">){</span>
+                        <span class="k">if</span><span class="p">(</span><span class="n">valid</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">)){</span>
+                            <span class="n">sudoku</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">k</span><span class="p">;</span>
+                            <span class="n">checkRow</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+                            <span class="n">checkCol</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+                            <span class="n">checkSquare</span><span class="p">[</span><span class="n">i</span><span class="o">/</span><span class="mi">3</span><span class="o">*</span><span class="mi">3</span> <span class="o">+</span> <span class="n">j</span><span class="o">/</span><span class="mi">3</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+                            <span class="n">solve</span><span class="p">(</span><span class="n">cnt</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+    
+                            <span class="n">sudoku</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+                            <span class="n">checkRow</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+                            <span class="n">checkCol</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+                            <span class="n">checkSquare</span><span class="p">[</span><span class="n">i</span><span class="o">/</span><span class="mi">3</span><span class="o">*</span><span class="mi">3</span> <span class="o">+</span> <span class="n">j</span><span class="o">/</span><span class="mi">3</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+                        <span class="p">}</span>
+                    <span class="p">}</span>
+                    <span class="k">return</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+    
+        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">9</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">j</span><span class="o">&lt;</span><span class="mi">9</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">){</span>
+                <span class="kt">int</span> <span class="n">num</span><span class="p">;</span>
+                <span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">num</span><span class="p">;</span>
+                <span class="n">sudoku</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">num</span><span class="p">;</span>
+                <span class="n">checkRow</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">num</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+                <span class="n">checkCol</span><span class="p">[</span><span class="n">num</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+                <span class="n">checkSquare</span><span class="p">[</span><span class="n">i</span><span class="o">/</span><span class="mi">3</span><span class="o">*</span><span class="mi">3</span> <span class="o">+</span> <span class="n">j</span><span class="o">/</span><span class="mi">3</span><span class="p">][</span><span class="n">num</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">num</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="n">cnt</span><span class="o">++</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    
+        <span class="n">solve</span><span class="p">(</span><span class="n">cnt</span><span class="p">);</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+</code></pre></div></div>
+<ul>
+  <li>
+    <p>문제 풀이</p>
+
+    <p>스도쿠를 풀려면 3가지 조건이 충족되어야 한다.</p>
+
+    <ol>
+      <li>가로 줄에 숫자가 중복이 안되어야 함</li>
+      <li>세로 줄에 숫자가 중복이 안되어야 함</li>
+      <li>3*3 사각형에 숫자가 중복이 안되어야 함</li>
+    </ol>
+
+    <p>그래서 배열이 3개 필요하다! → 가로 체크, 세로 체크, 사각형 체크</p>
+
+    <p>일단 입력을 받으면서 0이 아닌 입력들을 체크 해 준다.</p>
+
+    <p>그리고 재귀 함수에 센 숫자를 인자로 보내준다.</p>
+
+    <p>스도쿠 판이 9*9이기 때문에 함수 내에서 기저 조건을 81이랑 cnt랑 같으면 끝내게 해 주었다.</p>
+
+    <p>이제 스도쿠 판을 돌면서 0에 1부터 10까지 하나씩 넣어보면서 재귀를 돈다.</p>
+
+    <p>숫자를 넣어 볼 때 이미 가로, 세로, 사각형에 들어가 있는 숫자인지 체크 해 준다 (valid 함수)</p>
+
+    <p>스도쿠 답은 여러개가 될 수 있지만, 1개만 출력 하라고 했기 때문에 exit(0)으로 탈출한다.</p>
+
+    <hr />
+
+    <p>Square 체크 할 때, i/3 *3 + j/3에 대해서 설명을 하겠다. 예시를 들면 더 쉽기 때문에 예시를 보면서 설명하겠다.
+  <img width="685" alt="_2020-01-28__6 42 22" src="https://user-images.githubusercontent.com/41617388/73274324-bae64680-4228-11ea-9fed-351bc0ba0387.png" /></p>
+
+    <p>i, j가 0일 때에 각각의 값들은 다음과 같다.</p>
+
+    <p><strong>checkSquare[0][num] = 1</strong> 의 의미는 → 해당 square 칸(0)에 num이 있다고 표시 해 준다.</p>
+
+    <p>따라서 i<em>3/3+j</em>3은 해당 square의 <strong>가장 왼쪽 위</strong>를 가리킨다.</p>
+
+    <p>그 값으로 어떤 칸인지 체크 하는 것이다.</p>
+
+    <p>다음 예시를 보겠다.
+  <img width="675" alt="_2020-01-28__6 44 12" src="https://user-images.githubusercontent.com/41617388/73274395-dbae9c00-4228-11ea-8c57-bc3658b0e915.png" /></p>
+
+    <p>i*3/3+j/3의 값은 3이다.</p>
+
+    <p>3은 2번째 칸의 시작 인덱스이다!</p>
+
+    <p>4, 1도 똑같이 나온다.</p>
+
+    <p>해당 칸 안에 있는 것들은 다 3이 나오게 될 것이다. → 이걸로 square안에 num을 체크 해주는것!</p>
+  </li>
+  <li>
+    <p>후기</p>
+
+    <p>스도쿠 풀어본적도 없는데 알고리즘으로 배웠다 인생 모를..</p>
+
+    <p>휴대폰 게임도 스도쿠는 안하고 걸렀는데</p>
+
+    <p>수포자 승리하자</p>
+  </li>
+</ul>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#algorithm" class="page__taxonomy-item p-category" rel="tag">algorithm</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2020-01-28T00:00:00+09:00">January 28, 2020</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%5B%EB%B0%B1%EC%A4%80%5D%5B2580%5D+%EC%8A%A4%EB%8F%84%EC%BF%A0%20http%3A%2F%2Flocalhost%3A4000%2Falgorithm%2F%25EB%25B0%25B1%25EC%25A4%2580-2580-%25EC%258A%25A4%25EB%258F%2584%25EC%25BF%25A0%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Falgorithm%2F%25EB%25B0%25B1%25EC%25A4%2580-2580-%25EC%258A%25A4%25EB%258F%2584%25EC%25BF%25A0%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Falgorithm%2F%25EB%25B0%25B1%25EC%25A4%2580-2580-%25EC%258A%25A4%25EB%258F%2584%25EC%25BF%25A0%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/algorithm/%EB%B0%B1%EC%A4%80-1759-%EC%95%94%ED%98%B8-%EB%A7%8C%EB%93%A4%EA%B8%B0/" class="pagination--pager" title="[백준][1759] 암호 만들기
+">Previous</a>
+    
+    
+      <a href="/algorithm/%EB%B0%B1%EC%A4%80-9095-1,2,3-%EB%8D%94%ED%95%98%EA%B8%B0/" class="pagination--pager" title="[백준][9095] 1, 2, 3 더하기
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+  <div class="page__related">
+    <h2 class="page__related-title">You may also enjoy
+    </h2>
+    <div class="grid__wrapper">
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/til/TIL-webpack.config.js-%EC%82%B4%ED%8E%B4%EB%B3%B4%EA%B8%B0/" rel="permalink">[TIL] webpack.config.js 살펴보기
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">React 개발 환경 설정 시 CRA로만 진행했었다. 멘토님께서 CRA는 불필요한 것들이 많으니 직접 customizing을 해 가는게 좋다고 해주셨다. React 공식 documentation에 나와있는 해당 article을 보며 React 개발 환경을 기초부터 진행 해 봤다. ...</p>
+  </article>
+</div>
+
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/algorithm/leetcode-House-Robber-III/" rel="permalink">[leetcode] House Robber III
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">[leetcode] House Robber III
+문제 링크
+</p>
+  </article>
+</div>
+
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/algorithm/leetcode-Flatten-Binary-Tree-to-Linked-List/" rel="permalink">[leetcode] Flatten Binary Tree to Linked List
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          less than 1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">[leetcode] Flatten Binary Tree to Linked List
+문제 링크
+</p>
+  </article>
+</div>
+
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/algorithm/leetcode-Search-in-Rotated-Sorted-Array/" rel="permalink">[leetcode] Search in Rotated Sorted Array
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          less than 1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">[leetcode] Search in Rotated Sorted Array
+문제 링크
+</p>
+  </article>
+</div>
+
+      
+    </div>
+  </div>
+  
+  
+</div>
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://github.com/forbid403" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 forbid403. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

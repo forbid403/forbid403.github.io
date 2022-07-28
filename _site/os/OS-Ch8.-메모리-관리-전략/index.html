@@ -1,0 +1,543 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>[OS] Ch8. 메모리 관리 전략 - Forbid403 개발 블로그</title>
+<meta name="description" content="스와핑    프로세스는 실행 중 임시로 예비 저장장치로 내보내어졌다가 다시 메모리로 돌아올 수 있다.   스와핑 시간은 오버헤드이다.   한 프로세스를 스왑 아웃 하고 싶다면 해당 프로세스는 휴지 상태에 있어야 한다.            이중 버퍼링 (운영체제의 버퍼와만 입출력을 함) : 오버헤드">
+
+
+  <meta name="author" content="forbid403">
+  
+  <meta property="article:author" content="forbid403">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Forbid403 개발 블로그">
+<meta property="og:title" content="[OS] Ch8. 메모리 관리 전략">
+<meta property="og:url" content="http://localhost:4000/os/OS-Ch8.-%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B4%80%EB%A6%AC-%EC%A0%84%EB%9E%B5/">
+
+
+  <meta property="og:description" content="스와핑    프로세스는 실행 중 임시로 예비 저장장치로 내보내어졌다가 다시 메모리로 돌아올 수 있다.   스와핑 시간은 오버헤드이다.   한 프로세스를 스왑 아웃 하고 싶다면 해당 프로세스는 휴지 상태에 있어야 한다.            이중 버퍼링 (운영체제의 버퍼와만 입출력을 함) : 오버헤드">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2020-10-27T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/os/OS-Ch8.-%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B4%80%EB%A6%AC-%EC%A0%84%EB%9E%B5/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "forbid403",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Forbid403 개발 블로그 Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Forbid403 개발 블로그
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="https://forbid403.github.io/">Main</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/">Categories</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <meta itemprop="headline" content="[OS] Ch8. 메모리 관리 전략">
+    
+    <meta itemprop="description" content="스와핑  프로세스는 실행 중 임시로 예비 저장장치로 내보내어졌다가 다시 메모리로 돌아올 수 있다.  스와핑 시간은 오버헤드이다.  한 프로세스를 스왑 아웃 하고 싶다면 해당 프로세스는 휴지 상태에 있어야 한다.          이중 버퍼링 (운영체제의 버퍼와만 입출력을 함) : 오버헤드      ">
+    
+    
+    <meta itemprop="datePublished" content="2020-10-27T00:00:00+09:00">
+    
+
+    <div class="page__inner-wrap">
+      
+      <header>
+        <h1 id="page-title" class="page__title p-name" itemprop="headline">
+          <a href="http://localhost:4000/os/OS-Ch8.-%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B4%80%EB%A6%AC-%EC%A0%84%EB%9E%B5/" class="u-url" itemprop="url"><p>[OS] Ch8. 메모리 관리 전략
+</a>
+        </h1>
+        
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+      </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <h3 id="스와핑">스와핑</h3>
+<ul>
+  <li>프로세스는 실행 중 임시로 예비 저장장치로 내보내어졌다가 다시 메모리로 돌아올 수 있다.</li>
+  <li>스와핑 시간은 오버헤드이다.</li>
+  <li>한 프로세스를 스왑 아웃 하고 싶다면 해당 프로세스는 휴지 상태에 있어야 한다.
+    <ul>
+      <li>이중 버퍼링 (운영체제의 버퍼와만 입출력을 함) : 오버헤드</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="연속-메모리-할당-contiguous-memory-allocation">연속 메모리 할당 (Contiguous Memory Allocation)</h3>
+<ul>
+  <li>최초 적합
+    <ul>
+      <li>처음으로 사용 가능한 공간을 할당</li>
+    </ul>
+  </li>
+  <li>최적 적합
+    <ul>
+      <li>가능한 공간 중 가장 작은 공간을 할당</li>
+    </ul>
+  </li>
+  <li>최악 적합
+    <ul>
+      <li>가능한 공간 중 가장 큰 공간을 할당</li>
+    </ul>
+  </li>
+  <li>최초 &gt;= 최적 &gt; 최악</li>
+</ul>
+
+<h3 id="단편화">단편화</h3>
+<ul>
+  <li>외부 단편화 : 유휴 공간들을 합치면 충분한 공간이 되지만 분산되어 있음
+    <ul>
+      <li>압축(compaction)으로 해결
+        <ul>
+          <li>메모리 모든 내용들을 한군데로 몰고, 자유 공간을 모아 큰 블럭을 만듬</li>
+          <li>프로세스들의 재배치가 실행 시간에 동적으로 이루어지는 경우에만 사용 가능.</li>
+          <li>비용 문제도 고려해야 함</li>
+        </ul>
+      </li>
+      <li>한 프로세스의 논리 주소 공간을 여러 개의 비연속적인 공간으로 나눔 (페이징, 세그멘테이션)</li>
+    </ul>
+  </li>
+  <li>내부 단편화 : 할당한 메모리 내부에 공간이 남음</li>
+</ul>
+
+<h3 id="세그멘테이션">세그멘테이션</h3>
+<ul>
+  <li>세그먼트라는 논리적 단위로 나눈다.</li>
+  <li>외부 단편화가 발생할 수 있음.</li>
+  <li>메모리 압축을 통해 외부 단편화를 최소화 시킬 수 있음.</li>
+  <li>분할이 가변적이기 때문에 스와핑은 힘들 수 있다.</li>
+  <li>페이징보다 공유가 간편함.
+    <ul>
+      <li>페이징: 페이지 테이블의 공유 항목을 표시해야 함, 세그먼테이션: 공유한다고 선언만 하면 됨</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="페이징">페이징</h3>
+<ul>
+  <li>물리 메모리는 프레임이라 불리는 같은 크기 블록으로 나눈다.</li>
+  <li>논리 메모리는 페이지라 불리는 같은 크기 블록으로 나눈다.</li>
+  <li>내부 단편화가 발생할 수 있음.</li>
+</ul>
+
+<h3 id="페이지화된-세그멘테이션">페이지화된 세그멘테이션</h3>
+<ul>
+  <li>페이지와 세그멘테이션의 장점 결합</li>
+  <li>세그먼트를 페이징한다 -&gt; 세그먼트 안에 별도의 페이지 테이블 존재</li>
+  <li>외부 단편화 해결</li>
+  <li>분할공간이 많아져 관리가 힘들 수 있다.</li>
+</ul>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#os" class="page__taxonomy-item p-category" rel="tag">os</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2020-10-27T00:00:00+09:00">October 27, 2020</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%5BOS%5D+Ch8.+%EB%A9%94%EB%AA%A8%EB%A6%AC+%EA%B4%80%EB%A6%AC+%EC%A0%84%EB%9E%B5%20http%3A%2F%2Flocalhost%3A4000%2Fos%2FOS-Ch8.-%25EB%25A9%2594%25EB%25AA%25A8%25EB%25A6%25AC-%25EA%25B4%2580%25EB%25A6%25AC-%25EC%25A0%2584%25EB%259E%25B5%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fos%2FOS-Ch8.-%25EB%25A9%2594%25EB%25AA%25A8%25EB%25A6%25AC-%25EA%25B4%2580%25EB%25A6%25AC-%25EC%25A0%2584%25EB%259E%25B5%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fos%2FOS-Ch8.-%25EB%25A9%2594%25EB%25AA%25A8%25EB%25A6%25AC-%25EA%25B4%2580%25EB%25A6%25AC-%25EC%25A0%2584%25EB%259E%25B5%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/os/OS-Ch7.-%EC%97%B0%EC%8A%B5%EB%AC%B8%EC%A0%9C/" class="pagination--pager" title="[OS] Ch7. 연습문제
+">Previous</a>
+    
+    
+      <a href="/algorithm/leetcode-Champagne-Tower/" class="pagination--pager" title="[leetcode] Champagne Tower
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+  <div class="page__related">
+    <h2 class="page__related-title">You may also enjoy
+    </h2>
+    <div class="grid__wrapper">
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/til/TIL-webpack.config.js-%EC%82%B4%ED%8E%B4%EB%B3%B4%EA%B8%B0/" rel="permalink">[TIL] webpack.config.js 살펴보기
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">React 개발 환경 설정 시 CRA로만 진행했었다. 멘토님께서 CRA는 불필요한 것들이 많으니 직접 customizing을 해 가는게 좋다고 해주셨다. React 공식 documentation에 나와있는 해당 article을 보며 React 개발 환경을 기초부터 진행 해 봤다. ...</p>
+  </article>
+</div>
+
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/algorithm/leetcode-House-Robber-III/" rel="permalink">[leetcode] House Robber III
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">[leetcode] House Robber III
+문제 링크
+</p>
+  </article>
+</div>
+
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/algorithm/leetcode-Flatten-Binary-Tree-to-Linked-List/" rel="permalink">[leetcode] Flatten Binary Tree to Linked List
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          less than 1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">[leetcode] Flatten Binary Tree to Linked List
+문제 링크
+</p>
+  </article>
+</div>
+
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/algorithm/leetcode-Search-in-Rotated-Sorted-Array/" rel="permalink">[leetcode] Search in Rotated Sorted Array
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          less than 1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">[leetcode] Search in Rotated Sorted Array
+문제 링크
+</p>
+  </article>
+</div>
+
+      
+    </div>
+  </div>
+  
+  
+</div>
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://github.com/forbid403" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 forbid403. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

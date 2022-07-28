@@ -1,0 +1,195 @@
+I"�<h3 id="기본-개념">기본 개념</h3>
+<ul>
+  <li>단일 처리기에서는 오직 하나의 프로세스만이 실행 가능하다.</li>
+  <li>다중 프로그래밍의 목적은 CPU 사용률 최대화이다.
+=&gt; 스케쥴링 알고리즘이 중요해짐</li>
+</ul>
+
+<h3 id="cpu-입출력-버스트-사이클-cpu-io-burst-cycle">CPU 입출력 버스트 사이클 (CPU I/O Burst Cycle)</h3>
+<ul>
+  <li>프로세스 실행은 CPU버스트, I/O 버스트가 번갈아가면서 사이클을 이룬다.</li>
+</ul>
+
+<h3 id="cpu-스케쥴러">CPU 스케쥴러</h3>
+<ul>
+  <li>단기 스케쥴러라고도 한다.</li>
+  <li>메모리 내의 프로세스를 CPU에 할당한다.</li>
+</ul>
+
+<h3 id="선점-스케쥴링-preemptive-scheduling">선점 스케쥴링 (Preemptive Scheduling)</h3>
+<ul>
+  <li>중간에 교체 가능 한 스케쥴링</li>
+  <li>Race condition이 발생 할 수 있다</li>
+</ul>
+
+<h3 id="디스패처-dispatcher">디스패처 (Dispatcher)</h3>
+<ul>
+  <li>CPU의 제어를 실행되는 프로세스에게 주는 모듈이다.
+    <ul>
+      <li>문맥 교환, 사용자 모드 전환, 사용자 프로그램의 적절한 위치로 이동(jump)의 기능이 있다.</li>
+    </ul>
+  </li>
+  <li>모든 프로세스의 문맥 교환 시 실행된다.
+    <ul>
+      <li>이 때의 지연을 dispatch latency라고 한다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="스케쥴링-기준">스케쥴링 기준</h3>
+<ul>
+  <li>CPU 이용률 ↑</li>
+  <li>처리량 ↑
+    <ul>
+      <li>단위 시간 당 처리한 프로세스의 갯수</li>
+    </ul>
+  </li>
+  <li>총 처리 시간 ↓</li>
+  <li>대기 시간 ↓
+    <ul>
+      <li>준비 완료 큐에서의 총 대기시간</li>
+    </ul>
+  </li>
+  <li>응답 시간 ↓</li>
+</ul>
+
+<h2 id="스케쥴링-알고리즘">스케쥴링 알고리즘</h2>
+<h3 id="fcfs-first-come-first-served">FCFS (First Come First Served)</h3>
+<ul>
+  <li>가장 빨리 온 프로세스가 가장 먼저 처리됨</li>
+  <li>convoy effect 발생 가능
+    <ul>
+      <li>가장 많은 시간이 소요되는 프로세스가 맨 먼저 오게 돼 대기 시간이 많아진다.</li>
+    </ul>
+  </li>
+  <li>비선점형</li>
+</ul>
+
+<h3 id="sjf-shortest-job-first">SJF (Shortest Job First)</h3>
+<ul>
+  <li>가장 짧은 프로세스가 먼저 수행된다.</li>
+  <li>장기 스케쥴링 시 주로 사용된다. (시간을 파악해야 하므로)</li>
+  <li>비선점</li>
+</ul>
+
+<h3 id="srjf-shortest-remaining-job-first">SRJF (Shortest Remaining Job First)</h3>
+<ul>
+  <li>SJF의 선점형</li>
+</ul>
+
+<h3 id="우선-순위">우선 순위</h3>
+<ul>
+  <li>우선 순위를 부여 해 높은 우선순위부터 실행한다.</li>
+  <li>기아 상태, 무한 봉쇄의 가능성이 있다.
+    <ul>
+      <li>시간이 지날 수록 우선순위를 높이는 Aging으로 해결 할 수 있다.</li>
+    </ul>
+  </li>
+  <li>선점형과 비선점형 둘 다 가능하다.</li>
+</ul>
+
+<h3 id="round-robin">Round Robin</h3>
+<ul>
+  <li>동일한 시간만큼 프로세스를 번갈아가면서 실행한다.</li>
+  <li>선점형</li>
+  <li>Time Slice가 너무 크면 FCFS와 다를 바가 없고, 너무 작으면 오버헤드가 커진다.</li>
+</ul>
+
+<h3 id="다단계-큐">다단계 큐</h3>
+<ul>
+  <li>Ready 큐를 여러 개 생성한다.</li>
+  <li>ex) foreground 큐, background 큐를 생성 해 foreground를 우선적으로 처리한다.</li>
+  <li>RR 사용 해 slice한다.</li>
+  <li>비선점</li>
+</ul>
+
+<h3 id="다단계-피드백-큐">다단계 피드백 큐</h3>
+<ul>
+  <li>프로세스가 CPU사이를 이동할 수 있다.</li>
+</ul>
+
+<hr />
+
+<h3 id="멀티-프로세서-스케쥴링">멀티 프로세서 스케쥴링</h3>
+<ul>
+  <li>
+    <p>load sharing(부하 공유)가 중요하다.</p>
+  </li>
+  <li>비대칭 다중처리
+    <ul>
+      <li>주 서버와 보조서버를 둔다.</li>
+      <li>주 서버는 시스템적인 처리를 한다. (스케쥴링 결정, I/O)</li>
+      <li>보조 서버는 사용자 코드 처리를 한다.</li>
+    </ul>
+  </li>
+  <li>대칭 다중처리 (SMP, Symmetric Multiprocessing)
+    <ul>
+      <li>각 처리기가 독자적으로 처리한다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="처리기-친화성-processor-affinity">처리기 친화성 (Processor Affinity)</h3>
+<ul>
+  <li>한 처리기에서 다른 처리기로의 이주를 피한다.</li>
+  <li>Soft Affinity : 이주 가능</li>
+  <li>Hard Affinity : 이주 불가능</li>
+</ul>
+
+<h3 id="load-balancing">Load Balancing</h3>
+<ul>
+  <li>SMP 시스템에서는 부하 분배가 균등해야 한다.</li>
+  <li>push 이주, pull 이주</li>
+</ul>
+
+<h3 id="다중코어-프로세서">다중코어 프로세서</h3>
+<ul>
+  <li>하나의 칩에 처리기가 여러 개 존재</li>
+  <li>스케쥴링이 복잡해짐</li>
+  <li>캐시 미스로 메모리 멈춤(stall) 발생 시 처리기 내부의 스레드를 통해 전환한다.</li>
+  <li>거친(coarse-grained) 다중스레딩
+    <ul>
+      <li>긴 지연 시간일 시 다중스레드 실행</li>
+    </ul>
+  </li>
+  <li>세밀한(fine-grained) 다중스레딩</li>
+</ul>
+
+<h2 id="실시간-cpu-스케쥴링">실시간 CPU 스케쥴링</h2>
+<ul>
+  <li>Soft 실시간 시스템
+    <ul>
+      <li>데드라인이 X</li>
+    </ul>
+  </li>
+  <li>Hard 실시간 시스템
+    <ul>
+      <li>데드라인 O</li>
+    </ul>
+  </li>
+  <li>지연시간 최소화
+    <ul>
+      <li>인터럽트 지연</li>
+      <li>디스패치 지연</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="승인-제어admission-control-알고리즘">승인 제어(admission-control) 알고리즘</h3>
+<ul>
+  <li>마감 시간 이내에 완수 가능하다면 승인, 아니라면 거절</li>
+</ul>
+
+<h3 id="rate-monotonic-알고리즘">Rate Monotonic 알고리즘</h3>
+<ul>
+  <li>주기에 따라 우선순위 결정</li>
+  <li>주기가 짧은게 우선</li>
+  <li>CPU 자원 최대화 불가능</li>
+</ul>
+
+<h3 id="earliset-deadline-first">Earliset Deadline First</h3>
+<ul>
+  <li>우선 순위 동적 부여</li>
+  <li>마감 시간이 빠른게 우선</li>
+</ul>
+:ET

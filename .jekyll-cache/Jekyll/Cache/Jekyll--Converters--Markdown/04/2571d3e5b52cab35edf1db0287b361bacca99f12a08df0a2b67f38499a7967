@@ -1,0 +1,37 @@
+I"�<h2 id="leetcode-convert-sorted-list-to-binary-search-tree">[leetcode] Convert Sorted List to Binary Search Tree</h2>
+<p><a href="https://leetcode.com/problems/convert-sorted-list-to-binary-search-tree/">문제 링크</a></p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">TreeNode</span><span class="o">*</span> <span class="n">sortedListToBST</span><span class="p">(</span><span class="n">ListNode</span><span class="o">*</span> <span class="n">head</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">head</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">head</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="k">return</span> <span class="k">new</span> <span class="n">TreeNode</span><span class="p">(</span><span class="n">head</span><span class="o">-&gt;</span><span class="n">val</span><span class="p">);</span>
+        
+        <span class="c1">// get mid</span>
+        <span class="n">ListNode</span> <span class="o">*</span><span class="n">slow</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+        <span class="n">ListNode</span> <span class="o">*</span><span class="n">fast</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+        <span class="n">ListNode</span> <span class="o">*</span><span class="n">pre</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+        <span class="k">while</span><span class="p">(</span><span class="n">fast</span> <span class="o">&amp;&amp;</span> <span class="n">fast</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">pre</span> <span class="o">=</span> <span class="n">slow</span><span class="p">;</span>
+            <span class="n">slow</span> <span class="o">=</span> <span class="n">slow</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+            <span class="n">fast</span> <span class="o">=</span> <span class="n">fast</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">pre</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+        
+        <span class="n">TreeNode</span> <span class="o">*</span><span class="n">root</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TreeNode</span><span class="p">(</span><span class="n">slow</span><span class="o">-&gt;</span><span class="n">val</span><span class="p">);</span>
+        <span class="n">root</span><span class="o">-&gt;</span><span class="n">left</span> <span class="o">=</span> <span class="n">sortedListToBST</span><span class="p">(</span><span class="n">head</span><span class="p">);</span>
+        <span class="n">root</span><span class="o">-&gt;</span><span class="n">right</span> <span class="o">=</span> <span class="n">sortedListToBST</span><span class="p">(</span><span class="n">slow</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">root</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<ul>
+  <li>좋은 트리 + 리스트 문제라서 기록한다.</li>
+  <li>정렬된 리스트를 이진검색트리로 만드는 문제이다.</li>
+  <li>재귀로 접근해서 풀 수 있는데, base condition은 <code class="language-plaintext highlighter-rouge">head</code>가 <code class="language-plaintext highlighter-rouge">null</code>일 경우, <code class="language-plaintext highlighter-rouge">null</code> 리턴하고 노드가 하나만 있을 경우는 해당 노드를 리턴한다.</li>
+  <li><code class="language-plaintext highlighter-rouge">slow</code>, <code class="language-plaintext highlighter-rouge">fast</code>포인터로 가운데 값을 찾는다. 이 리스트를 절반으로 나누기 위해 <code class="language-plaintext highlighter-rouge">prev</code>노드로 <code class="language-plaintext highlighter-rouge">slow</code>의 이전 노드를 저장한다.</li>
+  <li><code class="language-plaintext highlighter-rouge">prev-&gt;next</code>를 <code class="language-plaintext highlighter-rouge">null</code>처리 해 주어 리스트를 두 개로 나눈다.</li>
+  <li>중간의 노드가 <code class="language-plaintext highlighter-rouge">root</code>가 되고, 해당 노드의 <code class="language-plaintext highlighter-rouge">left</code>는 왼쪽 리스트의 중간 값, <code class="language-plaintext highlighter-rouge">right</code>는 왼쪽 리스트의 중간값이 된다.`</li>
+</ul>
+:ET

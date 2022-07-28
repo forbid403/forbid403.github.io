@@ -1,0 +1,51 @@
+I"�<h2 id="leetcode-reorder-list">[leetcode] Reorder List</h2>
+<p><a href="https://leetcode.com/problems/reorder-list/">문제 링크</a></p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="kt">void</span> <span class="n">reorderList</span><span class="p">(</span><span class="n">ListNode</span><span class="o">*</span> <span class="n">head</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">head</span> <span class="o">||</span> <span class="o">!</span><span class="n">head</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+        
+        <span class="c1">// find the middle</span>
+        <span class="n">ListNode</span> <span class="o">*</span><span class="n">cur1</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+        <span class="n">ListNode</span> <span class="o">*</span><span class="n">cur2</span> <span class="o">=</span> <span class="n">head</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+        <span class="k">while</span><span class="p">(</span><span class="n">cur2</span> <span class="o">&amp;&amp;</span> <span class="n">cur2</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">cur1</span> <span class="o">=</span> <span class="n">cur1</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+            <span class="n">cur2</span> <span class="o">=</span> <span class="n">cur2</span><span class="o">-&gt;</span><span class="n">next</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+        <span class="p">}</span>
+        
+        <span class="n">cur2</span> <span class="o">=</span> <span class="n">cur1</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+        <span class="n">cur1</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+        
+        <span class="c1">// reverse second list</span>
+        <span class="n">ListNode</span> <span class="o">*</span><span class="n">prev</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+        <span class="k">while</span><span class="p">(</span><span class="n">cur2</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">ListNode</span> <span class="o">*</span><span class="n">temp</span> <span class="o">=</span> <span class="n">cur2</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+            <span class="n">cur2</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">prev</span><span class="p">;</span>
+            <span class="n">prev</span> <span class="o">=</span> <span class="n">cur2</span><span class="p">;</span>
+            <span class="n">cur2</span> <span class="o">=</span> <span class="n">temp</span><span class="p">;</span>
+        <span class="p">}</span>
+        
+        <span class="n">cur1</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+        <span class="n">cur2</span> <span class="o">=</span> <span class="n">prev</span><span class="p">;</span>
+        <span class="n">ListNode</span> <span class="o">*</span><span class="n">temp</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+        <span class="k">while</span><span class="p">(</span><span class="n">cur1</span> <span class="o">&amp;&amp;</span> <span class="n">cur2</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">temp</span> <span class="o">=</span> <span class="n">cur1</span><span class="p">;</span>
+            <span class="n">cur1</span> <span class="o">=</span> <span class="n">cur1</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+            <span class="n">temp</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">cur2</span><span class="p">;</span>
+            
+            <span class="n">temp</span> <span class="o">=</span> <span class="n">cur2</span><span class="p">;</span>
+            <span class="n">cur2</span> <span class="o">=</span> <span class="n">cur2</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+            <span class="n">temp</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">cur1</span><span class="p">;</span>
+        <span class="p">}</span>
+        
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<ul>
+  <li>리스트를 둘로 쪼갠다.</li>
+  <li>두 번째 리스트를 반대로 정렬한다. (4-5-6 =&gt; 6-5-4)</li>
+  <li>첫 번째 리스트와 두 번째 리스트를 번갈아가면서 이어준다.</li>
+</ul>
+:ET

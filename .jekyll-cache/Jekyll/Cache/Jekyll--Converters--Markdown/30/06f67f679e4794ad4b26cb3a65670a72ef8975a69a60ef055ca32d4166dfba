@@ -1,0 +1,99 @@
+I"o	<h1 id="0102-til">0102 TIL</h1>
+
+<p>Created By: 성희 배
+Last Edited: Jan 03, 2020 1:49 AM
+Tags: til</p>
+
+<h3 id="server">Server</h3>
+
+<p>→ API (interface) : 상호 작용을 하는 프로그램</p>
+
+<h3 id="protocol">Protocol</h3>
+
+<p>→ HTTP</p>
+
+<p>서버/클라이언트간 통신 약속 → 이런 문법대로 써야 알아먹는다.</p>
+
+<p>request/response</p>
+
+<p>client가 얘기하면 서버가 응답 → 서버는 응답밖에 못함</p>
+
+<p>method : get/post</p>
+
+<p>→ web socket</p>
+
+<p>실시간 통신용</p>
+
+<h3 id="server-1">Server</h3>
+
+<p>→ program</p>
+
+<p>→ package manager (gradle, npm …)</p>
+
+<h3 id="network">Network</h3>
+
+<p>→ DNS : ip를 사용해 접속</p>
+
+<p>→ TCP/IP</p>
+
+<h3 id="framework">Framework</h3>
+
+<p>→ 어쨌든 통신 하는 것은 비슷함 : framework 제공</p>
+
+<p>→ 서버 개발자는 handling을 하는 부분만 개발</p>
+
+<p>handling : req→res</p>
+
+<h3 id="api-server">API Server</h3>
+
+<p>→ client ↔ server ↔ db server</p>
+
+<p>→ Database</p>
+
+<p>RDB : excel → Data들이 어떻게 저장하고 조회하는지 제공 (규약이 있음) : select, insert, delete 등</p>
+
+<p>Scheme을 무조건 적어야 함</p>
+
+<p>NoSQL : column이 계속 바뀜</p>
+
+<p>Scheme가 없음 → create table을 강제하지 않음</p>
+
+<p>Key/Val : column이 없음, Map&lt;key, val&gt; 형식</p>
+
+<p>ex) redis</p>
+
+<p>Search Engine : 검색</p>
+
+<p>ex) elastic search</p>
+
+<h3 id="auth">Auth</h3>
+
+<p>→ ip로 사용자 구분이 어려움 (매번 바뀜)</p>
+
+<p>→ header에 token을 보냄</p>
+
+<p>→ Authentication (인증) : 사용자를 구분</p>
+
+<p>→ Authorization (허가) : 서버에서 정보를 받아올 수 있는지</p>
+
+<h3 id="암호화">암호화</h3>
+
+<p>→ 통신 단에서 내용을 암호화 하겠다.</p>
+
+<p>→ release는 무조건 https</p>
+
+<p>→ Information architecture</p>
+
+<p>사용자 입장에서 어떻게 제공 되어야 하는지, 데이터 구조나 데이터 양 등 여러 변수를 고려 해야 함</p>
+
+<hr />
+
+<h3 id="prototype">Prototype</h3>
+
+<ul>
+  <li>JS에서 객체를 생성 할 때 prototype이 생성된다.</li>
+  <li><strong>proto</strong> (prototype property)는 함수 생성시에만 생성된다.</li>
+  <li>객체.<strong>proto</strong> 호출 시 프로토타입 객체 [[prototype]] 를 가리킨다</li>
+  <li>[[prototype]]은 constructor property를 갖는다.</li>
+</ul>
+:ET

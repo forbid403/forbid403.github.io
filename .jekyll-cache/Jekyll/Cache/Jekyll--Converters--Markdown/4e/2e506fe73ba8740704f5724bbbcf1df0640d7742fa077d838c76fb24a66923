@@ -1,0 +1,39 @@
+I"1<h2 id="leetcode-longest-increasing-subsequence">[leetcode] Longest Increasing Subsequence</h2>
+<p><a href="https://leetcode.com/problems/longest-increasing-subsequence/">문제 링크</a></p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="kt">int</span> <span class="n">lengthOfLIS</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">nums</span><span class="p">)</span> <span class="p">{</span>
+                
+        <span class="kt">int</span> <span class="n">ans</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">nums</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+        <span class="kt">int</span> <span class="n">dp</span><span class="p">[</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span> <span class="n">memset</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">dp</span><span class="p">));</span>
+
+        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">j</span><span class="o">&lt;</span><span class="n">i</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">nums</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">dp</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">dp</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="n">ans</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">ans</span><span class="p">,</span> <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+        <span class="p">}</span>
+        
+        <span class="k">return</span> <span class="n">ans</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Longest Increasing Subsequence는 기본 dp 문제이다. 숙지 해 놓자!</li>
+  <li><code class="language-plaintext highlighter-rouge">dp[i]</code>는 해당 위치에서의 증가 수열의 최대 길이이다.</li>
+  <li><code class="language-plaintext highlighter-rouge">j=0</code>에서부터 <code class="language-plaintext highlighter-rouge">i</code>까지의 최장 증가 수열을 계산 해 주면 된다.</li>
+  <li>1개는 무조건 1 길이의 lis를 가지기 때문에 <code class="language-plaintext highlighter-rouge">dp[i] = 1</code>로 초기화 시켜준다.</li>
+  <li><code class="language-plaintext highlighter-rouge">i</code>인덱스 숫자가 <code class="language-plaintext highlighter-rouge">j</code>인덱스보다 크고, <code class="language-plaintext highlighter-rouge">dp[j]+1</code>가 <code class="language-plaintext highlighter-rouge">dp[i]</code>보다 클 경우에 업데이트를 해 준다.
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">dp[j]+1</code>을 비교 해 주는 이유는, 최장 길이를 업데이트 해야 하는데 <code class="language-plaintext highlighter-rouge">dp[i]</code>가 최대가 아닌 경우가 있기 때문이다.</li>
+      <li>ex) 10 20 10 30 일 때, 30을 업데이트 시 크기 비교만 해 줄 경우 3이 아닌 2로 갱신된다. (<code class="language-plaintext highlighter-rouge">dp[2]</code>가 1이기 때문)</li>
+    </ul>
+  </li>
+</ul>
+:ET

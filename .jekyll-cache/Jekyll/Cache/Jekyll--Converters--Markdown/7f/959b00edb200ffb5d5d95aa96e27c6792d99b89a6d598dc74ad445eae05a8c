@@ -1,0 +1,162 @@
+I"�=<h1 id="백준-15686-치킨-배달">[백준 15686] 치킨 배달</h1>
+
+<p>Algorithm: dfs, 시뮬레이션
+Created: Apr 30, 2020 10:50 PM
+DoubleChk: No
+Type: 백준
+link: https://www.acmicpc.net/problem/15686</p>
+
+<h2 id="문제">문제</h2>
+
+<p>크기가 N×N인 도시가 있다. 도시는 1×1크기의 칸으로 나누어져 있다. 도시의 각 칸은 빈 칸, 치킨집, 집 중 하나이다. 도시의 칸은 (r, c)와 같은 형태로 나타내고, r행 c열 또는 위에서부터 r번째 칸, 왼쪽에서부터 c번째 칸을 의미한다. r과 c는 1부터 시작한다.</p>
+
+<p>이 도시에 사는 사람들은 치킨을 매우 좋아한다. 따라서, 사람들은 ”<strong>치킨 거리</strong>“라는 말을 주로 사용한다. <strong>치킨 거리</strong>는 집과 가장 가까운 치킨집 사이의 거리이다. 즉, 치킨 거리는 집을 기준으로 정해지며, 각각의 집은 <strong>치킨 거리</strong>를 가지고 있다. <strong>도시의 치킨 거리</strong>는 모든 집의 <strong>치킨 거리</strong>의 합이다.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>임의의 두 칸 (r1, c1)과 (r2, c2) 사이의 거리는</td>
+      <td>r1-r2</td>
+      <td>+</td>
+      <td>c1-c2</td>
+      <td>로 구한다.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>예를 들어, 아래와 같은 지도를 갖는 도시를 살펴보자.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0 2 0 1 0
+1 0 1 0 0
+0 0 0 0 0
+0 0 0 1 1
+0 0 0 1 2
+
+</code></pre></div></div>
+
+<p>0은 빈 칸, 1은 집, 2는 치킨집이다.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>(2, 1)에 있는 집과 (1, 2)에 있는 치킨집과의 거리는</td>
+      <td>2-1</td>
+      <td>+</td>
+      <td>1-2</td>
+      <td>= 2, (5, 5)에 있는 치킨집과의 거리는</td>
+      <td>2-5</td>
+      <td>+</td>
+      <td>1-5</td>
+      <td>= 7이다. 따라서, (2, 1)에 있는 집의 치킨 거리는 2이다.</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>(5, 4)에 있는 집과 (1, 2)에 있는 치킨집과의 거리는</td>
+      <td>5-1</td>
+      <td>+</td>
+      <td>4-2</td>
+      <td>= 6, (5, 5)에 있는 치킨집과의 거리는</td>
+      <td>5-5</td>
+      <td>+</td>
+      <td>4-5</td>
+      <td>= 1이다. 따라서, (5, 4)에 있는 집의 치킨 거리는 1이다.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>이 도시에 있는 치킨집은 모두 같은 프랜차이즈이다. 프렌차이즈 본사에서는 수익을 증가시키기 위해 일부 치킨집을 폐업시키려고 한다. 오랜 연구 끝에 이 도시에서 가장 수익을 많이 낼 수 있는 치킨집의 개수는 최대 M개라는 사실을 알아내었다.</p>
+
+<p>도시에 있는 치킨집 중에서 최대 M개를 고르고, 나머지 치킨집은 모두 폐업시켜야 한다. 어떻게 고르면, <strong>도시의 치킨 거리</strong>가 가장 작게 될지 구하는 프로그램을 작성하시오.</p>
+
+<hr />
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;cstring&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;queue&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;algorithm&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;map&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sstream&gt;</span><span class="cp">
+</span><span class="o">~~</span><span class="n">u</span><span class="o">~~</span><span class="n">sing</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">N</span><span class="p">,</span> <span class="n">M</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">city</span><span class="p">[</span><span class="mi">51</span><span class="p">][</span><span class="mi">51</span><span class="p">];</span>
+<span class="n">vector</span> <span class="o">&lt;</span><span class="n">pair</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">chicken</span><span class="p">;</span> <span class="c1">// 치킨집의 위치</span>
+<span class="n">vector</span> <span class="o">&lt;</span><span class="n">pair</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">house</span><span class="p">;</span> <span class="c1">//집의 위치</span>
+<span class="kt">int</span> <span class="n">ans</span> <span class="o">=</span> <span class="mi">987654321</span><span class="p">;</span>
+
+<span class="c1">//치킨 거리 : 집과 가장 '가까운' 치킨집과의 거리</span>
+<span class="c1">//치킨 집을 최대 M개를 골라서 =&gt; 조합 (dfs)</span>
+<span class="c1">//거리를 센다</span>
+<span class="c1">//치킨 거리의 최솟값을 리턴</span>
+
+<span class="kt">void</span> <span class="nf">input</span><span class="p">(){</span>
+    <span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">N</span> <span class="o">&gt;&gt;</span> <span class="n">M</span><span class="p">;</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">N</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">j</span><span class="o">&lt;</span><span class="n">N</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">){</span>
+            <span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">city</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">];</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">city</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">){</span>
+                <span class="n">chicken</span><span class="p">.</span><span class="n">push_back</span><span class="p">({</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">});</span>
+            <span class="p">}</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">city</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">){</span>
+                <span class="n">house</span><span class="p">.</span><span class="n">push_back</span><span class="p">({</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">});</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">select_chicken</span><span class="p">(</span><span class="kt">int</span> <span class="n">idx</span><span class="p">,</span> <span class="n">vector</span> <span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">pair</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;&gt;&gt;&amp;</span> <span class="n">selected</span><span class="p">,</span> <span class="n">vector</span> <span class="o">&lt;</span><span class="n">pair</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;&gt;&amp;</span> <span class="n">candidates</span><span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">candidates</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="o">&gt;</span> <span class="n">M</span> <span class="o">||</span><span class="n">candidates</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">chicken</span><span class="p">.</span><span class="n">size</span><span class="p">()){</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">candidates</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+        <span class="n">selected</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">candidates</span><span class="p">);</span>
+
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="n">idx</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">chicken</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+        <span class="n">candidates</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">chicken</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+        <span class="n">select_chicken</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">selected</span><span class="p">,</span> <span class="n">candidates</span><span class="p">);</span>
+        <span class="n">candidates</span><span class="p">.</span><span class="n">pop_back</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">solve</span><span class="p">(){</span>
+    <span class="n">vector</span> <span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">pair</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;&gt;&gt;</span> <span class="n">selected</span><span class="p">;</span>
+    <span class="n">vector</span> <span class="o">&lt;</span><span class="n">pair</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">candidates</span><span class="p">;</span>
+    <span class="c1">//없앨 치킨집을 최대 M개 까지 고른다</span>
+    <span class="n">select_chicken</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">selected</span><span class="p">,</span> <span class="n">candidates</span><span class="p">);</span>
+
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">selected</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span> <span class="c1">//경우의 수만큼</span>
+        
+        <span class="kt">int</span> <span class="n">chicken_dist</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="c1">//거리 계산</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">j</span><span class="o">&lt;</span><span class="n">house</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">j</span><span class="o">++</span><span class="p">){</span>
+            <span class="kt">int</span> <span class="n">dist</span> <span class="o">=</span> <span class="mi">987654321</span><span class="p">;</span>
+            <span class="kt">int</span> <span class="n">house_x</span> <span class="o">=</span> <span class="n">house</span><span class="p">[</span><span class="n">j</span><span class="p">].</span><span class="n">first</span><span class="p">;</span>
+            <span class="kt">int</span> <span class="n">house_y</span> <span class="o">=</span> <span class="n">house</span><span class="p">[</span><span class="n">j</span><span class="p">].</span><span class="n">second</span><span class="p">;</span>
+
+            <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">k</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">k</span><span class="o">&lt;</span><span class="n">selected</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">size</span><span class="p">();</span> <span class="n">k</span><span class="o">++</span><span class="p">){</span>
+                <span class="kt">int</span> <span class="n">calc</span> <span class="o">=</span> <span class="n">abs</span><span class="p">(</span><span class="n">house_x</span> <span class="o">-</span> <span class="n">selected</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">].</span><span class="n">first</span><span class="p">)</span> <span class="o">+</span> <span class="n">abs</span><span class="p">(</span><span class="n">house_y</span> <span class="o">-</span> <span class="n">selected</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">].</span><span class="n">second</span><span class="p">);</span>
+                <span class="n">dist</span> <span class="o">=</span> <span class="n">min</span><span class="p">(</span><span class="n">dist</span><span class="p">,</span> <span class="n">calc</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="n">chicken_dist</span> <span class="o">+=</span> <span class="n">dist</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="n">ans</span> <span class="o">=</span> <span class="n">min</span><span class="p">(</span><span class="n">ans</span><span class="p">,</span> <span class="n">chicken_dist</span><span class="p">);</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">input</span><span class="p">();</span>
+    
+    <span class="n">solve</span><span class="p">();</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">ans</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+:ET

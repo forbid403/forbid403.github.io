@@ -1,0 +1,106 @@
+I"�1<h1 id="valid-parentheses">Valid Parentheses</h1>
+
+<p><a href="https://leetcode.com/problems/valid-parentheses/">문제링크</a></p>
+
+<h3 id="first-solution">First Solution</h3>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+    <span class="nl">public:</span>
+        <span class="n">stack</span> <span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span> <span class="n">st</span><span class="p">;</span>
+        <span class="kt">bool</span> <span class="n">isValid</span><span class="p">(</span><span class="n">string</span> <span class="n">s</span><span class="p">)</span> <span class="p">{</span>
+            
+            <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">s</span><span class="p">.</span><span class="n">length</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+                <span class="kt">char</span> <span class="n">c</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+                
+                <span class="k">if</span><span class="p">(</span><span class="n">c</span> <span class="o">==</span> <span class="sc">')'</span><span class="p">){</span>
+                    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">st</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span> <span class="o">&amp;&amp;</span><span class="n">st</span><span class="p">.</span><span class="n">top</span><span class="p">()</span> <span class="o">==</span> <span class="sc">'('</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="n">st</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+                        <span class="k">continue</span><span class="p">;</span>
+                    <span class="p">}</span><span class="k">else</span> <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+                <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">c</span> <span class="o">==</span> <span class="sc">'}'</span><span class="p">){</span>
+                    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">st</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span> <span class="o">&amp;&amp;</span><span class="n">st</span><span class="p">.</span><span class="n">top</span><span class="p">()</span> <span class="o">==</span> <span class="sc">'{'</span><span class="p">){</span>
+                        <span class="n">st</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+                        <span class="k">continue</span><span class="p">;</span>
+                    <span class="p">}</span><span class="k">else</span> <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+                    
+                <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">c</span> <span class="o">==</span> <span class="sc">']'</span><span class="p">){</span>
+                    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">st</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">st</span><span class="p">.</span><span class="n">top</span><span class="p">()</span> <span class="o">==</span> <span class="sc">'['</span><span class="p">){</span>
+                        <span class="n">st</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+                        <span class="k">continue</span><span class="p">;</span>
+                    <span class="p">}</span><span class="k">else</span> <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+                <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+                    <span class="n">st</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            
+            <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">st</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+            <span class="k">else</span> <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+</code></pre></div></div>
+<h3 id="second-solution">Second Solution</h3>
+
+<p>좀더 가시적인 코드</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+    <span class="nl">public:</span>
+        <span class="n">stack</span> <span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span> <span class="n">st</span><span class="p">;</span>
+        <span class="kt">bool</span> <span class="n">isValid</span><span class="p">(</span><span class="n">string</span> <span class="n">s</span><span class="p">)</span> <span class="p">{</span>
+            
+            <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">s</span><span class="p">.</span><span class="n">length</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+                <span class="kt">char</span> <span class="n">c</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">c</span> <span class="o">==</span> <span class="sc">'('</span> <span class="o">||</span> <span class="n">c</span> <span class="o">==</span> <span class="sc">'['</span> <span class="o">||</span> <span class="n">c</span> <span class="o">==</span> <span class="sc">'{'</span><span class="p">){</span>
+                    <span class="n">st</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>
+                <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+                    <span class="k">if</span><span class="p">(</span><span class="n">st</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+                    <span class="k">if</span><span class="p">(</span><span class="n">c</span> <span class="o">==</span> <span class="sc">']'</span> <span class="o">&amp;&amp;</span> <span class="n">st</span><span class="p">.</span><span class="n">top</span><span class="p">()</span><span class="o">!=</span> <span class="sc">'['</span><span class="p">)</span> <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+                    <span class="k">if</span><span class="p">(</span><span class="n">c</span> <span class="o">==</span> <span class="sc">'}'</span> <span class="o">&amp;&amp;</span> <span class="n">st</span><span class="p">.</span><span class="n">top</span><span class="p">()</span><span class="o">!=</span> <span class="sc">'{'</span><span class="p">)</span> <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+                    <span class="k">if</span><span class="p">(</span><span class="n">c</span> <span class="o">==</span> <span class="sc">')'</span> <span class="o">&amp;&amp;</span> <span class="n">st</span><span class="p">.</span><span class="n">top</span><span class="p">()</span><span class="o">!=</span> <span class="sc">'('</span><span class="p">)</span> <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+                    <span class="n">st</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+                <span class="p">}</span>
+                
+            <span class="p">}</span>
+            
+            <span class="k">return</span> <span class="n">st</span><span class="p">.</span><span class="n">empty</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+</code></pre></div></div>
+
+<h3 id="javascript">Javascript</h3>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">isValid</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">stack</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="kd">const</span> <span class="nx">map</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="dl">'</span><span class="s1">(</span><span class="dl">'</span> <span class="p">:</span> <span class="dl">'</span><span class="s1">)</span><span class="dl">'</span><span class="p">,</span>
+        <span class="dl">'</span><span class="s1">[</span><span class="dl">'</span> <span class="p">:</span> <span class="dl">'</span><span class="s1">]</span><span class="dl">'</span><span class="p">,</span>
+        <span class="dl">'</span><span class="s1">{</span><span class="dl">'</span> <span class="p">:</span> <span class="dl">'</span><span class="s1">}</span><span class="dl">'</span>
+    <span class="p">};</span>
+    
+    <span class="k">for</span><span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">s</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">let</span> <span class="nx">c</span> <span class="o">=</span> <span class="nx">s</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+        
+        <span class="k">if</span><span class="p">(</span><span class="nx">map</span><span class="p">[</span><span class="nx">c</span><span class="p">])</span> <span class="nx">stack</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">map</span><span class="p">[</span><span class="nx">c</span><span class="p">]);</span> <span class="c1">// open bracket</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">c</span> <span class="o">!==</span> <span class="nx">stack</span><span class="p">.</span><span class="nx">pop</span><span class="p">())</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="k">return</span> <span class="o">!</span><span class="nx">stack</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div></div>
+<ul>
+  <li>
+    <p>문제풀이</p>
+
+    <p>스택에 하나씩 넣으면서 닫는 괄호 라면 앞에 여는 괄호가 있는지 st.top()으로 확인한다.</p>
+
+    <p>여는 괄호가 없거나 스택이 비었다면 return false</p>
+
+    <p>여는 괄호가 있으면 pop을 해준다.</p>
+
+    <p>다 돈 다음에 스택에 남아있는게 있으면 짝이 없다는 뜻이므로 return false</p>
+
+    <p>스택이 비었다면 다 짝을 찾았으므로 return true를 해준다!</p>
+  </li>
+  <li>
+    <p>후기</p>
+
+    <p>비슷한 문제를 자료구조 시간에 풀어서 잘 .. 풀었다 ㅎ 아래 코드가 더 깔끔한데 시간이 더 걸린다 왤까~~</p>
+  </li>
+</ul>
+:ET

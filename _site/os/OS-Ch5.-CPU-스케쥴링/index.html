@@ -1,0 +1,662 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>[OS] Ch5. CPU 스케쥴링 - Forbid403 개발 블로그</title>
+<meta name="description" content="기본 개념    단일 처리기에서는 오직 하나의 프로세스만이 실행 가능하다.   다중 프로그래밍의 목적은 CPU 사용률 최대화이다. =&gt; 스케쥴링 알고리즘이 중요해짐">
+
+
+  <meta name="author" content="forbid403">
+  
+  <meta property="article:author" content="forbid403">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Forbid403 개발 블로그">
+<meta property="og:title" content="[OS] Ch5. CPU 스케쥴링">
+<meta property="og:url" content="http://localhost:4000/os/OS-Ch5.-CPU-%EC%8A%A4%EC%BC%80%EC%A5%B4%EB%A7%81/">
+
+
+  <meta property="og:description" content="기본 개념    단일 처리기에서는 오직 하나의 프로세스만이 실행 가능하다.   다중 프로그래밍의 목적은 CPU 사용률 최대화이다. =&gt; 스케쥴링 알고리즘이 중요해짐">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2020-10-20T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/os/OS-Ch5.-CPU-%EC%8A%A4%EC%BC%80%EC%A5%B4%EB%A7%81/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "forbid403",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Forbid403 개발 블로그 Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Forbid403 개발 블로그
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="https://forbid403.github.io/">Main</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/">Categories</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <meta itemprop="headline" content="[OS] Ch5. CPU 스케쥴링">
+    
+    <meta itemprop="description" content="기본 개념  단일 처리기에서는 오직 하나의 프로세스만이 실행 가능하다.  다중 프로그래밍의 목적은 CPU 사용률 최대화이다.=&gt; 스케쥴링 알고리즘이 중요해짐">
+    
+    
+    <meta itemprop="datePublished" content="2020-10-20T00:00:00+09:00">
+    
+
+    <div class="page__inner-wrap">
+      
+      <header>
+        <h1 id="page-title" class="page__title p-name" itemprop="headline">
+          <a href="http://localhost:4000/os/OS-Ch5.-CPU-%EC%8A%A4%EC%BC%80%EC%A5%B4%EB%A7%81/" class="u-url" itemprop="url"><p>[OS] Ch5. CPU 스케쥴링
+</a>
+        </h1>
+        
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+      </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <h3 id="기본-개념">기본 개념</h3>
+<ul>
+  <li>단일 처리기에서는 오직 하나의 프로세스만이 실행 가능하다.</li>
+  <li>다중 프로그래밍의 목적은 CPU 사용률 최대화이다.
+=&gt; 스케쥴링 알고리즘이 중요해짐</li>
+</ul>
+
+<h3 id="cpu-입출력-버스트-사이클-cpu-io-burst-cycle">CPU 입출력 버스트 사이클 (CPU I/O Burst Cycle)</h3>
+<ul>
+  <li>프로세스 실행은 CPU버스트, I/O 버스트가 번갈아가면서 사이클을 이룬다.</li>
+</ul>
+
+<h3 id="cpu-스케쥴러">CPU 스케쥴러</h3>
+<ul>
+  <li>단기 스케쥴러라고도 한다.</li>
+  <li>메모리 내의 프로세스를 CPU에 할당한다.</li>
+</ul>
+
+<h3 id="선점-스케쥴링-preemptive-scheduling">선점 스케쥴링 (Preemptive Scheduling)</h3>
+<ul>
+  <li>중간에 교체 가능 한 스케쥴링</li>
+  <li>Race condition이 발생 할 수 있다</li>
+</ul>
+
+<h3 id="디스패처-dispatcher">디스패처 (Dispatcher)</h3>
+<ul>
+  <li>CPU의 제어를 실행되는 프로세스에게 주는 모듈이다.
+    <ul>
+      <li>문맥 교환, 사용자 모드 전환, 사용자 프로그램의 적절한 위치로 이동(jump)의 기능이 있다.</li>
+    </ul>
+  </li>
+  <li>모든 프로세스의 문맥 교환 시 실행된다.
+    <ul>
+      <li>이 때의 지연을 dispatch latency라고 한다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="스케쥴링-기준">스케쥴링 기준</h3>
+<ul>
+  <li>CPU 이용률 ↑</li>
+  <li>처리량 ↑
+    <ul>
+      <li>단위 시간 당 처리한 프로세스의 갯수</li>
+    </ul>
+  </li>
+  <li>총 처리 시간 ↓</li>
+  <li>대기 시간 ↓
+    <ul>
+      <li>준비 완료 큐에서의 총 대기시간</li>
+    </ul>
+  </li>
+  <li>응답 시간 ↓</li>
+</ul>
+
+<h2 id="스케쥴링-알고리즘">스케쥴링 알고리즘</h2>
+<h3 id="fcfs-first-come-first-served">FCFS (First Come First Served)</h3>
+<ul>
+  <li>가장 빨리 온 프로세스가 가장 먼저 처리됨</li>
+  <li>convoy effect 발생 가능
+    <ul>
+      <li>가장 많은 시간이 소요되는 프로세스가 맨 먼저 오게 돼 대기 시간이 많아진다.</li>
+    </ul>
+  </li>
+  <li>비선점형</li>
+</ul>
+
+<h3 id="sjf-shortest-job-first">SJF (Shortest Job First)</h3>
+<ul>
+  <li>가장 짧은 프로세스가 먼저 수행된다.</li>
+  <li>장기 스케쥴링 시 주로 사용된다. (시간을 파악해야 하므로)</li>
+  <li>비선점</li>
+</ul>
+
+<h3 id="srjf-shortest-remaining-job-first">SRJF (Shortest Remaining Job First)</h3>
+<ul>
+  <li>SJF의 선점형</li>
+</ul>
+
+<h3 id="우선-순위">우선 순위</h3>
+<ul>
+  <li>우선 순위를 부여 해 높은 우선순위부터 실행한다.</li>
+  <li>기아 상태, 무한 봉쇄의 가능성이 있다.
+    <ul>
+      <li>시간이 지날 수록 우선순위를 높이는 Aging으로 해결 할 수 있다.</li>
+    </ul>
+  </li>
+  <li>선점형과 비선점형 둘 다 가능하다.</li>
+</ul>
+
+<h3 id="round-robin">Round Robin</h3>
+<ul>
+  <li>동일한 시간만큼 프로세스를 번갈아가면서 실행한다.</li>
+  <li>선점형</li>
+  <li>Time Slice가 너무 크면 FCFS와 다를 바가 없고, 너무 작으면 오버헤드가 커진다.</li>
+</ul>
+
+<h3 id="다단계-큐">다단계 큐</h3>
+<ul>
+  <li>Ready 큐를 여러 개 생성한다.</li>
+  <li>ex) foreground 큐, background 큐를 생성 해 foreground를 우선적으로 처리한다.</li>
+  <li>RR 사용 해 slice한다.</li>
+  <li>비선점</li>
+</ul>
+
+<h3 id="다단계-피드백-큐">다단계 피드백 큐</h3>
+<ul>
+  <li>프로세스가 CPU사이를 이동할 수 있다.</li>
+</ul>
+
+<hr />
+
+<h3 id="멀티-프로세서-스케쥴링">멀티 프로세서 스케쥴링</h3>
+<ul>
+  <li>
+    <p>load sharing(부하 공유)가 중요하다.</p>
+  </li>
+  <li>비대칭 다중처리
+    <ul>
+      <li>주 서버와 보조서버를 둔다.</li>
+      <li>주 서버는 시스템적인 처리를 한다. (스케쥴링 결정, I/O)</li>
+      <li>보조 서버는 사용자 코드 처리를 한다.</li>
+    </ul>
+  </li>
+  <li>대칭 다중처리 (SMP, Symmetric Multiprocessing)
+    <ul>
+      <li>각 처리기가 독자적으로 처리한다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="처리기-친화성-processor-affinity">처리기 친화성 (Processor Affinity)</h3>
+<ul>
+  <li>한 처리기에서 다른 처리기로의 이주를 피한다.</li>
+  <li>Soft Affinity : 이주 가능</li>
+  <li>Hard Affinity : 이주 불가능</li>
+</ul>
+
+<h3 id="load-balancing">Load Balancing</h3>
+<ul>
+  <li>SMP 시스템에서는 부하 분배가 균등해야 한다.</li>
+  <li>push 이주, pull 이주</li>
+</ul>
+
+<h3 id="다중코어-프로세서">다중코어 프로세서</h3>
+<ul>
+  <li>하나의 칩에 처리기가 여러 개 존재</li>
+  <li>스케쥴링이 복잡해짐</li>
+  <li>캐시 미스로 메모리 멈춤(stall) 발생 시 처리기 내부의 스레드를 통해 전환한다.</li>
+  <li>거친(coarse-grained) 다중스레딩
+    <ul>
+      <li>긴 지연 시간일 시 다중스레드 실행</li>
+    </ul>
+  </li>
+  <li>세밀한(fine-grained) 다중스레딩</li>
+</ul>
+
+<h2 id="실시간-cpu-스케쥴링">실시간 CPU 스케쥴링</h2>
+<ul>
+  <li>Soft 실시간 시스템
+    <ul>
+      <li>데드라인이 X</li>
+    </ul>
+  </li>
+  <li>Hard 실시간 시스템
+    <ul>
+      <li>데드라인 O</li>
+    </ul>
+  </li>
+  <li>지연시간 최소화
+    <ul>
+      <li>인터럽트 지연</li>
+      <li>디스패치 지연</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="승인-제어admission-control-알고리즘">승인 제어(admission-control) 알고리즘</h3>
+<ul>
+  <li>마감 시간 이내에 완수 가능하다면 승인, 아니라면 거절</li>
+</ul>
+
+<h3 id="rate-monotonic-알고리즘">Rate Monotonic 알고리즘</h3>
+<ul>
+  <li>주기에 따라 우선순위 결정</li>
+  <li>주기가 짧은게 우선</li>
+  <li>CPU 자원 최대화 불가능</li>
+</ul>
+
+<h3 id="earliset-deadline-first">Earliset Deadline First</h3>
+<ul>
+  <li>우선 순위 동적 부여</li>
+  <li>마감 시간이 빠른게 우선</li>
+</ul>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#os" class="page__taxonomy-item p-category" rel="tag">os</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2020-10-20T00:00:00+09:00">October 20, 2020</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%5BOS%5D+Ch5.+CPU+%EC%8A%A4%EC%BC%80%EC%A5%B4%EB%A7%81%20http%3A%2F%2Flocalhost%3A4000%2Fos%2FOS-Ch5.-CPU-%25EC%258A%25A4%25EC%25BC%2580%25EC%25A5%25B4%25EB%25A7%2581%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fos%2FOS-Ch5.-CPU-%25EC%258A%25A4%25EC%25BC%2580%25EC%25A5%25B4%25EB%25A7%2581%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fos%2FOS-Ch5.-CPU-%25EC%258A%25A4%25EC%25BC%2580%25EC%25A5%25B4%25EB%25A7%2581%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/algorithm/leetcode-Reorder-List/" class="pagination--pager" title="[leetcode] Reorder List
+">Previous</a>
+    
+    
+      <a href="/algorithm/leetcode-As-Far-from-Land-as-Possible/" class="pagination--pager" title="[leetcode] As Far from Land as Possible
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+  <div class="page__related">
+    <h2 class="page__related-title">You may also enjoy
+    </h2>
+    <div class="grid__wrapper">
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/til/TIL-webpack.config.js-%EC%82%B4%ED%8E%B4%EB%B3%B4%EA%B8%B0/" rel="permalink">[TIL] webpack.config.js 살펴보기
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">React 개발 환경 설정 시 CRA로만 진행했었다. 멘토님께서 CRA는 불필요한 것들이 많으니 직접 customizing을 해 가는게 좋다고 해주셨다. React 공식 documentation에 나와있는 해당 article을 보며 React 개발 환경을 기초부터 진행 해 봤다. ...</p>
+  </article>
+</div>
+
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/algorithm/leetcode-House-Robber-III/" rel="permalink">[leetcode] House Robber III
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">[leetcode] House Robber III
+문제 링크
+</p>
+  </article>
+</div>
+
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/algorithm/leetcode-Flatten-Binary-Tree-to-Linked-List/" rel="permalink">[leetcode] Flatten Binary Tree to Linked List
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          less than 1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">[leetcode] Flatten Binary Tree to Linked List
+문제 링크
+</p>
+  </article>
+</div>
+
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/algorithm/leetcode-Search-in-Rotated-Sorted-Array/" rel="permalink">[leetcode] Search in Rotated Sorted Array
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          less than 1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">[leetcode] Search in Rotated Sorted Array
+문제 링크
+</p>
+  </article>
+</div>
+
+      
+    </div>
+  </div>
+  
+  
+</div>
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://github.com/forbid403" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 forbid403. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

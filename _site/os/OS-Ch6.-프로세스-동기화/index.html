@@ -1,0 +1,577 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>[OS] Ch6. 프로세스 동기화 - Forbid403 개발 블로그</title>
+<meta name="description" content="임계구역 문제 (The Critical-Section Problem)    각 프로세스는 임계구역이라고 부르는 코드 부분을 포함하고 있고, 그 안에서 다른 프로세스와 공유하는 변수를 변경하거나, 테이블 갱신 등의 작업을 진행한다.   이 시스템의 중요한 특징은 한 프로세스가 자신의 임계 구역에서 수행하는 동안 다른 프로세스들은 그 임계구역에 들어갈 수 없다는 사실이다.   각 프로세스는 임계구역에 진입하려면 진입 허가를 요청해야 한다.   요청을 하는 부분을 진입 구역(entry section), 그 뒤는 퇴출 구역(exit session)이라고 한다.   임계 구역이 아닌 구역은 나머지 구역(remainder section) 이라고 한다.   임계 구역 문제 해결안은 다음의 3가지를 충족해야 한다.            상호 배제 (mutual exclusion)                    프로세스가 자기의 임계 구역에서 실행된다면 다른 프로세스들은 자신의 임계 구역에서 실행될 수 없다.                       진행 (progress)                    자기의 임계 구역에서 실행되는 프로세스가 없고 자신의 임계 구역으로 진입하려는 프로세스가 있다면, 나머지 구역이 아닌 프로세스들만 그 다음에 누가 진입할지를 결정하는 데 참여할 수 있다. 이 선택은 무한정 연기될 수 없다.                       한정된 대기 (bounded waiting)                    프로세스가 자기의 임계 구역에 진입하려는 요청을 한 후 부터 허용 될 때 까지 다른 프로세스들이 그들 자신의 임계구역에 진입하는 횟수에 제한이 있어야 한다.">
+
+
+  <meta name="author" content="forbid403">
+  
+  <meta property="article:author" content="forbid403">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Forbid403 개발 블로그">
+<meta property="og:title" content="[OS] Ch6. 프로세스 동기화">
+<meta property="og:url" content="http://localhost:4000/os/OS-Ch6.-%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4-%EB%8F%99%EA%B8%B0%ED%99%94/">
+
+
+  <meta property="og:description" content="임계구역 문제 (The Critical-Section Problem)    각 프로세스는 임계구역이라고 부르는 코드 부분을 포함하고 있고, 그 안에서 다른 프로세스와 공유하는 변수를 변경하거나, 테이블 갱신 등의 작업을 진행한다.   이 시스템의 중요한 특징은 한 프로세스가 자신의 임계 구역에서 수행하는 동안 다른 프로세스들은 그 임계구역에 들어갈 수 없다는 사실이다.   각 프로세스는 임계구역에 진입하려면 진입 허가를 요청해야 한다.   요청을 하는 부분을 진입 구역(entry section), 그 뒤는 퇴출 구역(exit session)이라고 한다.   임계 구역이 아닌 구역은 나머지 구역(remainder section) 이라고 한다.   임계 구역 문제 해결안은 다음의 3가지를 충족해야 한다.            상호 배제 (mutual exclusion)                    프로세스가 자기의 임계 구역에서 실행된다면 다른 프로세스들은 자신의 임계 구역에서 실행될 수 없다.                       진행 (progress)                    자기의 임계 구역에서 실행되는 프로세스가 없고 자신의 임계 구역으로 진입하려는 프로세스가 있다면, 나머지 구역이 아닌 프로세스들만 그 다음에 누가 진입할지를 결정하는 데 참여할 수 있다. 이 선택은 무한정 연기될 수 없다.                       한정된 대기 (bounded waiting)                    프로세스가 자기의 임계 구역에 진입하려는 요청을 한 후 부터 허용 될 때 까지 다른 프로세스들이 그들 자신의 임계구역에 진입하는 횟수에 제한이 있어야 한다.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2020-10-23T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/os/OS-Ch6.-%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4-%EB%8F%99%EA%B8%B0%ED%99%94/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "forbid403",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Forbid403 개발 블로그 Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Forbid403 개발 블로그
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="https://forbid403.github.io/">Main</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/">Categories</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <meta itemprop="headline" content="[OS] Ch6. 프로세스 동기화">
+    
+    <meta itemprop="description" content="임계구역 문제 (The Critical-Section Problem)  각 프로세스는 임계구역이라고 부르는 코드 부분을 포함하고 있고, 그 안에서 다른 프로세스와 공유하는 변수를 변경하거나, 테이블 갱신 등의 작업을 진행한다.  이 시스템의 중요한 특징은 한 프로세스가 자신의 임계 구역에서 수행하는 동안 다른 프로세스들은 그 임계구역에 들어갈 수 없다는 사실이다.  각 프로세스는 임계구역에 진입하려면 진입 허가를 요청해야 한다.  요청을 하는 부분을 진입 구역(entry section), 그 뒤는 퇴출 구역(exit session)이라고 한다.  임계 구역이 아닌 구역은 나머지 구역(remainder section) 이라고 한다.  임계 구역 문제 해결안은 다음의 3가지를 충족해야 한다.          상호 배제 (mutual exclusion)                  프로세스가 자기의 임계 구역에서 실행된다면 다른 프로세스들은 자신의 임계 구역에서 실행될 수 없다.                    진행 (progress)                  자기의 임계 구역에서 실행되는 프로세스가 없고 자신의 임계 구역으로 진입하려는 프로세스가 있다면, 나머지 구역이 아닌 프로세스들만 그 다음에 누가 진입할지를 결정하는 데 참여할 수 있다. 이 선택은 무한정 연기될 수 없다.                    한정된 대기 (bounded waiting)                  프로세스가 자기의 임계 구역에 진입하려는 요청을 한 후 부터 허용 될 때 까지 다른 프로세스들이 그들 자신의 임계구역에 진입하는 횟수에 제한이 있어야 한다.                    ">
+    
+    
+    <meta itemprop="datePublished" content="2020-10-23T00:00:00+09:00">
+    
+
+    <div class="page__inner-wrap">
+      
+      <header>
+        <h1 id="page-title" class="page__title p-name" itemprop="headline">
+          <a href="http://localhost:4000/os/OS-Ch6.-%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4-%EB%8F%99%EA%B8%B0%ED%99%94/" class="u-url" itemprop="url"><p>[OS] Ch6. 프로세스 동기화
+</a>
+        </h1>
+        
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+      </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <h3 id="임계구역-문제-the-critical-section-problem">임계구역 문제 (The Critical-Section Problem)</h3>
+<ul>
+  <li>각 프로세스는 임계구역이라고 부르는 코드 부분을 포함하고 있고, 그 안에서 다른 프로세스와 공유하는 변수를 변경하거나, 테이블 갱신 등의 작업을 진행한다.</li>
+  <li>이 시스템의 중요한 특징은 <strong>한 프로세스가 자신의 임계 구역에서 수행하는 동안 다른 프로세스들은 그 임계구역에 들어갈 수 없다</strong>는 사실이다.</li>
+  <li>각 프로세스는 임계구역에 진입하려면 진입 허가를 요청해야 한다.</li>
+  <li>요청을 하는 부분을 <strong>진입 구역(entry section)</strong>, 그 뒤는 퇴출 구역(exit session)이라고 한다.</li>
+  <li>임계 구역이 아닌 구역은 <strong>나머지 구역(remainder section)</strong> 이라고 한다.</li>
+  <li>임계 구역 문제 해결안은 다음의 3가지를 충족해야 한다.
+    <ul>
+      <li><strong>상호 배제 (mutual exclusion)</strong>
+        <ul>
+          <li>프로세스가 자기의 임계 구역에서 실행된다면 다른 프로세스들은 자신의 임계 구역에서 실행될 수 없다.</li>
+        </ul>
+      </li>
+      <li><strong>진행 (progress)</strong>
+        <ul>
+          <li>자기의 임계 구역에서 실행되는 프로세스가 없고 자신의 임계 구역으로 진입하려는 프로세스가 있다면, 나머지 구역이 아닌 프로세스들만 그 다음에 누가 진입할지를 결정하는 데 참여할 수 있다. 이 선택은 무한정 연기될 수 없다.</li>
+        </ul>
+      </li>
+      <li><strong>한정된 대기 (bounded waiting)</strong>
+        <ul>
+          <li>프로세스가 자기의 임계 구역에 진입하려는 요청을 한 후 부터 허용 될 때 까지 다른 프로세스들이 그들 자신의 임계구역에 진입하는 횟수에 제한이 있어야 한다.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="피터슨의-해결안">피터슨의 해결안</h3>
+<ul>
+  <li>flag를 두어 두 개의 프로세스가 번갈아 가면서 실행된다.</li>
+</ul>
+
+<h3 id="mutex-locks">Mutex Locks</h3>
+<ul>
+  <li>프로세스는 임계 구역에 들어가기 전에 반드시 lock을 획득 해야 하고, 빠져 나올 때 반납 해야 한다.</li>
+  <li><code class="language-plaintext highlighter-rouge">acquire()</code> 락을 획득, busy waiting 사용 (spin lock) -&gt; CPU 사이클 낭비, but 문맥 교환을 필요로 하지 않는다. 짧은 시간 동안만 락을 소유할 경우 유용하다.</li>
+  <li><code class="language-plaintext highlighter-rouge">release()</code> 락을 반환</li>
+</ul>
+
+<h3 id="세마포-semaphore">세마포 (Semaphore)</h3>
+<ul>
+  <li>세마포는 <code class="language-plaintext highlighter-rouge">wait()</code>과 <code class="language-plaintext highlighter-rouge">signal()</code>로만 접근 가능하다.</li>
+  <li>카운팅 세마포 값은 제한이 없고, 이진 세마포 값은 0, 1 사이의 값만 가능하다.</li>
+  <li>따라서 이진 세마포는 mutex락과 유사하게 동작한다.</li>
+  <li>카운팅 세마포는 가용한 자원의 갯수로 초기화 된다. 자원을 사용하려는 프로세스는 <code class="language-plaintext highlighter-rouge">wait()</code> 연산을 수행하며, 세마포의 값이 감소가 된다. 값을 방출 하면 <code class="language-plaintext highlighter-rouge">signal()</code>연산을 수행하고, 세마포 값은 증가한다. 세마포의 값이 0이 되면 모든 자원이 사용중이고, 0 이상이 될 때까지 봉쇄된다.</li>
+</ul>
+
+<h3 id="교착-상태와-기아">교착 상태와 기아</h3>
+<ul>
+  <li>세마포에서 프로세스들이 하나에 의해서만 야기될 수 있는 상황 (signal 연산)을 무한정 기다리는 상황이 발생할 수 있다. 이를 교착 상태(deadlock) 이라고 한다.</li>
+  <li>무한 봉쇄, 또는 기아는 세마포에서 무한정 대기하는 것이다. 이는 큐에서 LIFO 순서로 제거할 경우 발생 할 수 있다.</li>
+</ul>
+
+<h3 id="우선순위-역전">우선순위 역전</h3>
+<ul>
+  <li>셋 이상의 우선 순위를 가진 시스템에서만 발생한다. 상대적으로 낮은 우선 순위를 가진 프로세스가 높은 프로세스에게 영향을 끼치는 상황이다.</li>
+  <li>두 가지 우선순위만 가지게 하면 해결 할 수 있다.</li>
+  <li>우선순위 상속 프로토콜을 구현함으로서 해결할 수 있다.
+    <ul>
+      <li>우선순위가 높은 프로세스가 필요로 하는 자원을 사용하는 프로세스들은 끝날 때 까지 더 높은 우선순위를 상속받는다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="고전적인-동기화-문제들">고전적인 동기화 문제들</h2>
+<h3 id="유한-버퍼-문제-the-bounded-buffer-problem">유한 버퍼 문제 (The Bounded-Buffer Problem)</h3>
+<ul>
+  <li>유한한 크기를 가지는 버퍼에 여러 프로세스들이 접근할 때 발생하는 문제.</li>
+  <li>이진 세마포어를 통해 해결할 수 있다.</li>
+</ul>
+
+<h3 id="readers-writers-문제">Readers-Writers 문제</h3>
+<ul>
+  <li>writer와 reader이 동시에 접근 할 때 발생할 수 있는 문제.</li>
+  <li>reader/reader 접근은 허용, writer은 한 개만 접근할 수 있도록 함.</li>
+</ul>
+
+<h3 id="식사하는-철학자들-문제-the-dining-philosophers-problem">식사하는 철학자들 문제 (The Dining-Philosophers Problem)</h3>
+<ul>
+  <li>자신의 바로 좌우의 젓가락만 집을 수 있다.</li>
+  <li>두 젓가락을 모두 집어야 식사를 할 수 있다.</li>
+  <li>식사를 하고 난 다음에 두 젓가락을 모두 내려놓는다.</li>
+  <li>모두 오른쪽의 젓가락을 집게 된다면 아무도 먹을 수 없을 것이다. (교착상태와 기아)</li>
+  <li>이는 모니터로 해결 할 수 있다.</li>
+</ul>
+
+<h3 id="모니터">모니터</h3>
+<ul>
+  <li>세마포를 사용할 때 다음과 같은 문제점이 발생할 수 있다.
+    <ul>
+      <li>코딩하는 것이 힘들다.</li>
+      <li>타이밍 오류가 발생할 수 있다.</li>
+      <li>정확성(correctness) 입증이 어렵다.</li>
+      <li>자발적 협력(voluntary cooperation)이 필요하다.</li>
+      <li>한 번의 실수가 시스템 전체에 치명적으로 영향을 미친다.</li>
+    </ul>
+  </li>
+  <li>모니터 구조물은 모니터 안에 항상 하나의 프로세스만이 활성화된다. -&gt; 동기화 제약 조건을 구현할 필요 없다.</li>
+  <li>동기화는 condition이라는 구조물로 제공된다.</li>
+  <li>condition은 <code class="language-plaintext highlighter-rouge">signal()</code>과 <code class="language-plaintext highlighter-rouge">wait()</code>을 가지고 있다.</li>
+  <li><code class="language-plaintext highlighter-rouge">x.wait()</code>, <code class="language-plaintext highlighter-rouge">x.signal()</code>과 같이 사용한다.</li>
+</ul>
+
+<h3 id="함수형-프로그래밍-언어">함수형 프로그래밍 언어</h3>
+<ul>
+  <li>C++, Java와 같은 절차형 언어들은 변수들이 다른 값을 배정받을 수 있기 때문에 변경이 가능하다.</li>
+  <li>함수형 프로그래밍은 상태를 유지하지 않는다. 변수가 정의 되어 값을 배정받으면 값이 변경 될 수 없기 때문에 경쟁 조건이나 교착 상태의 쟁점에서 자유롭다.</li>
+</ul>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#os" class="page__taxonomy-item p-category" rel="tag">os</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2020-10-23T00:00:00+09:00">October 23, 2020</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%5BOS%5D+Ch6.+%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4+%EB%8F%99%EA%B8%B0%ED%99%94%20http%3A%2F%2Flocalhost%3A4000%2Fos%2FOS-Ch6.-%25ED%2594%2584%25EB%25A1%259C%25EC%2584%25B8%25EC%258A%25A4-%25EB%258F%2599%25EA%25B8%25B0%25ED%2599%2594%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fos%2FOS-Ch6.-%25ED%2594%2584%25EB%25A1%259C%25EC%2584%25B8%25EC%258A%25A4-%25EB%258F%2599%25EA%25B8%25B0%25ED%2599%2594%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fos%2FOS-Ch6.-%25ED%2594%2584%25EB%25A1%259C%25EC%2584%25B8%25EC%258A%25A4-%25EB%258F%2599%25EA%25B8%25B0%25ED%2599%2594%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/os/OS-Ch6.-%EC%97%B0%EC%8A%B5%EB%AC%B8%EC%A0%9C/" class="pagination--pager" title="[OS] Ch6. 연습문제
+">Previous</a>
+    
+    
+      <a href="/algorithm/leetcode-Remove-Duplicate-Letters/" class="pagination--pager" title="[leetcode] Remove Duplicate Letters
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+  <div class="page__related">
+    <h2 class="page__related-title">You may also enjoy
+    </h2>
+    <div class="grid__wrapper">
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/til/TIL-webpack.config.js-%EC%82%B4%ED%8E%B4%EB%B3%B4%EA%B8%B0/" rel="permalink">[TIL] webpack.config.js 살펴보기
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">React 개발 환경 설정 시 CRA로만 진행했었다. 멘토님께서 CRA는 불필요한 것들이 많으니 직접 customizing을 해 가는게 좋다고 해주셨다. React 공식 documentation에 나와있는 해당 article을 보며 React 개발 환경을 기초부터 진행 해 봤다. ...</p>
+  </article>
+</div>
+
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/algorithm/leetcode-House-Robber-III/" rel="permalink">[leetcode] House Robber III
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">[leetcode] House Robber III
+문제 링크
+</p>
+  </article>
+</div>
+
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/algorithm/leetcode-Flatten-Binary-Tree-to-Linked-List/" rel="permalink">[leetcode] Flatten Binary Tree to Linked List
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          less than 1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">[leetcode] Flatten Binary Tree to Linked List
+문제 링크
+</p>
+  </article>
+</div>
+
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/algorithm/leetcode-Search-in-Rotated-Sorted-Array/" rel="permalink">[leetcode] Search in Rotated Sorted Array
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          less than 1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">[leetcode] Search in Rotated Sorted Array
+문제 링크
+</p>
+  </article>
+</div>
+
+      
+    </div>
+  </div>
+  
+  
+</div>
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://github.com/forbid403" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 forbid403. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

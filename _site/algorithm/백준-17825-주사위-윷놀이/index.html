@@ -1,0 +1,626 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>[백준 17825] 주사위 윷놀이 - Forbid403 개발 블로그</title>
+<meta name="description" content="주사위 윷놀이">
+
+
+  <meta name="author" content="forbid403">
+  
+  <meta property="article:author" content="forbid403">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Forbid403 개발 블로그">
+<meta property="og:title" content="[백준 17825] 주사위 윷놀이">
+<meta property="og:url" content="http://localhost:4000/algorithm/%EB%B0%B1%EC%A4%80-17825-%EC%A3%BC%EC%82%AC%EC%9C%84-%EC%9C%B7%EB%86%80%EC%9D%B4/">
+
+
+  <meta property="og:description" content="주사위 윷놀이">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2020-04-21T00:00:00+09:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/algorithm/%EB%B0%B1%EC%A4%80-17825-%EC%A3%BC%EC%82%AC%EC%9C%84-%EC%9C%B7%EB%86%80%EC%9D%B4/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "forbid403",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Forbid403 개발 블로그 Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Forbid403 개발 블로그
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="https://forbid403.github.io/">Main</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/">Categories</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <meta itemprop="headline" content="[백준 17825] 주사위 윷놀이">
+    
+    <meta itemprop="description" content="주사위 윷놀이">
+    
+    
+    <meta itemprop="datePublished" content="2020-04-21T00:00:00+09:00">
+    
+
+    <div class="page__inner-wrap">
+      
+      <header>
+        <h1 id="page-title" class="page__title p-name" itemprop="headline">
+          <a href="http://localhost:4000/algorithm/%EB%B0%B1%EC%A4%80-17825-%EC%A3%BC%EC%82%AC%EC%9C%84-%EC%9C%B7%EB%86%80%EC%9D%B4/" class="u-url" itemprop="url"><p>[백준 17825] 주사위 윷놀이
+</a>
+        </h1>
+        
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+      </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <h1 id="주사위-윷놀이">주사위 윷놀이</h1>
+
+<p>Algorithm: dfs, 시뮬레이션
+Created: Apr 21, 2020 3:11 PM
+DoubleChk: No
+Type: 백준
+link: https://www.acmicpc.net/problem/17825</p>
+
+<h2 id="문제">문제</h2>
+
+<p>주사위 윷놀이는 다음과 같은 게임판에서 하는 게임이다.</p>
+
+<p><a href="https://upload.acmicpc.net/43409ac6-54bf-4a21-b542-e01a8211e59f/-/preview/">https://upload.acmicpc.net/43409ac6-54bf-4a21-b542-e01a8211e59f/-/preview/</a></p>
+
+<ul>
+  <li>처음에는 시작 칸에 말 4개가 있다.</li>
+  <li>말은 게임판에 그려진 화살표의 방향대로만 이동할 수 있다. 말이 파란색 칸에서 이동을 시작하면 파란색 화살표를 타야 하고, 이동하는 도중이거나 파란색이 아닌 칸에서 이동을 시작하면 빨간색 화살표를 타야 한다. 말이 도착 칸으로 이동하면 주사위에 나온 수와 관계 없이 이동을 마친다.</li>
+  <li>게임은 10개의 턴으로 이루어진다. 매 턴마다 1부터 5까지 한 면에 하나씩 적혀있는 5면체 주사위를 굴리고, 도착 칸에 있지 않은 말을 하나 골라 주사위에 나온 수만큼 이동시킨다.</li>
+  <li>말이 이동을 마치는 칸에 다른 말이 있으면 그 말은 고를 수 없다. 단, 이동을 마치는 칸이 도착 칸이면 고를 수 있다.</li>
+  <li>말이 이동을 마칠 때마다 칸에 적혀있는 수가 점수에 추가된다.</li>
+</ul>
+
+<p>주사위에서 나올 수 10개를 미리 알고 있을 때, 얻을 수 있는 점수의 최댓값을 구해보자.</p>
+
+<hr />
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+#include &lt;map&gt;
+#include &lt;stack&gt;
+#include &lt;iostream&gt;
+using namespace std;
+map&lt;int, int&gt; red = {
+        { 0, 2 },{ 2, 4 },{ 4, 6 },
+        { 6, 8 },{ 8, 10 },{ 10, 12 },
+        { 12, 14 },{ 14, 16 },{ 16, 18 },
+        { 18, 20 },{ 20, 22 },{ 22, 24 },
+        { 24, 26 },{ 26, 28 },{ 28, 30 },
+        { 30, 32 },{ 32, 34 },{ 34, 36 },
+        { 36, 38 },{ 38, 40 },{ 40, 50 }
+};
+
+map&lt;int, int&gt; blue = {
+        { 10, 13 },{ 13, 16 },{ 16, 19 },
+        { 19, 25 },{ 20, 22 },{ 22, 24 },
+        { 24, 25 },{ 30, 28 },{ 28, 27 },
+        { 27, 26 },{ 26, 25 },
+};
+
+map&lt;int, int&gt; blue_goal = {
+        { 25, 30 },{ 30, 35 },{ 35, 40 },{ 40, 50 }
+};
+
+int ans;
+vector&lt;int&gt; dice;
+void input(){
+    for(int i=0; i&lt;10; i++){
+        int n;
+        cin &gt;&gt; n;
+        dice.push_back(n);
+    }
+}
+int move(int idx, int piece, vector&lt;pair&lt;int, int&gt;&gt;&amp; pieces){
+
+    //해당 piece의 방향 알기
+    int dir = pieces[piece].second;
+    int now = pieces[piece].first;
+    int cnt = dice[idx];
+
+    for(int i=0; i&lt;cnt; i++){
+
+        if(dir == 0){
+            now = red[now];
+        }else if(dir == 1){
+            now = blue[now];
+        }else if(dir == 2){
+            now = blue_goal[now];
+        }
+
+        if(now == 25) dir = 2;
+        else if(now == 50) break; //끝에 도달
+    }
+
+    int check = true;
+    if(now == 50){
+        pieces[piece].first = 50;
+    }else{
+
+        if(dir == 0 &amp;&amp; (now == 10 || now == 20 || now == 30)) dir = 1;
+
+        for(int i=0; i&lt;4; i++){ //중복된 말이 있는지 체크한다.
+            if(i == piece) continue;
+            if(pieces[i].first == now &amp;&amp; (now == 40 || dir == pieces[i].second)){
+                check = false;
+            }
+        }
+
+        if(!check){
+            return -1;
+        }else{
+            pieces[piece].first = now;
+            pieces[piece].second = dir;
+            return now;
+        }
+
+    }
+
+    return 0;
+}
+void solve(int idx, int sum, vector&lt;pair&lt;int, int&gt;&gt;&amp; pieces){
+
+    if(idx &gt;= 10){
+        ans = max(ans, sum);
+        return;
+    }
+
+    //모든 말들 dfs
+    for(int i=0; i&lt;4; i++){
+        int prev = pieces[i].first;
+        int prev_dir = pieces[i].second;
+
+        int ret = move(idx, i, pieces);
+        if(ret &gt; -1){
+            solve(idx + 1, sum + ret, pieces);
+        }
+
+        pieces[i].first = prev;
+        pieces[i].second = prev_dir;
+    }
+
+}
+int main(){
+    vector &lt;pair&lt;int, int&gt;&gt; pieces; //현재 위치, 방향
+    //0 -&gt; 제일 큰 동그라미
+    //1 -&gt; 꺾을 때
+    //2 -&gt; 25일 때
+
+    pieces ={{0, 0},{0, 0},{0, 0},{0, 0}};
+
+    input();
+    solve(0, 0, pieces);
+
+    cout &lt;&lt; ans &lt;&lt; endl;
+
+    return 0;
+}
+</code></pre></div></div>
+
+<ul>
+  <li>
+    <p>문제 풀이</p>
+
+    <p>map을 사용해서 윷놀이 판을 구현한다.</p>
+
+    <p>4개의 말을 10번 돌리는 모든 경우의 수를 파악하여 제일 큰 값을 저장해야 하기 때문에, dfs로 풀어준다.</p>
+  </li>
+</ul>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#algorithm" class="page__taxonomy-item p-category" rel="tag">algorithm</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2020-04-21T00:00:00+09:00">April 21, 2020</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%5B%EB%B0%B1%EC%A4%80+17825%5D+%EC%A3%BC%EC%82%AC%EC%9C%84+%EC%9C%B7%EB%86%80%EC%9D%B4%20http%3A%2F%2Flocalhost%3A4000%2Falgorithm%2F%25EB%25B0%25B1%25EC%25A4%2580-17825-%25EC%25A3%25BC%25EC%2582%25AC%25EC%259C%2584-%25EC%259C%25B7%25EB%2586%2580%25EC%259D%25B4%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Falgorithm%2F%25EB%25B0%25B1%25EC%25A4%2580-17825-%25EC%25A3%25BC%25EC%2582%25AC%25EC%259C%2584-%25EC%259C%25B7%25EB%2586%2580%25EC%259D%25B4%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Falgorithm%2F%25EB%25B0%25B1%25EC%25A4%2580-17825-%25EC%25A3%25BC%25EC%2582%25AC%25EC%259C%2584-%25EC%259C%25B7%25EB%2586%2580%25EC%259D%25B4%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/algorithm/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4-%ED%81%AC%EB%A0%88%EC%9D%B8-%EC%9D%B8%ED%98%95%EB%BD%91%EA%B8%B0-%EA%B2%8C%EC%9E%84/" class="pagination--pager" title="[프로그래머스] 크레인 인형뽑기 게임
+">Previous</a>
+    
+    
+      <a href="/algorithm/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4-%ED%8A%9C%ED%94%8C/" class="pagination--pager" title="[프로그래머스] 튜플
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+  <div class="page__related">
+    <h2 class="page__related-title">You may also enjoy
+    </h2>
+    <div class="grid__wrapper">
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/til/TIL-webpack.config.js-%EC%82%B4%ED%8E%B4%EB%B3%B4%EA%B8%B0/" rel="permalink">[TIL] webpack.config.js 살펴보기
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">React 개발 환경 설정 시 CRA로만 진행했었다. 멘토님께서 CRA는 불필요한 것들이 많으니 직접 customizing을 해 가는게 좋다고 해주셨다. React 공식 documentation에 나와있는 해당 article을 보며 React 개발 환경을 기초부터 진행 해 봤다. ...</p>
+  </article>
+</div>
+
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/algorithm/leetcode-House-Robber-III/" rel="permalink">[leetcode] House Robber III
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">[leetcode] House Robber III
+문제 링크
+</p>
+  </article>
+</div>
+
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/algorithm/leetcode-Flatten-Binary-Tree-to-Linked-List/" rel="permalink">[leetcode] Flatten Binary Tree to Linked List
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          less than 1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">[leetcode] Flatten Binary Tree to Linked List
+문제 링크
+</p>
+  </article>
+</div>
+
+      
+      
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/algorithm/leetcode-Search-in-Rotated-Sorted-Array/" rel="permalink">[leetcode] Search in Rotated Sorted Array
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          less than 1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">[leetcode] Search in Rotated Sorted Array
+문제 링크
+</p>
+  </article>
+</div>
+
+      
+    </div>
+  </div>
+  
+  
+</div>
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://github.com/forbid403" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 forbid403. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

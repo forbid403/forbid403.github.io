@@ -1,0 +1,43 @@
+I"`<h2 id="leetcode-rotate-list">[leetcode] Rotate List</h2>
+<p><a href="https://leetcode.com/problems/rotate-list/">문제 링크</a></p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">ListNode</span><span class="o">*</span> <span class="n">rotateRight</span><span class="p">(</span><span class="n">ListNode</span><span class="o">*</span> <span class="n">head</span><span class="p">,</span> <span class="kt">int</span> <span class="n">k</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">head</span> <span class="o">==</span> <span class="nb">NULL</span> <span class="o">||</span> <span class="n">k</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="n">head</span><span class="p">;</span>
+        
+        <span class="kt">int</span> <span class="n">cnt</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="n">ListNode</span><span class="o">*</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+        <span class="k">while</span><span class="p">(</span><span class="n">temp</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">)</span> <span class="n">cnt</span><span class="o">++</span><span class="p">,</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">temp</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+        <span class="n">k</span> <span class="o">%=</span> <span class="n">cnt</span><span class="p">;</span>
+        
+        <span class="n">ListNode</span> <span class="o">*</span><span class="n">cur1</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+        <span class="n">ListNode</span> <span class="o">*</span><span class="n">cur2</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+        <span class="n">ListNode</span> <span class="o">*</span><span class="n">new_head</span><span class="p">;</span>
+        
+        <span class="k">while</span><span class="p">(</span><span class="n">k</span><span class="o">--</span> <span class="o">&amp;&amp;</span> <span class="n">cur1</span><span class="p">)</span> <span class="n">cur1</span> <span class="o">=</span> <span class="n">cur1</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+        
+        <span class="k">while</span><span class="p">(</span><span class="n">cur1</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">&amp;&amp;</span> <span class="n">cur2</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">cur1</span> <span class="o">=</span> <span class="n">cur1</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+            <span class="n">cur2</span> <span class="o">=</span> <span class="n">cur2</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+        <span class="p">}</span>
+        
+        <span class="n">cur1</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+        <span class="n">new_head</span> <span class="o">=</span> <span class="n">cur2</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+        <span class="n">cur2</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+
+
+        <span class="k">return</span> <span class="n">new_head</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<ul>
+  <li>투 포인터로 푸는 문제.</li>
+  <li>리스트의 길이를 구한 후, K에 나머지 연산을 하면 새로운 헤드의 위치를 구할 수 있다. (뒤에서 몇 번째인지)</li>
+  <li><code class="language-plaintext highlighter-rouge">cur1</code>, <code class="language-plaintext highlighter-rouge">cur2</code>를 만들고 <code class="language-plaintext highlighter-rouge">cur1</code>을 <code class="language-plaintext highlighter-rouge">k</code>만큼 움직여준다.</li>
+  <li>이제 <code class="language-plaintext highlighter-rouge">cur1</code>가 끝에 도달 할 때까지 <code class="language-plaintext highlighter-rouge">cur1</code>, <code class="language-plaintext highlighter-rouge">cur2</code>를 함께 움직여준다.</li>
+  <li>끝에 도달하게 되면 <code class="language-plaintext highlighter-rouge">cur1-&gt;next</code>를 맨 처음과 이어준다. (<code class="language-plaintext highlighter-rouge">head</code>)</li>
+  <li>새로운 헤드를 <code class="language-plaintext highlighter-rouge">cur2-&gt;next</code>로 해 주고, <code class="language-plaintext highlighter-rouge">null</code>처리를 해주면 된다.</li>
+</ul>
+:ET

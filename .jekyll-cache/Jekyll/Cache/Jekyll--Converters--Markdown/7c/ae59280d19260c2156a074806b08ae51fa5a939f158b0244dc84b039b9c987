@@ -1,0 +1,92 @@
+I"�<h1 id="combination-sum">Combination Sum</h1>
+
+<p>Algorithm: 재귀
+Created: Jan 04, 2020 10:25 AM
+DoubleChk: No
+Type: LeetCode
+level: 2
+link: https://leetcode.com/problems/combination-sum/</p>
+
+<p>Given a <strong>set</strong> of candidate numbers (<code class="language-plaintext highlighter-rouge">candidates</code>) <strong>(without duplicates)</strong> and a target number (<code class="language-plaintext highlighter-rouge">target</code>), find all unique combinations in <code class="language-plaintext highlighter-rouge">candidates</code> where the candidate numbers sums to <code class="language-plaintext highlighter-rouge">target</code>.</p>
+
+<p>The <strong>same</strong> repeated number may be chosen from <code class="language-plaintext highlighter-rouge">candidates</code> unlimited number of times.</p>
+
+<p><strong>Note:</strong></p>
+
+<ul>
+  <li>All numbers (including <code class="language-plaintext highlighter-rouge">target</code>) will be positive integers.</li>
+  <li>The solution set must not contain duplicate combinations.</li>
+</ul>
+
+<p><strong>Example 1:</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Input: candidates = [2,3,6,7], target = 7,
+A solution set is:
+[
+  [7],
+  [2,2,3]
+]
+</code></pre></div></div>
+
+<p><strong>Example 2:</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Input: candidates = [2,3,5], target = 8,
+A solution set is:
+[
+  [2,2,2,2],
+  [2,3,3],
+  [3,5]
+]
+</code></pre></div></div>
+
+<hr />
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+    <span class="nl">public:</span>
+        
+        <span class="kt">void</span> <span class="n">recursion</span><span class="p">(</span><span class="n">vector</span> <span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="o">&amp;</span><span class="n">ans</span><span class="p">,</span> <span class="n">vector</span> <span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">chosen</span><span class="p">,</span> <span class="n">vector</span> <span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">candidates</span><span class="p">,</span> <span class="kt">int</span> <span class="n">target</span><span class="p">,</span> <span class="kt">int</span> <span class="n">index</span><span class="p">){</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">target</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">){</span>
+                <span class="k">return</span><span class="p">;</span>
+            <span class="p">}</span>
+            
+            <span class="k">if</span><span class="p">(</span><span class="n">target</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+                <span class="n">ans</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">chosen</span><span class="p">);</span>
+                <span class="k">return</span><span class="p">;</span>
+            <span class="p">}</span>
+            
+            <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="n">index</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">candidates</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+                <span class="n">chosen</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">candidates</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+                <span class="n">recursion</span><span class="p">(</span><span class="n">ans</span><span class="p">,</span> <span class="n">chosen</span><span class="p">,</span> <span class="n">candidates</span><span class="p">,</span> <span class="n">target</span> <span class="o">-</span> <span class="n">candidates</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">i</span><span class="p">);</span>
+                <span class="n">chosen</span><span class="p">.</span><span class="n">pop_back</span><span class="p">();</span>
+            <span class="p">}</span>
+            
+        <span class="p">}</span>
+        
+        <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">combinationSum</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">candidates</span><span class="p">,</span> <span class="kt">int</span> <span class="n">target</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">vector</span> <span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">ans</span><span class="p">;</span>
+            <span class="n">vector</span> <span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">chosen</span><span class="p">;</span>
+            
+            <span class="n">recursion</span><span class="p">(</span><span class="n">ans</span><span class="p">,</span> <span class="n">chosen</span><span class="p">,</span> <span class="n">candidates</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+            
+            <span class="k">return</span> <span class="n">ans</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+</code></pre></div></div>
+<ul>
+  <li>
+    <p>문제 풀이</p>
+
+    <p>target에서 candidates를 재귀로 계속 빼가면서 0이 되면 ans 벡터에 push를 해준다.</p>
+
+    <p>만약 candidates를 뺐는데 음수가 나오면 return 한다. (너무 많이 뺐으므로)</p>
+
+    <p>재귀함수를 호출 하면서 index를 부여 해주는데, 중복이 허용 가능 하기 때문에</p>
+
+    <p>인자로 i를 보내주어 다시 한 번 자기 자신을 chosen에 넣을 수 있도록 해주었다.</p>
+  </li>
+  <li>
+    <p>후기</p>
+
+    <p>:D</p>
+  </li>
+</ul>
+:ET

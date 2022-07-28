@@ -1,0 +1,332 @@
+I"<h2 id="key-point">Key Point</h2>
+<blockquote>
+  <p>중복 허용 X : 방문 처리 필요 (visit 배열 사용)</p>
+
+  <p>순서 상관 X : 인덱스 필요</p>
+</blockquote>
+
+<ul>
+  <li>순서 상관 X 라면 <code class="language-plaintext highlighter-rouge">AB = BA</code>이다. 따라서 <code class="language-plaintext highlighter-rouge">[1, 2], [2, 1]</code>은 같기 때문에 제거 해 주어야 하기 때문에 인덱스가 필요하다.</li>
+  <li>순서 상관 O 라면 <code class="language-plaintext highlighter-rouge">AB ≠ BA</code>이다. 따라서 <code class="language-plaintext highlighter-rouge">[1, 2], [2, 1]</code>은 2개로 카운트 되기 때문에 인덱스가 필요 없이 모든 경우의 수를 세 주면 된다.</li>
+</ul>
+
+<h2 id="조합-combintaion">조합 (Combintaion)</h2>
+<ul>
+  <li>순서에 상관 <strong>없이</strong> n개중 r개를 뽑는다.</li>
+  <li>중복 허용 X, 순서 상관 X
+    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">combination</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="n">candidates</span><span class="p">,</span> <span class="n">vector</span> <span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="n">num</span><span class="p">,</span> <span class="kt">int</span> <span class="n">idx</span><span class="p">,</span> <span class="kt">int</span> <span class="n">cnt</span><span class="p">)</span> <span class="p">{</span>
+<span class="k">if</span><span class="p">(</span><span class="n">candidates</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="n">cnt</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">print</span><span class="p">(</span><span class="n">candidates</span><span class="p">);</span>
+  <span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="n">idx</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">num</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">visit</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="p">{</span>
+    <span class="n">visit</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="n">candidates</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">num</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+    <span class="n">combination</span><span class="p">(</span><span class="n">candidates</span><span class="p">,</span> <span class="n">num</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">cnt</span><span class="p">);</span>
+    <span class="n">candidates</span><span class="p">.</span><span class="n">pop_back</span><span class="p">();</span>
+    <span class="n">visit</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>    </div>
+    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// result</span>
+<span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> 
+<span class="mi">1</span> <span class="mi">2</span> <span class="mi">4</span> 
+<span class="mi">1</span> <span class="mi">3</span> <span class="mi">4</span> 
+<span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> 
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="순열-permutation">순열 (Permutation)</h2>
+<ul>
+  <li>순서에 상관 <strong>있이</strong> n개중 r개를 뽑는다.</li>
+  <li>중복 허용 X, 순서 상관 O
+    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">permutation</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="n">candidates</span><span class="p">,</span> <span class="n">vector</span> <span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="n">num</span><span class="p">,</span> <span class="kt">int</span> <span class="n">cnt</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// 조합</span>
+<span class="k">if</span><span class="p">(</span><span class="n">candidates</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="n">cnt</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">print</span><span class="p">(</span><span class="n">candidates</span><span class="p">);</span>
+  <span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">num</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">visit</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="p">{</span>
+    <span class="n">visit</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="n">candidates</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">num</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+    <span class="n">permutation</span><span class="p">(</span><span class="n">candidates</span><span class="p">,</span> <span class="n">num</span><span class="p">,</span> <span class="n">cnt</span><span class="p">);</span>
+    <span class="n">candidates</span><span class="p">.</span><span class="n">pop_back</span><span class="p">();</span>
+    <span class="n">visit</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>    </div>
+    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//result</span>
+<span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> 
+<span class="mi">1</span> <span class="mi">2</span> <span class="mi">4</span> 
+<span class="mi">1</span> <span class="mi">3</span> <span class="mi">2</span> 
+<span class="mi">1</span> <span class="mi">3</span> <span class="mi">4</span> 
+<span class="mi">1</span> <span class="mi">4</span> <span class="mi">2</span> 
+<span class="mi">1</span> <span class="mi">4</span> <span class="mi">3</span> 
+<span class="mi">2</span> <span class="mi">1</span> <span class="mi">3</span> 
+<span class="mi">2</span> <span class="mi">1</span> <span class="mi">4</span> 
+<span class="mi">2</span> <span class="mi">3</span> <span class="mi">1</span> 
+<span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> 
+<span class="mi">2</span> <span class="mi">4</span> <span class="mi">1</span> 
+<span class="mi">2</span> <span class="mi">4</span> <span class="mi">3</span> 
+<span class="mi">3</span> <span class="mi">1</span> <span class="mi">2</span> 
+<span class="mi">3</span> <span class="mi">1</span> <span class="mi">4</span> 
+<span class="mi">3</span> <span class="mi">2</span> <span class="mi">1</span> 
+<span class="mi">3</span> <span class="mi">2</span> <span class="mi">4</span> 
+<span class="mi">3</span> <span class="mi">4</span> <span class="mi">1</span> 
+<span class="mi">3</span> <span class="mi">4</span> <span class="mi">2</span> 
+<span class="mi">4</span> <span class="mi">1</span> <span class="mi">2</span> 
+<span class="mi">4</span> <span class="mi">1</span> <span class="mi">3</span> 
+<span class="mi">4</span> <span class="mi">2</span> <span class="mi">1</span> 
+<span class="mi">4</span> <span class="mi">2</span> <span class="mi">3</span> 
+<span class="mi">4</span> <span class="mi">3</span> <span class="mi">1</span> 
+<span class="mi">4</span> <span class="mi">3</span> <span class="mi">2</span> 
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="중복-조합">중복 조합</h2>
+<ul>
+  <li>조합에서 중복을 허용한다.</li>
+  <li>중복 허용 O, 순서 상관 X
+    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">duplicate_combination</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="n">candidates</span><span class="p">,</span> <span class="n">vector</span> <span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="n">num</span><span class="p">,</span> <span class="kt">int</span> <span class="n">idx</span><span class="p">,</span> <span class="kt">int</span> <span class="n">cnt</span><span class="p">)</span> <span class="p">{</span>
+  
+<span class="k">if</span><span class="p">(</span><span class="n">candidates</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="n">cnt</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">print</span><span class="p">(</span><span class="n">candidates</span><span class="p">);</span>
+  <span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="n">idx</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">num</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">candidates</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">num</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+  <span class="n">duplicate_combination</span><span class="p">(</span><span class="n">candidates</span><span class="p">,</span> <span class="n">num</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">cnt</span><span class="p">);</span>
+  <span class="n">candidates</span><span class="p">.</span><span class="n">pop_back</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>    </div>
+    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//result</span>
+<span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> 
+<span class="mi">1</span> <span class="mi">1</span> <span class="mi">2</span> 
+<span class="mi">1</span> <span class="mi">1</span> <span class="mi">3</span> 
+<span class="mi">1</span> <span class="mi">1</span> <span class="mi">4</span> 
+<span class="mi">1</span> <span class="mi">2</span> <span class="mi">2</span> 
+<span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> 
+<span class="mi">1</span> <span class="mi">2</span> <span class="mi">4</span> 
+<span class="mi">1</span> <span class="mi">3</span> <span class="mi">3</span> 
+<span class="mi">1</span> <span class="mi">3</span> <span class="mi">4</span> 
+<span class="mi">1</span> <span class="mi">4</span> <span class="mi">4</span> 
+<span class="mi">2</span> <span class="mi">2</span> <span class="mi">2</span> 
+<span class="mi">2</span> <span class="mi">2</span> <span class="mi">3</span> 
+<span class="mi">2</span> <span class="mi">2</span> <span class="mi">4</span> 
+<span class="mi">2</span> <span class="mi">3</span> <span class="mi">3</span> 
+<span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> 
+<span class="mi">2</span> <span class="mi">4</span> <span class="mi">4</span> 
+<span class="mi">3</span> <span class="mi">3</span> <span class="mi">3</span> 
+<span class="mi">3</span> <span class="mi">3</span> <span class="mi">4</span> 
+<span class="mi">3</span> <span class="mi">4</span> <span class="mi">4</span> 
+<span class="mi">4</span> <span class="mi">4</span> <span class="mi">4</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="중복-순열">중복 순열</h2>
+<ul>
+  <li>순열에서 중복을 허용한다.</li>
+  <li>중복 허용 O, 순서 상관 O
+    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">duplicate_permutation</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="n">candidates</span><span class="p">,</span> <span class="n">vector</span> <span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="n">num</span><span class="p">,</span> <span class="kt">int</span> <span class="n">cnt</span><span class="p">)</span> <span class="p">{</span>
+  
+<span class="k">if</span><span class="p">(</span><span class="n">candidates</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="n">cnt</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">print</span><span class="p">(</span><span class="n">candidates</span><span class="p">);</span>
+  <span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">num</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">candidates</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">num</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+  <span class="n">duplicate_permutation</span><span class="p">(</span><span class="n">candidates</span><span class="p">,</span> <span class="n">num</span><span class="p">,</span> <span class="n">cnt</span><span class="p">);</span>
+  <span class="n">candidates</span><span class="p">.</span><span class="n">pop_back</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>    </div>
+    <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//result</span>
+<span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> 
+<span class="mi">1</span> <span class="mi">1</span> <span class="mi">2</span> 
+<span class="mi">1</span> <span class="mi">1</span> <span class="mi">3</span> 
+<span class="mi">1</span> <span class="mi">1</span> <span class="mi">4</span> 
+<span class="mi">1</span> <span class="mi">2</span> <span class="mi">1</span> 
+<span class="mi">1</span> <span class="mi">2</span> <span class="mi">2</span> 
+<span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> 
+<span class="mi">1</span> <span class="mi">2</span> <span class="mi">4</span> 
+<span class="mi">1</span> <span class="mi">3</span> <span class="mi">1</span> 
+<span class="mi">1</span> <span class="mi">3</span> <span class="mi">2</span> 
+<span class="mi">1</span> <span class="mi">3</span> <span class="mi">3</span> 
+<span class="mi">1</span> <span class="mi">3</span> <span class="mi">4</span> 
+<span class="mi">1</span> <span class="mi">4</span> <span class="mi">1</span> 
+<span class="mi">1</span> <span class="mi">4</span> <span class="mi">2</span> 
+<span class="mi">1</span> <span class="mi">4</span> <span class="mi">3</span> 
+<span class="mi">1</span> <span class="mi">4</span> <span class="mi">4</span> 
+<span class="mi">2</span> <span class="mi">1</span> <span class="mi">1</span> 
+<span class="mi">2</span> <span class="mi">1</span> <span class="mi">2</span> 
+<span class="mi">2</span> <span class="mi">1</span> <span class="mi">3</span> 
+<span class="mi">2</span> <span class="mi">1</span> <span class="mi">4</span> 
+<span class="mi">2</span> <span class="mi">2</span> <span class="mi">1</span> 
+<span class="mi">2</span> <span class="mi">2</span> <span class="mi">2</span> 
+<span class="mi">2</span> <span class="mi">2</span> <span class="mi">3</span> 
+<span class="mi">2</span> <span class="mi">2</span> <span class="mi">4</span> 
+<span class="mi">2</span> <span class="mi">3</span> <span class="mi">1</span> 
+<span class="mi">2</span> <span class="mi">3</span> <span class="mi">2</span> 
+<span class="mi">2</span> <span class="mi">3</span> <span class="mi">3</span> 
+<span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> 
+<span class="mi">2</span> <span class="mi">4</span> <span class="mi">1</span> 
+<span class="mi">2</span> <span class="mi">4</span> <span class="mi">2</span> 
+<span class="mi">2</span> <span class="mi">4</span> <span class="mi">3</span> 
+<span class="mi">2</span> <span class="mi">4</span> <span class="mi">4</span> 
+<span class="mi">3</span> <span class="mi">1</span> <span class="mi">1</span> 
+<span class="mi">3</span> <span class="mi">1</span> <span class="mi">2</span> 
+<span class="mi">3</span> <span class="mi">1</span> <span class="mi">3</span> 
+<span class="mi">3</span> <span class="mi">1</span> <span class="mi">4</span> 
+<span class="mi">3</span> <span class="mi">2</span> <span class="mi">1</span> 
+<span class="mi">3</span> <span class="mi">2</span> <span class="mi">2</span> 
+<span class="mi">3</span> <span class="mi">2</span> <span class="mi">3</span> 
+<span class="mi">3</span> <span class="mi">2</span> <span class="mi">4</span> 
+<span class="mi">3</span> <span class="mi">3</span> <span class="mi">1</span> 
+<span class="mi">3</span> <span class="mi">3</span> <span class="mi">2</span> 
+<span class="mi">3</span> <span class="mi">3</span> <span class="mi">3</span> 
+<span class="mi">3</span> <span class="mi">3</span> <span class="mi">4</span> 
+<span class="mi">3</span> <span class="mi">4</span> <span class="mi">1</span> 
+<span class="mi">3</span> <span class="mi">4</span> <span class="mi">2</span> 
+<span class="mi">3</span> <span class="mi">4</span> <span class="mi">3</span> 
+<span class="mi">3</span> <span class="mi">4</span> <span class="mi">4</span> 
+<span class="mi">4</span> <span class="mi">1</span> <span class="mi">1</span> 
+<span class="mi">4</span> <span class="mi">1</span> <span class="mi">2</span> 
+<span class="mi">4</span> <span class="mi">1</span> <span class="mi">3</span> 
+<span class="mi">4</span> <span class="mi">1</span> <span class="mi">4</span> 
+<span class="mi">4</span> <span class="mi">2</span> <span class="mi">1</span> 
+<span class="mi">4</span> <span class="mi">2</span> <span class="mi">2</span> 
+<span class="mi">4</span> <span class="mi">2</span> <span class="mi">3</span> 
+<span class="mi">4</span> <span class="mi">2</span> <span class="mi">4</span> 
+<span class="mi">4</span> <span class="mi">3</span> <span class="mi">1</span> 
+<span class="mi">4</span> <span class="mi">3</span> <span class="mi">2</span> 
+<span class="mi">4</span> <span class="mi">3</span> <span class="mi">3</span> 
+<span class="mi">4</span> <span class="mi">3</span> <span class="mi">4</span> 
+<span class="mi">4</span> <span class="mi">4</span> <span class="mi">1</span> 
+<span class="mi">4</span> <span class="mi">4</span> <span class="mi">2</span> 
+<span class="mi">4</span> <span class="mi">4</span> <span class="mi">3</span> 
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="전체-소스-코드">전체 소스 코드</h2>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">"header.h"</span><span class="cp">
+</span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">visit</span><span class="p">[</span><span class="mi">5</span><span class="p">];</span>
+<span class="kt">void</span> <span class="nf">print</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="n">candidates</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="n">a</span> <span class="o">:</span> <span class="n">candidates</span><span class="p">)</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">a</span> <span class="o">&lt;&lt;</span> <span class="sc">' '</span><span class="p">;</span>
+  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">init</span><span class="p">(</span><span class="n">vector</span> <span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">ans</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">ans</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+  <span class="n">memset</span><span class="p">(</span><span class="n">visit</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">visit</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">combination</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="n">candidates</span><span class="p">,</span> <span class="n">vector</span> <span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="n">num</span><span class="p">,</span> <span class="kt">int</span> <span class="n">idx</span><span class="p">,</span> <span class="kt">int</span> <span class="n">cnt</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span><span class="p">(</span><span class="n">candidates</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="n">cnt</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">print</span><span class="p">(</span><span class="n">candidates</span><span class="p">);</span>
+    <span class="k">return</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="n">idx</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">num</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">visit</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="p">{</span>
+      <span class="n">visit</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+      <span class="n">candidates</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">num</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+      <span class="n">combination</span><span class="p">(</span><span class="n">candidates</span><span class="p">,</span> <span class="n">num</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">cnt</span><span class="p">);</span>
+      <span class="n">candidates</span><span class="p">.</span><span class="n">pop_back</span><span class="p">();</span>
+      <span class="n">visit</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">permutation</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="n">candidates</span><span class="p">,</span> <span class="n">vector</span> <span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="n">num</span><span class="p">,</span> <span class="kt">int</span> <span class="n">cnt</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// 조합</span>
+  <span class="k">if</span><span class="p">(</span><span class="n">candidates</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="n">cnt</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">print</span><span class="p">(</span><span class="n">candidates</span><span class="p">);</span>
+    <span class="k">return</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">num</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">visit</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="p">{</span>
+      <span class="n">visit</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+      <span class="n">candidates</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">num</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+      <span class="n">permutation</span><span class="p">(</span><span class="n">candidates</span><span class="p">,</span> <span class="n">num</span><span class="p">,</span> <span class="n">cnt</span><span class="p">);</span>
+      <span class="n">candidates</span><span class="p">.</span><span class="n">pop_back</span><span class="p">();</span>
+      <span class="n">visit</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">duplicate_combination</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="n">candidates</span><span class="p">,</span> <span class="n">vector</span> <span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="n">num</span><span class="p">,</span> <span class="kt">int</span> <span class="n">idx</span><span class="p">,</span> <span class="kt">int</span> <span class="n">cnt</span><span class="p">)</span> <span class="p">{</span>
+  
+  <span class="k">if</span><span class="p">(</span><span class="n">candidates</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="n">cnt</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">print</span><span class="p">(</span><span class="n">candidates</span><span class="p">);</span>
+    <span class="k">return</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="n">idx</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">num</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">candidates</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">num</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+    <span class="n">duplicate_combination</span><span class="p">(</span><span class="n">candidates</span><span class="p">,</span> <span class="n">num</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">cnt</span><span class="p">);</span>
+    <span class="n">candidates</span><span class="p">.</span><span class="n">pop_back</span><span class="p">();</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">duplicate_permutation</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="n">candidates</span><span class="p">,</span> <span class="n">vector</span> <span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="n">num</span><span class="p">,</span> <span class="kt">int</span> <span class="n">cnt</span><span class="p">)</span> <span class="p">{</span>
+  
+  <span class="k">if</span><span class="p">(</span><span class="n">candidates</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="n">cnt</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">print</span><span class="p">(</span><span class="n">candidates</span><span class="p">);</span>
+    <span class="k">return</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">num</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">candidates</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">num</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+    <span class="n">duplicate_permutation</span><span class="p">(</span><span class="n">candidates</span><span class="p">,</span> <span class="n">num</span><span class="p">,</span> <span class="n">cnt</span><span class="p">);</span>
+    <span class="n">candidates</span><span class="p">.</span><span class="n">pop_back</span><span class="p">();</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">vector</span> <span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">num</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">};</span>
+  <span class="n">vector</span> <span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">ans</span><span class="p">;</span>
+
+  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"조합 구현"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="c1">// 중복 X, 순서 X</span>
+  <span class="n">combination</span><span class="p">(</span><span class="n">ans</span><span class="p">,</span> <span class="n">num</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span> <span class="c1">// 답을 저장할 벡터, 숫자들, 인덱스, 얼마나 뽑을 것인지</span>
+  <span class="n">init</span><span class="p">(</span><span class="n">ans</span><span class="p">);</span>
+  
+  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"</span><span class="se">\n</span><span class="s">순열 구현"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="c1">// 중복 X, 순서 O≠</span>
+  <span class="n">permutation</span><span class="p">(</span><span class="n">ans</span><span class="p">,</span> <span class="n">num</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span> <span class="c1">// 답을 저장할 벡터, 숫자들, 얼마나 뽑을 것인지</span>
+  <span class="n">init</span><span class="p">(</span><span class="n">ans</span><span class="p">);</span>
+
+  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"</span><span class="se">\n</span><span class="s">중복 조합"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="c1">// 중복 O, 순서 X</span>
+  <span class="n">duplicate_combination</span><span class="p">(</span><span class="n">ans</span><span class="p">,</span> <span class="n">num</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span> <span class="c1">// 답을 저장할 벡터, 숫자들, 얼마나 뽑을 것인지</span>
+  <span class="n">init</span><span class="p">(</span><span class="n">ans</span><span class="p">);</span>
+
+  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"</span><span class="se">\n</span><span class="s">중복 순열"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span> <span class="c1">// 중복 O, 순서 O</span>
+  <span class="n">duplicate_permutation</span><span class="p">(</span><span class="n">ans</span><span class="p">,</span> <span class="n">num</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span> <span class="c1">// 답을 저장할 벡터, 숫자들, 얼마나 뽑을 것인지</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="관련-문제">관련 문제</h2>
+
+<h3 id="조합">조합</h3>
+<p><a href="https://leetcode.com/problems/combination-sum-ii/">Combination Sum</a></p>
+
+<p><a href="https://leetcode.com/problems/letter-combinations-of-a-phone-number/">Letter Combinations of a Phone Number
+</a></p>
+
+<h3 id="순열">순열</h3>
+<p><a href="https://leetcode.com/problems/letter-case-permutation/">Letter Case Permutation</a></p>
+
+<p><a href="https://leetcode.com/problems/permutations/">Permutations</a></p>
+:ET

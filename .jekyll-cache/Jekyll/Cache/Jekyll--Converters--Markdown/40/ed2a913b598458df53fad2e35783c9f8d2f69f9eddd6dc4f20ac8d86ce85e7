@@ -1,0 +1,147 @@
+I";<h1 id="minimum-cost-to-make-at-least-one-valid-path-in-a-grid">Minimum Cost to Make at Least One Valid Path in a Grid</h1>
+
+<p>Algorithm: bfs
+Created: Mar 04, 2020 4:35 PM
+DoubleChk: No
+Type: LeetCode
+level: 3
+link: https://leetcode.com/problems/minimum-cost-to-make-at-least-one-valid-path-in-a-grid/</p>
+
+<p>Given a <em>m</em>x<em>n</em> <code class="language-plaintext highlighter-rouge">grid</code>. Each cell of the <code class="language-plaintext highlighter-rouge">grid</code> has a sign pointing to the next cell you should visit if you are currently in this cell.</p>
+
+<p>The sign of <code class="language-plaintext highlighter-rouge">grid[i][j]</code> can be:</p>
+
+<ul>
+  <li><strong>1</strong> which means go to the cell to the right. (i.e go from <code class="language-plaintext highlighter-rouge">grid[i][j]</code> to <code class="language-plaintext highlighter-rouge">grid[i][j + 1]</code>)</li>
+  <li><strong>2</strong> which means go to the cell to the left. (i.e go from <code class="language-plaintext highlighter-rouge">grid[i][j]</code> to <code class="language-plaintext highlighter-rouge">grid[i][j - 1]</code>)</li>
+  <li><strong>3</strong> which means go to the lower cell. (i.e go from <code class="language-plaintext highlighter-rouge">grid[i][j]</code> to <code class="language-plaintext highlighter-rouge">grid[i + 1][j]</code>)</li>
+  <li><strong>4</strong> which means go to the upper cell. (i.e go from <code class="language-plaintext highlighter-rouge">grid[i][j]</code> to <code class="language-plaintext highlighter-rouge">grid[i - 1][j]</code>)</li>
+</ul>
+
+<p>Notice that there could be some <strong>invalid signs</strong> on the cells of the <code class="language-plaintext highlighter-rouge">grid</code> which points outside the <code class="language-plaintext highlighter-rouge">grid</code>.</p>
+
+<p>You will initially start at the upper left cell <code class="language-plaintext highlighter-rouge">(0,0)</code>. A valid path in the grid is a path which starts from the upper left cell <code class="language-plaintext highlighter-rouge">(0,0)</code> and ends at the bottom-right cell <code class="language-plaintext highlighter-rouge">(m - 1, n - 1)</code> following the signs on the grid. The valid path <strong>doesn’t have to be the shortest</strong>.</p>
+
+<p>You can modify the sign on a cell with <code class="language-plaintext highlighter-rouge">cost = 1</code>. You can modify the sign on a cell <strong>one time only</strong>.</p>
+
+<p>Return <em>the minimum cost</em> to make the grid have at least one valid path.</p>
+
+<p><strong>Example 1:</strong></p>
+
+<p><img src="https://assets.leetcode.com/uploads/2020/02/13/grid1.png" alt="https://assets.leetcode.com/uploads/2020/02/13/grid1.png" /></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Input: grid = [[1,1,1,1],[2,2,2,2],[1,1,1,1],[2,2,2,2]]
+Output: 3
+Explanation: You will start at point (0, 0).
+The path to (3, 3) is as follows. (0, 0) --&gt; (0, 1) --&gt; (0, 2) --&gt; (0, 3) change the arrow to down with cost = 1 --&gt; (1, 3) --&gt; (1, 2) --&gt; (1, 1) --&gt; (1, 0) change the arrow to down with cost = 1 --&gt; (2, 0) --&gt; (2, 1) --&gt; (2, 2) --&gt; (2, 3) change the arrow to down with cost = 1 --&gt; (3, 3)
+The total cost = 3.
+</code></pre></div></div>
+
+<p><strong>Example 2:</strong></p>
+
+<p><img src="https://assets.leetcode.com/uploads/2020/02/13/grid2.png" alt="https://assets.leetcode.com/uploads/2020/02/13/grid2.png" /></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Input: grid = [[1,1,3],[3,2,2],[1,1,4]]
+Output: 0
+Explanation: You can follow the path from (0, 0) to (2, 2).
+</code></pre></div></div>
+
+<p><strong>Example 3:</strong></p>
+
+<p><img src="https://assets.leetcode.com/uploads/2020/02/13/grid3.png" alt="https://assets.leetcode.com/uploads/2020/02/13/grid3.png" /></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Input: grid = [[1,2],[4,3]]
+Output: 1
+</code></pre></div></div>
+
+<p><strong>Example 4:</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Input: grid = [[2,2,2],[2,2,2]]
+Output: 3
+</code></pre></div></div>
+
+<p><strong>Example 5:</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Input: grid = [[4]]
+Output: 0
+</code></pre></div></div>
+
+<p><strong>Constraints:</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">m == grid.length</code></li>
+  <li><code class="language-plaintext highlighter-rouge">n == grid[i].length</code></li>
+  <li><code class="language-plaintext highlighter-rouge">1 &lt;= m, n &lt;= 100</code></li>
+</ul>
+
+<hr />
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+    <span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+    <span class="nl">public:</span>
+        <span class="kt">int</span> <span class="n">dir</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">{{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">},</span> <span class="p">{</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">}};</span>
+        <span class="n">queue</span> <span class="o">&lt;</span><span class="n">pair</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">q</span><span class="p">;</span>
+    
+        <span class="kt">int</span> <span class="n">minCost</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;&amp;</span> <span class="n">grid</span><span class="p">)</span> <span class="p">{</span>
+            
+            <span class="kt">int</span> <span class="n">cost</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="kt">int</span> <span class="n">m</span> <span class="o">=</span> <span class="n">grid</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+            <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">size</span><span class="p">();</span>
+            <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">dp</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">INT_MAX</span><span class="p">));</span>
+            
+            <span class="n">dfs</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">cost</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">dp</span><span class="p">);</span>
+            
+            <span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="n">q</span><span class="p">.</span><span class="n">empty</span><span class="p">()){</span>
+                <span class="n">cost</span><span class="o">++</span><span class="p">;</span>
+                <span class="kt">int</span> <span class="n">sz</span> <span class="o">=</span> <span class="n">q</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+                
+                <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">sz</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+                    <span class="n">pair</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">p</span> <span class="o">=</span> <span class="n">q</span><span class="p">.</span><span class="n">front</span><span class="p">();</span>
+                    <span class="kt">int</span> <span class="n">px</span> <span class="o">=</span> <span class="n">p</span><span class="p">.</span><span class="n">first</span><span class="p">;</span>
+                    <span class="kt">int</span> <span class="n">py</span> <span class="o">=</span> <span class="n">p</span><span class="p">.</span><span class="n">second</span><span class="p">;</span>
+                    <span class="n">q</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+                    
+                    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">j</span><span class="o">&lt;</span><span class="mi">4</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">){</span>                
+                        <span class="n">dfs</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">px</span> <span class="o">+</span> <span class="n">dir</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">py</span> <span class="o">+</span> <span class="n">dir</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">cost</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">dp</span><span class="p">);</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+                
+            <span class="p">}</span>
+            
+            <span class="k">return</span> <span class="n">dp</span><span class="p">[</span><span class="n">m</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">];</span>
+        <span class="p">}</span>
+        
+        <span class="kt">void</span> <span class="n">dfs</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;&amp;</span> <span class="n">grid</span><span class="p">,</span> <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">,</span> <span class="kt">int</span> <span class="n">cost</span><span class="p">,</span> <span class="kt">int</span> <span class="n">m</span><span class="p">,</span> <span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;&amp;</span> <span class="n">dp</span><span class="p">){</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">x</span> <span class="o">&gt;=</span> <span class="n">m</span> <span class="o">||</span> <span class="n">y</span> <span class="o">&gt;=</span> <span class="n">n</span> <span class="o">||</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span><span class="n">dp</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span> <span class="o">!=</span> <span class="n">INT_MAX</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+            <span class="n">dp</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="n">cost</span><span class="p">;</span>
+            <span class="n">q</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">make_pair</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">));</span>
+            
+            <span class="kt">int</span> <span class="n">next_dir</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="n">dfs</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">x</span> <span class="o">+</span> <span class="n">dir</span><span class="p">[</span><span class="n">next_dir</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span> <span class="o">+</span> <span class="n">dir</span><span class="p">[</span><span class="n">next_dir</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">cost</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">dp</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+    
+
+</code></pre></div></div>
+<ul>
+  <li>
+    <p>문제풀이</p>
+
+    <ol>
+      <li>
+        <p>dfs로 방문 가능 한 모든 곳 탐색</p>
+      </li>
+      <li>
+        <p>방문한 노드들을 queue에 삽입, visit 체크</p>
+      </li>
+      <li>
+        <p>큐를 돌면서 상하좌우 탐색</p>
+      </li>
+    </ol>
+  </li>
+  <li>
+    <p>후기</p>
+
+    <p>3레벨 첨풀어봐 ㅎㅅㅎ</p>
+  </li>
+</ul>
+:ET

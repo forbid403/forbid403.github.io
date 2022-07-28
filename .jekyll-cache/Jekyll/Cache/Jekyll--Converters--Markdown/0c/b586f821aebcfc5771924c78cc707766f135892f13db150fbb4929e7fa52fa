@@ -1,0 +1,70 @@
+I"�<h1 id="0312-til">0312 TIL</h1>
+
+<p>Created By: 성희 배
+Last Edited: Mar 12, 2020 11:29 PM</p>
+
+<p><img width="316" alt="_2020-03-12__11 11 24" src="https://user-images.githubusercontent.com/41617388/76532186-9af9a200-64b9-11ea-8f18-372ea1671d8b.png" /></p>
+
+<ul>
+  <li>데이터를 받아올 때, 두 개를 한번에 받아오다 보니 동기화가 안돼서 한개만 받아와지는 경우가 있었다.</li>
+</ul>
+
+<blockquote>
+  <p>기존 코드</p>
+  <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="nx">Restriction</span><span class="p">.</span><span class="nx">countDocuments</span><span class="p">({</span><span class="na">state</span> <span class="p">:</span> <span class="mi">0</span><span class="p">},</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">cnt</span><span class="p">)</span><span class="o">=&gt;</span><span class="p">{</span>
+        <span class="nx">ret</span><span class="p">.</span><span class="nx">prohibitions</span> <span class="o">=</span> <span class="nx">cnt</span>
+     <span class="p">}).</span><span class="nx">then</span><span class="p">(</span><span class="nx">Restriction</span><span class="p">.</span><span class="nx">countDocuments</span><span class="p">({</span><span class="na">state</span> <span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">cnt</span><span class="p">)</span><span class="o">=&gt;</span><span class="p">{</span>
+        <span class="nx">ret</span><span class="p">.</span><span class="nx">restrictions</span> <span class="o">=</span> <span class="nx">cnt</span>
+     <span class="p">})).</span><span class="nx">then</span><span class="p">(()</span><span class="o">=&gt;</span> <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">ret</span><span class="p">))</span>
+</code></pre></div>  </div>
+  <ul>
+    <li>.then()으로 감싸다 보니 한 개만 보내지고.. 난리</li>
+  </ul>
+</blockquote>
+
+<blockquote>
+  <p>변경 코드
+```javascript
+    async function fetch(){
+        const prohibitions = await Restriction.countDocuments({state : 0})
+        const restrictions = await Restriction.countDocuments({state : 1})</p>
+</blockquote>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    res.send({
+      restrictions : restrictions,
+      prohibitions : prohibitions
+    })
+ } ``` - 해결 방법이 없을까 검색을 해보니 async/await이 있어 사용해 봤다! - 코드도 훨씬 가시적이고, 데이터도 너무 잘 보내짐 👍
+</code></pre></div></div>
+
+<h2 id="asyncawait-과-promise">Async/await 과 Promise</h2>
+
+<h3 id="promise">Promise?</h3>
+
+<ul>
+  <li>.then().then()…</li>
+  <li>함수 호출 (resolve라고 하나봄) 이후 then()에 걸린 함수 실행</li>
+</ul>
+
+<h3 id="asyncawait">Async/await</h3>
+
+<ul>
+  <li>async 함수(), await 함수()</li>
+  <li>await은 async가 resolve 된 이후 실행</li>
+</ul>
+
+<h3 id="그래서-promise보다-async가-나은-이유">그래서 Promise보다 Async가 나은 이유?</h3>
+
+<ul>
+  <li>동기적 코드 흐름으로 개발이 가능</li>
+  <li>코드가 간결해지고, 가독성이 높아진다</li>
+  <li>응답데이터 (err, data, res 등)를 없앨 수 있음</li>
+  <li>Promise 사용 시 콜백 내는 동기화 가능하지만, 밖의 함수는 동기화 불가</li>
+</ul>
+
+<hr />
+
+<ul>
+  <li>검색 해보니 Promise.all을 사용하면 여러개를 기다릴 수 있었다..ㅎㅎㅎ! 검색 부족이었던걸로..</li>
+</ul>
+:ET

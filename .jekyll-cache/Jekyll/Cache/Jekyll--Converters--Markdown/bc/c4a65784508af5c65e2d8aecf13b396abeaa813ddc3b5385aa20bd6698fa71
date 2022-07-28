@@ -1,0 +1,125 @@
+I"2<h2 id="spread와-rest">spread와 rest</h2>
+<blockquote>
+  <p>ES6 문법에 추가가 된 spread, rest를 배웠다.</p>
+</blockquote>
+
+<h2 id="spread-구문">Spread 구문</h2>
+<p>spread의 사전적 의미는 <code class="language-plaintext highlighter-rouge">펼치다</code>이다.<br />
+배열, 객체를 펼치는 것을 의미한다.<br />
+<code class="language-plaintext highlighter-rouge">...변수명</code>으로 사용한다.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">const</span> <span class="nx">food</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">vegetable</span><span class="p">:</span> <span class="dl">"</span><span class="s2">broccoli</span><span class="dl">"</span>
+<span class="p">};</span>
+
+<span class="kd">const</span> <span class="nx">grilledFood</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">...</span><span class="nx">food</span><span class="p">,</span>
+    <span class="na">cook</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">fire</span><span class="dl">"</span>
+<span class="p">};</span>
+
+<span class="kd">const</span> <span class="nx">grilledDeliciousFood</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">...</span><span class="nx">grilledFood</span><span class="p">,</span>
+    <span class="na">add</span><span class="p">:</span> <span class="dl">"</span><span class="s2">meat</span><span class="dl">"</span>
+<span class="p">};</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">food</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">grilledFood</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">grilledDeliciousFood</span><span class="p">);</span>
+</code></pre></div></div>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">output</span>
+<span class="p">{</span><span class="nl">vegetable</span><span class="p">:</span> <span class="dl">"</span><span class="s2">broccoli</span><span class="dl">"</span><span class="p">}</span>
+<span class="p">{</span><span class="na">vegetable</span><span class="p">:</span> <span class="dl">"</span><span class="s2">broccoli</span><span class="dl">"</span><span class="p">,</span> <span class="na">cook</span><span class="p">:</span> <span class="dl">"</span><span class="s2">fire</span><span class="dl">"</span><span class="p">}</span>
+<span class="p">{</span><span class="na">vegetable</span><span class="p">:</span> <span class="dl">"</span><span class="s2">broccoli</span><span class="dl">"</span><span class="p">,</span> <span class="na">cook</span><span class="p">:</span> <span class="dl">"</span><span class="s2">fire</span><span class="dl">"</span><span class="p">,</span> <span class="na">add</span><span class="p">:</span> <span class="dl">"</span><span class="s2">meat</span><span class="dl">"</span><span class="p">}</span>
+</code></pre></div></div>
+
+<p>예제에서 볼 수 있다시피 객체에 있는 값을 뿌려주고 있다.<br />
+모든 인자 값을 뿌려주는 것이 spread이다.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">];</span>
+<span class="kd">const</span> <span class="nx">array</span> <span class="o">=</span> <span class="p">[...</span><span class="nx">numbers</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="p">...</span><span class="nx">numbers</span><span class="p">];</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">array</span><span class="p">);</span>
+</code></pre></div></div>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">output</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>배열에서도 사용 가능 하다.
+spread는 여러 번 쓸 수 있다.
+하지만 깊은 복사가 아닌 <strong>얕은 복사</strong>이기 때문에 다중 배열에서는 주의해야 한다!</p>
+
+<h2 id="rest-파라미터">Rest 파라미터</h2>
+<p>Rest의 사전적인 의미는 나머지이다.
+Rest of ~~ 할때의 그 rest이다.</p>
+
+<p>rest는 객체, 배열, 함수의 파라미터에서 쓸 수 있다.
+<code class="language-plaintext highlighter-rouge">...변수명</code>으로 사용한다. 변수명은 어떤것이든 될 수 있다.</p>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">food</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">vegetable</span><span class="p">:</span> <span class="dl">"</span><span class="s2">broccoli</span><span class="dl">"</span><span class="p">,</span>
+    <span class="na">cook</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">fire</span><span class="dl">"</span><span class="p">,</span>
+    <span class="na">add</span><span class="p">:</span> <span class="dl">"</span><span class="s2">meat</span><span class="dl">"</span>
+
+<span class="p">};</span>
+
+<span class="kd">const</span> <span class="p">{</span><span class="nx">add</span><span class="p">,</span> <span class="p">...</span><span class="nx">rest</span><span class="p">}</span> <span class="o">=</span> <span class="nx">food</span><span class="p">;</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">add</span><span class="p">,</span> <span class="nx">rest</span><span class="p">);</span>
+</code></pre></div></div>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">output</span>
+<span class="nx">meat</span> <span class="p">{</span><span class="nl">vegetable</span><span class="p">:</span> <span class="dl">"</span><span class="s2">broccoli</span><span class="dl">"</span><span class="p">,</span> <span class="nx">cook</span><span class="p">:</span> <span class="dl">"</span><span class="s2">fire</span><span class="dl">"</span><span class="p">}</span>
+</code></pre></div></div>
+
+<p>food 객체에서 고기를 빼려고 할 때, {빼려고 하는 것, <code class="language-plaintext highlighter-rouge">...변수명</code>}을 사용하면 된다.</p>
+
+<p>spread 구문과 rest 구문을 동시에 쓸 수도 있다.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">food</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">vegetable</span><span class="p">:</span> <span class="dl">"</span><span class="s2">broccoli</span><span class="dl">"</span><span class="p">,</span>
+    <span class="na">cook</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">fire</span><span class="dl">"</span><span class="p">,</span>
+    <span class="na">add</span><span class="p">:</span> <span class="dl">"</span><span class="s2">meat</span><span class="dl">"</span>
+
+<span class="p">};</span>
+
+<span class="kd">const</span> <span class="p">{</span><span class="nx">add</span><span class="p">,</span> <span class="p">...</span><span class="nx">rest</span><span class="p">}</span> <span class="o">=</span> <span class="nx">food</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">newFood</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">...</span><span class="nx">rest</span><span class="p">,</span>
+    <span class="na">add</span><span class="p">:</span> <span class="dl">"</span><span class="s2">fork</span><span class="dl">"</span>
+<span class="p">}</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">newFood</span><span class="p">);</span>
+</code></pre></div></div>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">output</span>
+<span class="p">{</span> <span class="nl">vegetable</span><span class="p">:</span><span class="dl">"</span><span class="s2">broccoli</span><span class="dl">"</span><span class="p">,</span> <span class="nx">cook</span><span class="p">:</span><span class="dl">"</span><span class="s2">fire</span><span class="dl">"</span> <span class="nx">add</span><span class="p">:</span><span class="dl">"</span><span class="s2">fork</span><span class="dl">"</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="p">{...</span><span class="nx">rest</span><span class="p">,</span> <span class="nx">add</span><span class="p">}</span> <span class="o">=</span> <span class="nx">food</span><span class="p">;</span>
+<span class="c1">//Uncaught SyntaxError: Rest element must be last element</span>
+</code></pre></div></div>
+<p>…rest구문은 꼭 파라미터의 맨 앞에 와선 안된다.
+나머지가 없기 때문이다.</p>
+
+<h3 id="함수-파라미터에서-rest">함수 파라미터에서 rest</h3>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">add</span><span class="p">(...</span><span class="nx">nums</span><span class="p">){</span>
+    <span class="k">return</span> <span class="nx">nums</span><span class="p">.</span><span class="nx">reduce</span><span class="p">((</span><span class="nx">acc</span><span class="p">,</span> <span class="nx">current</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">acc</span> <span class="o">+</span> <span class="nx">current</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">const</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>이렇게 파라미터로서 모든 배열을 전달 해 줌으로서, 파라미터를 하나하나 선언 해 주지 않아도 된다.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">add</span><span class="p">(...</span><span class="nx">nums</span><span class="p">){</span>
+    <span class="k">return</span> <span class="nx">nums</span><span class="p">.</span><span class="nx">reduce</span><span class="p">((</span><span class="nx">acc</span><span class="p">,</span> <span class="nx">current</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">acc</span> <span class="o">+</span> <span class="nx">current</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="kd">const</span> <span class="nx">arr</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">];</span>
+<span class="nx">add</span><span class="p">(...</span><span class="nx">arr</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>spread와 rest를 동시에 쓴 예제이다.
+파라미터로 spread 구문을 쓰고, 인자로 rest 파라미터를 받았다.</p>
+
+<ul>
+  <li>spread와 rest는 ie에서는 지원하지 않는다!</li>
+</ul>
+:ET

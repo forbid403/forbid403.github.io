@@ -1,0 +1,117 @@
+I"<h1 id="validate-binary-tree-nodes">Validate Binary Tree Nodes</h1>
+
+<p>Algorithm: bfs
+Created: Feb 23, 2020 1:59 PM
+DoubleChk: No
+Type: LeetCode
+level: 2
+link: https://leetcode.com/problems/validate-binary-tree-nodes/</p>
+
+<p>You have <code class="language-plaintext highlighter-rouge">n</code> binary tree nodes numbered from <code class="language-plaintext highlighter-rouge">0</code> to <code class="language-plaintext highlighter-rouge">n - 1</code> where node <code class="language-plaintext highlighter-rouge">i</code> has two children <code class="language-plaintext highlighter-rouge">leftChild[i]</code> and <code class="language-plaintext highlighter-rouge">rightChild[i]</code>, return <code class="language-plaintext highlighter-rouge">true</code> if and only if <strong>all</strong> the given nodes form <strong>exactly one</strong> valid binary tree.</p>
+
+<p>If node <code class="language-plaintext highlighter-rouge">i</code> has no left child then <code class="language-plaintext highlighter-rouge">leftChild[i]</code> will equal <code class="language-plaintext highlighter-rouge">-1</code>, similarly for the right child.</p>
+
+<p>Note that the nodes have no values and that we only use the node numbers in this problem.</p>
+
+<p><strong>Example 1:</strong></p>
+
+<p><img src="https://assets.leetcode.com/uploads/2019/08/23/1503_ex1.png" alt="https://assets.leetcode.com/uploads/2019/08/23/1503_ex1.png" /></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Input: n = 4, leftChild = [1,-1,3,-1], rightChild = [2,-1,-1,-1]
+Output: true
+</code></pre></div></div>
+
+<p><strong>Example 2:</strong></p>
+
+<p><img src="https://assets.leetcode.com/uploads/2019/08/23/1503_ex2.png" alt="https://assets.leetcode.com/uploads/2019/08/23/1503_ex2.png" /></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Input: n = 4, leftChild = [1,-1,3,-1], rightChild = [2,3,-1,-1]
+Output: false
+</code></pre></div></div>
+
+<p><strong>Example 3:</strong></p>
+
+<p><img src="https://assets.leetcode.com/uploads/2019/08/23/1503_ex3.png" alt="https://assets.leetcode.com/uploads/2019/08/23/1503_ex3.png" /></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Input: n = 2, leftChild = [1,0], rightChild = [-1,-1]
+Output: false
+</code></pre></div></div>
+
+<p><strong>Example 4:</strong></p>
+
+<p><img src="https://assets.leetcode.com/uploads/2019/08/23/1503_ex4.png" alt="https://assets.leetcode.com/uploads/2019/08/23/1503_ex4.png" /></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Input: n = 6, leftChild = [1,-1,-1,4,-1,-1], rightChild = [2,-1,-1,5,-1,-1]
+Output: false
+</code></pre></div></div>
+
+<p><strong>Constraints:</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">1 &lt;= n &lt;= 10^4</code></li>
+  <li><code class="language-plaintext highlighter-rouge">leftChild.length == rightChild.length == n</code></li>
+  <li><code class="language-plaintext highlighter-rouge">-1 &lt;= leftChild[i], rightChild[i] &lt;= n - 1</code></li>
+</ul>
+
+<hr />
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class Solution {
+public:
+    int check[10001];
+    queue &lt;int&gt; q;
+    bool validateBinaryTreeNodes(int n, vector&lt;int&gt;&amp; leftChild, vector&lt;int&gt;&amp; rightChild) {
+        q.push(0);
+        int cnt = 0;
+        while(!q.empty()){
+            int top = q.front();
+            if(check[top]) return false;
+            check[top] = 1;
+            q.pop();
+            cnt++;
+            
+            if(leftChild[top] != -1) q.push(leftChild[top]);
+            if(rightChild[top] != -1) q.push(rightChild[top]);
+            
+        }
+        
+        if(cnt != n) return false;
+        
+        return true;
+    }
+};
+</code></pre></div></div>
+
+<ul>
+  <li>
+    <p>문제 풀이</p>
+
+    <p>bfs로 풀었다.</p>
+
+    <p>올바르지 않은 트리일 경우가</p>
+
+    <ol>
+      <li>사이클이 생기는 경우</li>
+      <li>두 개로 나눠진 경우</li>
+    </ol>
+
+    <p>이렇게 생각 했다. (예시에 나온 경우들)</p>
+
+    <p>풀이 방법은</p>
+
+    <ol>
+      <li>check 배열로 방문 처리를 해 준다 → 이미 방문 했다면 cycle</li>
+      <li>cnt 변수로 노드 갯수를 세준다. queue가 비었을 때, cnt와 n이 같지 않다면 트리가 1개 이상인 것</li>
+      <li>위 두 경우에 걸리지 않았다면 true</li>
+    </ol>
+  </li>
+  <li>
+    <p>후기</p>
+
+    <p>첫번째 콘테스트였다.</p>
+
+    <p>이게 될까? 했는데 1트에 됨.. ?</p>
+
+    <p>30개밖에 테스트케이스가 없어서 예외가 더 있을 것 같은데 그래도 풀었으 ㅎㅅㅎ</p>
+  </li>
+</ul>
+:ET

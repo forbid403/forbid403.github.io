@@ -1,0 +1,100 @@
+I"P<h1 id="더-맵게">더 맵게</h1>
+
+<p>Algorithm: 힙
+Created: Apr 15, 2020 1:10 AM
+DoubleChk: No
+Type: 프로그래머스
+level: 2
+link: https://programmers.co.kr/learn/courses/30/lessons/42626</p>
+
+<h3 id="문제-설명"><strong>문제 설명</strong></h3>
+
+<p>매운 것을 좋아하는 Leo는 모든 음식의 스코빌 지수를 K 이상으로 만들고 싶습니다. 모든 음식의 스코빌 지수를 K 이상으로 만들기 위해 Leo는 스코빌 지수가 가장 낮은 두 개의 음식을 아래와 같이 특별한 방법으로 섞어 새로운 음식을 만듭니다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">섞은 음식의 스코빌 지수 = 가장 맵지 않은 음식의 스코빌 지수 + (두 번째로 맵지 않은 음식의 스코빌 지수 * 2)</code></p>
+
+<p>Leo는 모든 음식의 스코빌 지수가 K 이상이 될 때까지 반복하여 섞습니다.Leo가 가진 음식의 스코빌 지수를 담은 배열 scoville과 원하는 스코빌 지수 K가 주어질 때, 모든 음식의 스코빌 지수를 K 이상으로 만들기 위해 섞어야 하는 최소 횟수를 return 하도록 solution 함수를 작성해주세요.</p>
+
+<h3 id="제한-사항">제한 사항</h3>
+
+<ul>
+  <li>scoville의 길이는 2 이상 1,000,000 이하입니다.</li>
+  <li>K는 0 이상 1,000,000,000 이하입니다.</li>
+  <li>scoville의 원소는 각각 0 이상 1,000,000 이하입니다.</li>
+  <li>모든 음식의 스코빌 지수를 K 이상으로 만들 수 없는 경우에는 -1을 return 합니다.</li>
+</ul>
+
+<h3 id="입출력-예">입출력 예</h3>
+
+<p><a href="Untitled/Untitled%20Database.csv">Untitled</a></p>
+
+<h3 id="입출력-예-설명">입출력 예 설명</h3>
+
+<ol>
+  <li>스코빌 지수가 1인 음식과 2인 음식을 섞으면 음식의 스코빌 지수가 아래와 같이 됩니다.새로운 음식의 스코빌 지수 = 1 + (2 * 2) = 5가진 음식의 스코빌 지수 = [5, 3, 9, 10, 12]</li>
+  <li>스코빌 지수가 3인 음식과 5인 음식을 섞으면 음식의 스코빌 지수가 아래와 같이 됩니다.새로운 음식의 스코빌 지수 = 3 + (5 * 2) = 13가진 음식의 스코빌 지수 = [13, 9, 10, 12]</li>
+</ol>
+
+<p>모든 음식의 스코빌 지수가 7 이상이 되었고 이때 섞은 횟수는 2회입니다.</p>
+
+<hr />
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp">
+</span>    <span class="cp">#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp">
+</span>    <span class="cp">#include</span> <span class="cpf">&lt;queue&gt;</span><span class="cp">
+</span>    <span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+    <span class="n">priority_queue</span> <span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">greater</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="o">&gt;</span> <span class="n">pq</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="nf">solution</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">scoville</span><span class="p">,</span> <span class="kt">int</span> <span class="n">K</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">answer</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        
+        <span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="n">plate</span> <span class="o">:</span> <span class="n">scoville</span><span class="p">){</span>
+            <span class="n">pq</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">plate</span><span class="p">);</span>
+        <span class="p">}</span>
+        
+        <span class="kt">bool</span> <span class="n">flag</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">){</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">pq</span><span class="p">.</span><span class="n">top</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="n">K</span><span class="p">){</span>
+                <span class="n">flag</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">pq</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">){</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="kt">int</span> <span class="n">first</span> <span class="o">=</span> <span class="n">pq</span><span class="p">.</span><span class="n">top</span><span class="p">();</span>
+            <span class="n">pq</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+            
+            <span class="kt">int</span> <span class="n">second</span> <span class="o">=</span> <span class="n">pq</span><span class="p">.</span><span class="n">top</span><span class="p">();</span>
+            <span class="n">pq</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+            
+            <span class="kt">int</span> <span class="n">new_scoville</span> <span class="o">=</span> <span class="n">first</span> <span class="o">+</span> <span class="p">(</span><span class="n">second</span> <span class="o">*</span> <span class="mi">2</span><span class="p">);</span>
+            
+            <span class="n">pq</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">new_scoville</span><span class="p">);</span>
+            <span class="n">answer</span><span class="o">++</span><span class="p">;</span>
+        <span class="p">}</span>
+        
+        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">flag</span><span class="p">)</span> <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+        
+        <span class="k">return</span> <span class="n">answer</span><span class="p">;</span>
+    <span class="p">}</span>
+</code></pre></div></div>
+<ul>
+  <li>
+    <p>문제 풀이</p>
+
+    <p>우선순위 큐 라이브러리를 사용해서 풀었다.</p>
+
+    <p>min heap으로 선언을 해주고, 모든 음식을 넣어준다.</p>
+
+    <p>정상 종료 됐는지 확인하기 위해 flag를 선언 해 준다.</p>
+
+    <p>while문을 돌면서 두 개의 음식을 꺼내고 섞은 후 다시 넣는다.</p>
+
+    <p>섞을 때 마다 answer를 하나씩 올려준다.</p>
+
+    <p>만약, 가장 작은 값(min heap의 top)이 K이상이라면, 모든 음식이 K 이상이기 때문에 flag를 true(정상종료)로 바꿔주고 종료 해준다.</p>
+
+    <p>만약, 우선순위 큐의 크기가 2 이하라면, 더이상 섞을 수 없으므로 false인 채로 종료한다 (비정상 종료)</p>
+
+    <p>종료 후 비정상이면 -1, 정상이면 answer를 출력해준다.</p>
+  </li>
+</ul>
+:ET

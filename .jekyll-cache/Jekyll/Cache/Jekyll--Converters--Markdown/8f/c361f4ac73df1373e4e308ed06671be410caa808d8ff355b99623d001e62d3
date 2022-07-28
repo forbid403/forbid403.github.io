@@ -1,0 +1,92 @@
+I"�<h1 id="큰-수-만들기">큰 수 만들기</h1>
+
+<p>Algorithm: 그리디
+Created: Apr 10, 2020 7:04 PM
+DoubleChk: No
+Type: 프로그래머스
+link: https://programmers.co.kr/learn/courses/30/lessons/42883</p>
+
+<h3 id="문제-설명"><strong>문제 설명</strong></h3>
+
+<p>어떤 숫자에서 k개의 수를 제거했을 때 얻을 수 있는 가장 큰 숫자를 구하려 합니다.</p>
+
+<p>예를 들어, 숫자 1924에서 수 두 개를 제거하면 [19, 12, 14, 92, 94, 24] 를 만들 수 있습니다. 이 중 가장 큰 숫자는 94 입니다.</p>
+
+<p>문자열 형식으로 숫자 number와 제거할 수의 개수 k가 solution 함수의 매개변수로 주어집니다. number에서 k 개의 수를 제거했을 때 만들 수 있는 수 중 가장 큰 숫자를 문자열 형태로 return 하도록 solution 함수를 완성하세요.</p>
+
+<h3 id="제한-조건">제한 조건</h3>
+
+<ul>
+  <li>number는 1자리 이상, 1,000,000자리 이하인 숫자입니다.</li>
+  <li>k는 1 이상 <code class="language-plaintext highlighter-rouge">number의 자릿수</code> 미만인 자연수입니다.</li>
+</ul>
+
+<hr />
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp">
+</span>    <span class="cp">#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp">
+</span>    
+    <span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+    
+    <span class="n">string</span> <span class="nf">solution</span><span class="p">(</span><span class="n">string</span> <span class="n">number</span><span class="p">,</span> <span class="kt">int</span> <span class="n">k</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">string</span> <span class="n">answer</span> <span class="o">=</span> <span class="s">""</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">number</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="n">k</span><span class="p">;</span>
+        
+        <span class="kt">int</span> <span class="n">cur</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+            <span class="kt">char</span> <span class="n">max_num</span> <span class="o">=</span> <span class="n">number</span><span class="p">[</span><span class="n">cur</span><span class="p">];</span>
+            <span class="kt">int</span> <span class="n">max_idx</span> <span class="o">=</span> <span class="n">cur</span><span class="p">;</span>
+            
+            <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="n">cur</span> <span class="p">;</span> <span class="n">j</span><span class="o">&lt;=</span> <span class="n">k</span><span class="o">+</span><span class="n">i</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">){</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">max_num</span> <span class="o">&lt;</span> <span class="n">number</span><span class="p">[</span><span class="n">j</span><span class="p">]){</span>
+                    <span class="n">max_num</span> <span class="o">=</span> <span class="n">number</span><span class="p">[</span><span class="n">j</span><span class="p">];</span>
+                    <span class="n">max_idx</span> <span class="o">=</span> <span class="n">j</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            
+            <span class="n">cur</span> <span class="o">=</span> <span class="n">max_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="n">answer</span> <span class="o">+=</span> <span class="n">max_num</span><span class="p">;</span>
+            
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">answer</span><span class="p">;</span>
+    <span class="p">}</span>
+</code></pre></div></div>
+<ul>
+  <li>
+    <p>문제 풀이</p>
+
+    <p>dfs로 풀면 시간 초과가 난다.</p>
+
+    <p>반복문을 n-k번만 돌리면 된다는 것은 다들 알 것이다.</p>
+
+    <p>총 (n-k)개의 숫자 길이가 나와야 하므로</p>
+
+    <p>각각의 자릿값들은 이전 인덱스 ~ (전체길이 - 나머지 남은 자릿수 길이)에서 찾으면 된다.</p>
+
+    <p>예를들어,</p>
+
+    <p>number = “1231234”</p>
+
+    <p>k = “3”</p>
+
+    <p>일때,</p>
+
+    <p>number.length() - k개가 숫자의 길이다. 즉 7-3으로 4개의 숫자를 더해야 한다.</p>
+
+    <p>그래서 outer loop가 0~n-k번 돌게 된다. i는 자릿수를 의미한다.</p>
+
+    <p>첫 번째 큰 값은, 0부터 number.length() - 3에서 찾아야 한다.</p>
+
+    <p>왜냐하면!!</p>
+
+    <p>나머지 자릿수들을 찾아야 하기 때문이다. 남은 자릿수가 3개니까 최소한 3개는 남겨 놔야한다.</p>
+
+    <p>inner loop는 이 작업을 한다.</p>
+
+    <p>가장 큰 값과 가장 큰 값의 인덱스를 저장하고,</p>
+
+    <p>innerloop가 끝나면 update를 한다.</p>
+
+    <p>가장 큰 값의 다음 인덱스부터 탐색을 진행하면 된다.</p>
+  </li>
+</ul>
+:ET

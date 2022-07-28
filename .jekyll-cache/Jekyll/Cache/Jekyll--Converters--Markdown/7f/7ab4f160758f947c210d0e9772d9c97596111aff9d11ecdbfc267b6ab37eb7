@@ -1,0 +1,137 @@
+I"^J<h2 id="백준-14891톱니바퀴">[백준 14891]톱니바퀴</h2>
+<p><a href="https://www.acmicpc.net/problem/14891">문제 링크</a></p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">"header.h"</span><span class="cp">
+</span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">k</span><span class="p">;</span>
+<span class="n">vector</span> <span class="o">&lt;</span><span class="n">pair</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">order</span><span class="p">;</span> <span class="c1">//톱니바퀴 번호, 방향</span>
+<span class="kt">int</span> <span class="n">gear</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="mi">8</span><span class="p">];</span>
+<span class="kt">int</span> <span class="n">temp_gear</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="mi">8</span><span class="p">];</span>
+
+<span class="kt">void</span> <span class="nf">input</span><span class="p">(){</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">4</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">j</span><span class="o">&lt;</span><span class="mi">8</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">){</span>
+            <span class="n">scanf</span><span class="p">(</span><span class="s">"%1d"</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">gear</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">k</span><span class="p">;</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">k</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>       
+        <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">;</span>
+        <span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">x</span><span class="p">;</span>
+        <span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">y</span><span class="p">;</span>
+        <span class="n">order</span><span class="p">.</span><span class="n">push_back</span><span class="p">({</span><span class="n">x</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="p">});</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="kt">void</span> <span class="nf">counter_clockwise</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">){</span>
+    <span class="n">temp_gear</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="n">gear</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">];</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="mi">7</span><span class="p">;</span> <span class="n">j</span><span class="o">&gt;=</span><span class="mi">1</span><span class="p">;</span> <span class="n">j</span><span class="o">--</span><span class="p">){</span>
+        <span class="n">temp_gear</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">gear</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">];</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="kt">void</span> <span class="nf">clockwise</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">){</span>
+    <span class="n">temp_gear</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">gear</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">7</span><span class="p">];</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">j</span><span class="o">&lt;</span><span class="mi">7</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">){</span>
+        <span class="n">temp_gear</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">gear</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">];</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="kt">void</span> <span class="nf">copy</span><span class="p">(){</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">4</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">j</span><span class="o">&lt;</span><span class="mi">8</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">){</span>
+            <span class="n">gear</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp_gear</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">];</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="kt">void</span> <span class="nf">pre_work</span><span class="p">(</span><span class="kt">int</span> <span class="n">idx</span><span class="p">,</span> <span class="kt">int</span> <span class="n">flag</span><span class="p">){</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="n">idx</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="n">i</span><span class="o">&gt;=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">--</span><span class="p">){</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">gear</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="mi">6</span><span class="p">]</span> <span class="o">==</span> <span class="n">gear</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">]){</span>
+                <span class="k">break</span><span class="p">;</span> <span class="c1">//같으면 더이상 돌아가지 않는다.</span>
+            <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+                <span class="c1">//다르면 돌리기</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">flag</span> <span class="o">==</span> <span class="mi">1</span><span class="p">){</span> <span class="c1">// 이전에 시계 방향으로 돌렸으면</span>
+                    <span class="c1">//반시계 방향으로 돌아간다.</span>
+                    <span class="n">counter_clockwise</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+                    <span class="n">flag</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+                <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+                    <span class="c1">//시계 방향</span>
+                    <span class="n">clockwise</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+                    <span class="n">flag</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+<span class="p">}</span>
+<span class="kt">void</span> <span class="nf">post_work</span><span class="p">(</span><span class="kt">int</span> <span class="n">idx</span><span class="p">,</span> <span class="kt">int</span> <span class="n">flag</span><span class="p">){</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">4</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">gear</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">gear</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">6</span><span class="p">]){</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">flag</span> <span class="o">==</span> <span class="mi">1</span><span class="p">){</span>
+                    <span class="n">counter_clockwise</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+                    <span class="n">flag</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+                <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+                    <span class="n">clockwise</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+                    <span class="n">flag</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+<span class="p">}</span>
+<span class="kt">void</span> <span class="nf">turn_gear</span><span class="p">(</span><span class="n">pair</span> <span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">turn</span><span class="p">){</span>
+    <span class="kt">int</span> <span class="n">idx</span> <span class="o">=</span> <span class="n">turn</span><span class="p">.</span><span class="n">first</span><span class="p">;</span> <span class="c1">// 톱니바퀴 번호</span>
+    <span class="kt">int</span> <span class="n">dir</span> <span class="o">=</span> <span class="n">turn</span><span class="p">.</span><span class="n">second</span><span class="p">;</span> <span class="c1">// 방향</span>
+    <span class="c1">// 첫 번째 정수는 회전시킨 톱니바퀴의 번호, 두 번째 정수는 방향이다.</span>
+    <span class="kt">int</span> <span class="n">flag</span> <span class="o">=</span> <span class="n">dir</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">dir</span> <span class="o">==</span> <span class="mi">1</span><span class="p">){</span> <span class="c1">//시계 방향</span>
+
+        <span class="n">pre_work</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">flag</span><span class="p">);</span> <span class="c1">//1번 ~ 돌린 톱니바퀴 - 1</span>
+        <span class="n">flag</span> <span class="o">=</span> <span class="n">dir</span><span class="p">;</span>
+        <span class="n">post_work</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">flag</span><span class="p">);</span> <span class="c1">//돌린 톱니바퀴 + 1 ~ 끝까지</span>
+        <span class="n">clockwise</span><span class="p">(</span><span class="n">idx</span><span class="p">);</span> <span class="c1">//해당 톱니바퀴 돌리기</span>
+        <span class="c1">//복사</span>
+        <span class="n">copy</span><span class="p">();</span>
+
+    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+
+        <span class="n">pre_work</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">flag</span><span class="p">);</span>
+        <span class="n">flag</span> <span class="o">=</span> <span class="n">dir</span><span class="p">;</span>
+        <span class="n">post_work</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">flag</span><span class="p">);</span>
+        <span class="n">counter_clockwise</span><span class="p">(</span><span class="n">idx</span><span class="p">);</span>
+
+        <span class="n">copy</span><span class="p">();</span>
+    <span class="p">}</span>
+    
+<span class="p">}</span>
+<span class="kt">int</span> <span class="nf">count_all</span><span class="p">(){</span>
+    <span class="kt">int</span> <span class="n">ret</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="n">gear</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">?</span> <span class="n">ret</span> <span class="o">+=</span> <span class="mi">0</span> <span class="o">:</span> <span class="n">ret</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="n">gear</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">?</span> <span class="n">ret</span> <span class="o">+=</span> <span class="mi">0</span> <span class="o">:</span> <span class="n">ret</span> <span class="o">+=</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="n">gear</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">?</span> <span class="n">ret</span> <span class="o">+=</span> <span class="mi">0</span> <span class="o">:</span> <span class="n">ret</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">;</span>
+    <span class="n">gear</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">?</span> <span class="n">ret</span> <span class="o">+=</span> <span class="mi">0</span> <span class="o">:</span> <span class="n">ret</span> <span class="o">+=</span> <span class="mi">8</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">void</span> <span class="nf">solve</span><span class="p">(){</span>
+    <span class="n">memcpy</span><span class="p">(</span><span class="n">temp_gear</span><span class="p">,</span> <span class="n">gear</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">gear</span><span class="p">));</span>
+
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">k</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+        <span class="n">pair</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">turn</span> <span class="o">=</span> <span class="n">order</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        <span class="n">turn_gear</span><span class="p">(</span><span class="n">turn</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">int</span> <span class="n">ans</span> <span class="o">=</span> <span class="n">count_all</span><span class="p">();</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">ans</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="c1">// ios_base ::sync_with_stdio(false);</span>
+    <span class="c1">// cin.tie(NULL);</span>
+    <span class="c1">// cout.tie(NULL);</span>
+
+    <span class="n">input</span><span class="p">();</span>
+    <span class="n">solve</span><span class="p">();</span>
+    
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+:ET

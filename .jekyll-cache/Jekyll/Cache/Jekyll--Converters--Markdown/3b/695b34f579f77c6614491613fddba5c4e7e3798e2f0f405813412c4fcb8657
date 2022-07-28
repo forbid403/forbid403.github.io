@@ -1,0 +1,123 @@
+I"<8<h2 id="기존-코드">기존 코드</h2>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;map&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sstream&gt;</span><span class="cp">
+</span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">solution</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">record</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">answer</span><span class="p">;</span>
+
+    <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span> <span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&gt;</span><span class="n">order</span><span class="p">;</span>
+
+    <span class="k">for</span><span class="p">(</span><span class="n">string</span> <span class="n">cur</span> <span class="o">:</span> <span class="n">record</span><span class="p">){</span>
+        <span class="n">istringstream</span> <span class="n">ss</span><span class="p">(</span><span class="n">cur</span><span class="p">);</span>
+        <span class="n">string</span> <span class="n">buffer</span> <span class="o">=</span> <span class="s">""</span><span class="p">;</span>
+        <span class="n">vector</span> <span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">save</span><span class="p">;</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">getline</span><span class="p">(</span><span class="n">ss</span><span class="p">,</span> <span class="n">buffer</span><span class="p">,</span> <span class="sc">' '</span><span class="p">)){</span>
+            <span class="n">save</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">buffer</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="n">order</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">save</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">map</span> <span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="n">string</span><span class="o">&gt;</span> <span class="n">chat</span><span class="p">;</span> <span class="c1">//uid, 닉네임</span>
+    <span class="k">for</span><span class="p">(</span><span class="n">vector</span> <span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">cur</span> <span class="o">:</span> <span class="n">order</span><span class="p">){</span>
+        <span class="n">string</span> <span class="n">act</span> <span class="o">=</span> <span class="n">cur</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+        <span class="n">string</span> <span class="n">uid</span> <span class="o">=</span> <span class="n">cur</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+        <span class="n">string</span> <span class="n">nickname</span> <span class="o">=</span> <span class="n">cur</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">act</span> <span class="o">==</span> <span class="s">"Enter"</span><span class="p">){</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">chat</span><span class="p">[</span><span class="n">uid</span><span class="p">]</span> <span class="o">==</span> <span class="n">nickname</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span> <span class="c1">//이미 존재</span>
+            <span class="n">chat</span><span class="p">[</span><span class="n">uid</span><span class="p">]</span> <span class="o">=</span> <span class="n">nickname</span><span class="p">;</span>
+        <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">act</span> <span class="o">==</span> <span class="s">"Change"</span><span class="p">){</span>
+            <span class="n">chat</span><span class="p">[</span><span class="n">uid</span><span class="p">]</span> <span class="o">=</span> <span class="n">nickname</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">for</span><span class="p">(</span><span class="n">vector</span> <span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">cur</span> <span class="o">:</span> <span class="n">order</span><span class="p">){</span>
+        <span class="n">string</span> <span class="n">act</span> <span class="o">=</span> <span class="n">cur</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+        <span class="n">string</span> <span class="n">uid</span> <span class="o">=</span> <span class="n">cur</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">act</span> <span class="o">==</span> <span class="s">"Enter"</span><span class="p">){</span>
+            <span class="n">answer</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">chat</span><span class="p">[</span><span class="n">uid</span><span class="p">]</span> <span class="o">+</span> <span class="s">"님이 들어왔습니다."</span><span class="p">);</span>
+        <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">act</span> <span class="o">==</span> <span class="s">"Leave"</span><span class="p">){</span> <span class="c1">//leave</span>
+            <span class="n">answer</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">chat</span><span class="p">[</span><span class="n">uid</span><span class="p">]</span> <span class="o">+</span> <span class="s">"님이 나갔습니다."</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">answer</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>C++ exception with description “basic_string::_M_construct null not valid” thrown in the test body.</p>
+</blockquote>
+
+<ul>
+  <li>이런 오류가 났음..</li>
+  <li>벡터 iterating 하는 부분에서 오류가 생겼다.</li>
+  <li>구글링 해보니 dangaling reference 때문이라고 한다.</li>
+</ul>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;map&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;sstream&gt;</span><span class="cp">
+</span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+<span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">solution</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">record</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">answer</span><span class="p">;</span>
+
+    <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&gt;</span> <span class="n">orders</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">string</span> <span class="n">cur</span> <span class="o">:</span> <span class="n">record</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">istringstream</span> <span class="n">ss</span><span class="p">(</span><span class="n">cur</span><span class="p">);</span>
+        <span class="n">string</span> <span class="n">buffer</span> <span class="o">=</span> <span class="s">""</span><span class="p">;</span>
+        <span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">save</span><span class="p">;</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">getline</span><span class="p">(</span><span class="n">ss</span><span class="p">,</span> <span class="n">buffer</span><span class="p">,</span> <span class="sc">' '</span><span class="p">))</span>
+            <span class="n">save</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">buffer</span><span class="p">);</span>
+            
+        <span class="n">orders</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">save</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="n">string</span><span class="o">&gt;</span> <span class="n">chat</span><span class="p">;</span> <span class="c1">//uid, 닉네임</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">vector</span> <span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">order</span> <span class="o">:</span> <span class="n">orders</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">order</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">"Enter"</span> <span class="o">||</span> <span class="n">order</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">"Change"</span><span class="p">)</span>
+            <span class="n">chat</span><span class="p">[</span><span class="n">order</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">order</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+    <span class="p">}</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">order</span> <span class="o">:</span> <span class="n">orders</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">string</span> <span class="n">act</span> <span class="o">=</span> <span class="n">order</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+        <span class="n">string</span> <span class="n">uid</span> <span class="o">=</span> <span class="n">order</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">act</span> <span class="o">==</span> <span class="s">"Enter"</span><span class="p">)</span>
+            <span class="n">answer</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">chat</span><span class="p">[</span><span class="n">uid</span><span class="p">]</span> <span class="o">+</span> <span class="s">"님이 들어왔습니다."</span><span class="p">);</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">act</span> <span class="o">==</span> <span class="s">"Leave"</span><span class="p">)</span>
+            <span class="n">answer</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">chat</span><span class="p">[</span><span class="n">uid</span><span class="p">]</span> <span class="o">+</span> <span class="s">"님이 나갔습니다."</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">answer</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">ans</span> <span class="o">=</span> <span class="n">solution</span><span class="p">({</span><span class="s">"Enter uid1234 Muzi"</span><span class="p">,</span>
+                                   <span class="s">"Enter uid4567 Prodo"</span><span class="p">,</span> <span class="s">"Leave uid1234"</span><span class="p">,</span> <span class="s">"Enter uid1234 Prodo"</span><span class="p">,</span> <span class="s">"Change uid4567 Ryan"</span><span class="p">});</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">c</span> <span class="o">:</span> <span class="n">ans</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">c</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>바꾼 코드. 잘 돌아간다.</li>
+</ul>
+:ET

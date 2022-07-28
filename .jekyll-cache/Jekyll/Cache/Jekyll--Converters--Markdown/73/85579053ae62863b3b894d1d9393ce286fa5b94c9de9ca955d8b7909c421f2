@@ -1,0 +1,147 @@
+I"�E<h1 id="14499-주사위-굴리기">[14499] 주사위 굴리기</h1>
+
+<p>Algorithm: 시뮬레이션
+Created: Apr 03, 2020 3:41 PM
+DoubleChk: No
+Type: 백준
+link: https://www.acmicpc.net/problem/14499</p>
+
+<h2 id="문제">문제</h2>
+
+<p>크기가 N×M인 지도가 존재한다. 지도의 오른쪽은 동쪽, 위쪽은 북쪽이다. 이 지도의 위에 주사위가 하나 놓여져 있으며, 주사위의 전개도는 아래와 같다. 지도의 좌표는 (r, c)로 나타내며, r는 북쪽으로부터 떨어진 칸의 개수, c는 서쪽으로부터 떨어진 칸의 개수이다.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  2
+4 1 3
+  5
+  6
+</code></pre></div></div>
+
+<p>주사위는 지도 위에 윗 면이 1이고, 동쪽을 바라보는 방향이 3인 상태로 놓여져 있으며, 놓여져 있는 곳의 좌표는 (x, y) 이다. 가장 처음에 주사위에는 모든 면에 0이 적혀져 있다.</p>
+
+<p>지도의 각 칸에는 정수가 하나씩 쓰여져 있다. 주사위를 굴렸을 때, 이동한 칸에 쓰여 있는 수가 0이면, 주사위의 바닥면에 쓰여 있는 수가 칸에 복사된다. 0이 아닌 경우에는 칸에 쓰여 있는 수가 주사위의 바닥면으로 복사되며, 칸에 쓰여 있는 수는 0이 된다.</p>
+
+<p>주사위를 놓은 곳의 좌표와 이동시키는 명령이 주어졌을 때, 주사위가 이동했을 때 마다 상단에 쓰여 있는 값을 구하는 프로그램을 작성하시오.</p>
+
+<p>주사위는 지도의 바깥으로 이동시킬 수 없다. 만약 바깥으로 이동시키려고 하는 경우에는 해당 명령을 무시해야 하며, 출력도 하면 안 된다.</p>
+
+<h2 id="입력">입력</h2>
+
+<p>첫째 줄에 지도의 세로 크기 N, 가로 크기 M (1 ≤ N, M ≤ 20), 주사위를 놓은 곳의 좌표 x y(0 ≤ x ≤ N-1, 0 ≤ y ≤ M-1), 그리고 명령의 개수 K (1 ≤ K ≤ 1,000)가 주어진다.</p>
+
+<p>둘째 줄부터 N개의 줄에 지도에 쓰여 있는 수가 북쪽부터 남쪽으로, 각 줄은 서쪽부터 동쪽 순서대로 주어진다. 주사위를 놓은 칸에 쓰여 있는 수는 항상 0이다. 지도의 각 칸에 쓰여 있는 수는 10을 넘지 않는 자연수 또는 0이다.</p>
+
+<p>마지막 줄에는 이동하는 명령이 순서대로 주어진다. 동쪽은 1, 서쪽은 2, 북쪽은 3, 남쪽은 4로 주어진다.</p>
+
+<hr />
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span>    <span class="cp">#include</span> <span class="cpf">&lt;queue&gt;</span><span class="cp">
+</span>    <span class="cp">#include</span> <span class="cpf">&lt;algorithm&gt;</span><span class="cp">
+</span>    <span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">N</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">K</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">map_</span><span class="p">[</span><span class="mi">21</span><span class="p">][</span><span class="mi">21</span><span class="p">];</span>
+    <span class="kt">int</span> <span class="n">order</span><span class="p">[</span><span class="mi">1001</span><span class="p">];</span>
+    
+    <span class="c1">//1동 2서 3북 4남</span>
+    <span class="kt">int</span> <span class="n">dx</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">};</span>
+    <span class="kt">int</span> <span class="n">dy</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">};</span>
+    
+    <span class="kt">void</span> <span class="nf">input</span><span class="p">(){</span>
+        <span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">N</span> <span class="o">&gt;&gt;</span> <span class="n">M</span> <span class="o">&gt;&gt;</span> <span class="n">x</span> <span class="o">&gt;&gt;</span> <span class="n">y</span> <span class="o">&gt;&gt;</span> <span class="n">K</span><span class="p">;</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">N</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">j</span><span class="o">&lt;</span><span class="n">M</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">){</span>
+                <span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">map_</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">];</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    
+        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">K</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+            <span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">order</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="kt">void</span> <span class="nf">changeDice</span><span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="n">dice</span><span class="p">,</span> <span class="kt">int</span> <span class="n">dir</span><span class="p">){</span>
+        <span class="kt">int</span> <span class="n">temp_dice</span><span class="p">[</span><span class="mi">7</span><span class="p">];</span>
+        <span class="n">copy</span><span class="p">(</span><span class="n">dice</span><span class="p">,</span> <span class="n">dice</span><span class="o">+</span><span class="mi">7</span><span class="p">,</span> <span class="n">temp_dice</span><span class="p">);</span>
+    
+        <span class="k">if</span><span class="p">(</span><span class="n">dir</span> <span class="o">==</span> <span class="mi">1</span><span class="p">){</span> <span class="c1">//동</span>
+            <span class="n">dice</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp_dice</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>
+            <span class="n">dice</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp_dice</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+            <span class="n">dice</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp_dice</span><span class="p">[</span><span class="mi">6</span><span class="p">];</span>
+            <span class="n">dice</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp_dice</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
+        <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">dir</span> <span class="o">==</span> <span class="mi">2</span><span class="p">){</span> <span class="c1">//서</span>
+            <span class="n">dice</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp_dice</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
+            <span class="n">dice</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp_dice</span><span class="p">[</span><span class="mi">6</span><span class="p">];</span>
+            <span class="n">dice</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp_dice</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+            <span class="n">dice</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp_dice</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>
+        <span class="p">}</span><span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">dir</span> <span class="o">==</span> <span class="mi">3</span><span class="p">){</span> <span class="c1">//북</span>
+            <span class="n">dice</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp_dice</span><span class="p">[</span><span class="mi">5</span><span class="p">];</span>
+            <span class="n">dice</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp_dice</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+            <span class="n">dice</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp_dice</span><span class="p">[</span><span class="mi">6</span><span class="p">];</span>
+            <span class="n">dice</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp_dice</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+        <span class="p">}</span><span class="k">else</span><span class="p">{</span> <span class="c1">//남</span>
+            <span class="n">dice</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp_dice</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+            <span class="n">dice</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp_dice</span><span class="p">[</span><span class="mi">6</span><span class="p">];</span>
+            <span class="n">dice</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp_dice</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+            <span class="n">dice</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp_dice</span><span class="p">[</span><span class="mi">5</span><span class="p">];</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="kt">void</span> <span class="nf">solve</span><span class="p">(){</span>
+        <span class="c1">//1동 2서 3북 4남</span>
+        <span class="c1">//4 4 4 1 3 3 3 2</span>
+        <span class="kt">int</span> <span class="n">dice</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="p">};</span>
+    
+        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">K</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+            <span class="kt">int</span> <span class="n">dir</span> <span class="o">=</span> <span class="n">order</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+    
+            <span class="kt">int</span> <span class="n">nx</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">dx</span><span class="p">[</span><span class="n">dir</span><span class="p">];</span>
+            <span class="kt">int</span> <span class="n">ny</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="n">dy</span><span class="p">[</span><span class="n">dir</span><span class="p">];</span>
+    
+            <span class="c1">//범위 초과</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">nx</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">ny</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">nx</span> <span class="o">&gt;=</span> <span class="n">N</span> <span class="o">||</span> <span class="n">ny</span> <span class="o">&gt;=</span> <span class="n">M</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
+    
+            <span class="n">changeDice</span><span class="p">(</span><span class="n">dice</span><span class="p">,</span> <span class="n">dir</span><span class="p">);</span>
+    
+            <span class="c1">//0이면 -&gt; 주사위 바닥을 칸으로</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">map_</span><span class="p">[</span><span class="n">nx</span><span class="p">][</span><span class="n">ny</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+                <span class="n">map_</span><span class="p">[</span><span class="n">nx</span><span class="p">][</span><span class="n">ny</span><span class="p">]</span> <span class="o">=</span> <span class="n">dice</span><span class="p">[</span><span class="mi">6</span><span class="p">];</span>
+            <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+            <span class="c1">//0이 아니면 -&gt; 칸을 주사위 바닥으로, 칸은 0</span>
+                <span class="n">dice</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="n">map_</span><span class="p">[</span><span class="n">nx</span><span class="p">][</span><span class="n">ny</span><span class="p">];</span>
+                <span class="n">map_</span><span class="p">[</span><span class="n">nx</span><span class="p">][</span><span class="n">ny</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="p">}</span>
+    
+            <span class="n">x</span> <span class="o">=</span> <span class="n">nx</span><span class="p">;</span> <span class="n">y</span> <span class="o">=</span> <span class="n">ny</span><span class="p">;</span>
+            <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">dice</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    
+        <span class="p">}</span>
+    
+    <span class="p">}</span>
+    <span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+    
+        <span class="n">ios_base</span><span class="o">::</span><span class="n">sync_with_stdio</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span>
+        <span class="n">cin</span><span class="p">.</span><span class="n">tie</span><span class="p">(</span><span class="nb">NULL</span><span class="p">);</span> <span class="n">cout</span><span class="p">.</span><span class="n">tie</span><span class="p">(</span><span class="nb">NULL</span><span class="p">);</span>
+    
+        <span class="n">input</span><span class="p">();</span>
+    
+        <span class="n">solve</span><span class="p">();</span>
+    
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+</code></pre></div></div>
+<ul>
+  <li>
+    <p>문제풀이</p>
+
+    <p>주사위를 굴려 가면서 조건에 맞게 주사위와 지도를 변경 해 주면 된다.</p>
+
+    <p><img src="https://user-images.githubusercontent.com/41617388/78332674-6a41ef80-75c3-11ea-9acc-3d05a37890f0.png" alt="Untitled" /></p>
+
+    <p><img src="https://user-images.githubusercontent.com/41617388/78332678-6ca44980-75c3-11ea-84e7-1a7e3611f740.png" alt="Untitled 1" /></p>
+
+    <p><img src="https://user-images.githubusercontent.com/41617388/78332676-6b731c80-75c3-11ea-996a-4ecf3f8f1988.png" alt="Untitled 2" /></p>
+  </li>
+  <li>
+    <p>후기</p>
+
+    <p>와 한방에 맞췄다 진심 눈물난다 ㅜ..최초야..</p>
+  </li>
+</ul>
+:ET

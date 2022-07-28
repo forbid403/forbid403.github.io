@@ -1,0 +1,56 @@
+I"�<h2 id="프로그래머스-예산">[프로그래머스] 예산</h2>
+<p><a href="https://programmers.co.kr/learn/courses/30/lessons/43237">문제 링크</a></p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">"header.h"</span><span class="cp">
+#define MAX 1000000001
+</span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+<span class="kt">long</span> <span class="kt">long</span> <span class="nf">check</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="o">&amp;</span> <span class="n">budgets</span><span class="p">,</span> <span class="kt">int</span> <span class="n">mid</span><span class="p">){</span>
+    <span class="c1">// mid = 상한선!</span>
+    <span class="kt">long</span> <span class="kt">long</span> <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">budgets</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">mid</span> <span class="o">&gt;=</span> <span class="n">budgets</span><span class="p">[</span><span class="n">i</span><span class="p">]){</span>
+            <span class="n">total</span> <span class="o">+=</span> <span class="n">budgets</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+            <span class="n">total</span> <span class="o">+=</span> <span class="n">mid</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">total</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">int</span> <span class="nf">solution</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">budgets</span><span class="p">,</span> <span class="kt">int</span> <span class="n">M</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">answer</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="kt">int</span> <span class="n">left</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">long</span> <span class="kt">long</span> <span class="n">right</span> <span class="o">=</span> <span class="n">M</span><span class="p">;</span>
+
+    <span class="k">while</span><span class="p">(</span><span class="n">left</span> <span class="o">&lt;=</span> <span class="n">right</span><span class="p">){</span>
+        <span class="kt">int</span> <span class="n">mid</span> <span class="o">=</span> <span class="n">left</span> <span class="o">+</span> <span class="p">(</span><span class="n">right</span> <span class="o">-</span> <span class="n">left</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span> <span class="c1">//상한액</span>
+        <span class="kt">long</span> <span class="kt">long</span> <span class="n">ret</span> <span class="o">=</span> <span class="n">check</span><span class="p">(</span><span class="n">budgets</span><span class="p">,</span> <span class="n">mid</span><span class="p">);</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">ret</span> <span class="o">&gt;</span> <span class="n">M</span><span class="p">){</span> <span class="c1">//예산 초과</span>
+            <span class="n">right</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+            <span class="n">left</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="n">answer</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">answer</span><span class="p">,</span> <span class="n">mid</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="k">if</span><span class="p">(</span><span class="n">answer</span> <span class="o">==</span> <span class="n">M</span><span class="p">){</span>
+        <span class="kt">long</span> <span class="kt">long</span> <span class="n">ret</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">long</span> <span class="kt">long</span> <span class="n">cur</span> <span class="o">:</span> <span class="n">budgets</span><span class="p">)</span> <span class="n">ret</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">ret</span><span class="p">,</span> <span class="n">cur</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">answer</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>간단한 이분탐색 문제. 일단 범위가 1억이 넘으면 이분탐색 접근법을 생각 해 보는게 좋을 것 같다.</li>
+  <li>mid를 선언 할 때, 오버플로우를 막기 위해 <code class="language-plaintext highlighter-rouge">left + (right - left) / 2</code>를 해 주었다.</li>
+  <li>mid를 상한선으로 잡고, 해당 상한선으로 얼마만큼의 예산이 소비되는지 <code class="language-plaintext highlighter-rouge">check</code>함수를 통해 계산한다.</li>
+  <li>만약 예산이 초과된다면, 상한선을 줄인다.</li>
+  <li>예산이 초과가 되지 않았으면, 상한선을 올리고, 답을 업데이트 한다.</li>
+  <li>문제가 조금 불친절한 감이 있는데, 만약 [1, 1, 1, 1], 400 같이 모든 요청이 배정될 수 있다면 1+1+1+1 을 반환해야 한다.</li>
+  <li>효율성에서 문제가 발생하면 budgets을 더하는 인자를 long long으로 바꿔야 한다. (1억이 넘으므로 int 범위 벗어남)</li>
+</ul>
+:ET

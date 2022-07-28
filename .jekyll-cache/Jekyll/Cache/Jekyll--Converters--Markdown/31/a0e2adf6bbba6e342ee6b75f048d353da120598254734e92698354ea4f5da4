@@ -1,0 +1,68 @@
+I"�&<h2 id="leetcode-house-robber-iii">[leetcode] House Robber III</h2>
+<p><a href="https://leetcode.com/problems/house-robber-iii/">문제 링크</a></p>
+
+<h3 id="recursive-시간-초과">Recursive (시간 초과)</h3>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="kt">int</span> <span class="n">dfs</span><span class="p">(</span><span class="n">TreeNode</span> <span class="o">*</span><span class="n">cur</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">isParentRobbed</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">cur</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+        
+        <span class="k">if</span><span class="p">(</span><span class="n">isParentRobbed</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c1">// cannot rob here</span>
+            <span class="k">return</span> <span class="n">dfs</span><span class="p">(</span><span class="n">cur</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">,</span> <span class="nb">false</span><span class="p">)</span> <span class="o">+</span> <span class="n">dfs</span><span class="p">(</span><span class="n">cur</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">,</span> <span class="nb">false</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="c1">// rob here</span>
+            <span class="kt">int</span> <span class="n">rob</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="n">val</span> <span class="o">+</span> <span class="n">dfs</span><span class="p">(</span><span class="n">cur</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">,</span> <span class="nb">true</span><span class="p">)</span> <span class="o">+</span> <span class="n">dfs</span><span class="p">(</span><span class="n">cur</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">,</span> <span class="nb">true</span><span class="p">);</span>
+            <span class="kt">int</span> <span class="n">not_rob</span> <span class="o">=</span> <span class="n">dfs</span><span class="p">(</span><span class="n">cur</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">,</span> <span class="nb">false</span><span class="p">)</span> <span class="o">+</span> <span class="n">dfs</span><span class="p">(</span><span class="n">cur</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">,</span> <span class="nb">false</span><span class="p">);</span>
+            
+            <span class="k">return</span> <span class="n">max</span><span class="p">(</span><span class="n">rob</span><span class="p">,</span> <span class="n">not_rob</span><span class="p">);</span>
+        <span class="p">}</span>
+        
+    <span class="p">}</span>
+    
+    <span class="kt">int</span> <span class="n">rob</span><span class="p">(</span><span class="n">TreeNode</span><span class="o">*</span> <span class="n">root</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">dfs</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="nb">false</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div>
+<ul>
+  <li>연결된 노드끼리 도둑질을 하면 안 되기 때문에, 부모 노드에 따라 훔칠지 훔치지 않을지가 결정된다.</li>
+  <li>만약 부모 노드를 훔쳤다면, 자식 노드는 훔치면 안된다.</li>
+  <li>부모 노드를 훔치지 않았다면, 자식 노드를 훔치거나, 훔치지 않거나의 두 경우로 나뉜다.
+    <ul>
+      <li>이 경우에는 훔친 경우, 훔치지 않은 경우를 비교 해 큰 값을 저장해주면 된다.</li>
+    </ul>
+  </li>
+  <li>이렇게 풀면 시간초과가 난다.</li>
+</ul>
+
+<h3 id="memoization">Memoization</h3>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">unordered_map</span><span class="o">&lt;</span><span class="n">TreeNode</span><span class="o">*</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">m</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">dfs</span><span class="p">(</span><span class="n">TreeNode</span> <span class="o">*</span><span class="n">cur</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">isParentRobbed</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">cur</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+        
+        <span class="k">if</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">cur</span><span class="p">)</span> <span class="o">!=</span> <span class="n">m</span><span class="p">.</span><span class="n">end</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">m</span><span class="p">[</span><span class="n">cur</span><span class="p">][</span><span class="n">isParentRobbed</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="n">m</span><span class="p">[</span><span class="n">cur</span><span class="p">][</span><span class="n">isParentRobbed</span><span class="p">];</span>
+        <span class="k">else</span> <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">cur</span><span class="p">)</span> <span class="o">==</span> <span class="n">m</span><span class="p">.</span><span class="n">end</span><span class="p">())</span> <span class="n">m</span><span class="p">[</span><span class="n">cur</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">};</span>
+            
+            <span class="kt">int</span> <span class="n">rob</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="n">val</span> <span class="o">+</span> <span class="n">dfs</span><span class="p">(</span><span class="n">cur</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">,</span> <span class="nb">true</span><span class="p">)</span> <span class="o">+</span> <span class="n">dfs</span><span class="p">(</span><span class="n">cur</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">,</span> <span class="nb">true</span><span class="p">);</span>
+            <span class="kt">int</span> <span class="n">not_rob</span> <span class="o">=</span> <span class="n">dfs</span><span class="p">(</span><span class="n">cur</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">,</span> <span class="nb">false</span><span class="p">)</span> <span class="o">+</span> <span class="n">dfs</span><span class="p">(</span><span class="n">cur</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">,</span> <span class="nb">false</span><span class="p">);</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">isParentRobbed</span><span class="p">)</span> <span class="k">return</span> <span class="n">m</span><span class="p">[</span><span class="n">cur</span><span class="p">][</span><span class="n">isParentRobbed</span><span class="p">]</span> <span class="o">=</span> <span class="n">not_rob</span><span class="p">;</span>
+            <span class="k">else</span> <span class="k">return</span> <span class="n">m</span><span class="p">[</span><span class="n">cur</span><span class="p">][</span><span class="n">isParentRobbed</span><span class="p">]</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">not_rob</span><span class="p">,</span> <span class="n">rob</span><span class="p">);</span>
+        <span class="p">}</span>
+        
+    <span class="p">}</span>
+    
+    <span class="kt">int</span> <span class="n">rob</span><span class="p">(</span><span class="n">TreeNode</span><span class="o">*</span> <span class="n">root</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">dfs</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="nb">false</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div>
+<ul>
+  <li>중복된 계산을 제거 해 주기 위해 해쉬 맵을 사용해 결과를 저장해준다.</li>
+  <li>맵에 계산 결과가 저장 되어 있다면, 해당 결과를 리턴한다.</li>
+  <li>결과가 저장 되어 있지 않다면 훔친 경우, 훔치지 않은 경우를 맵에 저장하여 리턴한다.</li>
+</ul>
+:ET

@@ -1,0 +1,7 @@
+I"�<h2 id="key-point">Key Point</h2>
+<blockquote>
+  <p>중복 허용 X : 방문 처리 필요 (visit 배열 사용)</p>
+
+  <p>순서 상관 X : 인덱스 필요</p>
+</blockquote>
+:ET

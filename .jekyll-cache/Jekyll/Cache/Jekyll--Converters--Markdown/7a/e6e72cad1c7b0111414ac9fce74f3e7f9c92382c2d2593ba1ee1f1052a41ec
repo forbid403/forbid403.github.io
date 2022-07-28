@@ -1,0 +1,20 @@
+I"<h2 id="leetcode-symmetric-tree">[leetcode] Symmetric Tree</h2>
+<p><a href="https://leetcode.com/problems/symmetric-tree/">문제 링크</a></p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    
+    <span class="kt">bool</span> <span class="n">isMirror</span><span class="p">(</span><span class="n">TreeNode</span> <span class="o">*</span><span class="n">t1</span><span class="p">,</span> <span class="n">TreeNode</span> <span class="o">*</span> <span class="n">t2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">t1</span> <span class="o">==</span> <span class="nb">NULL</span> <span class="o">&amp;&amp;</span> <span class="n">t2</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">t1</span> <span class="o">==</span> <span class="nb">NULL</span> <span class="o">||</span> <span class="n">t2</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+        
+        <span class="k">return</span> <span class="p">(</span><span class="n">t1</span><span class="o">-&gt;</span><span class="n">val</span> <span class="o">==</span> <span class="n">t2</span><span class="o">-&gt;</span><span class="n">val</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">isMirror</span><span class="p">(</span><span class="n">t1</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">,</span> <span class="n">t2</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">)</span>
+            <span class="o">&amp;&amp;</span> <span class="n">isMirror</span><span class="p">(</span><span class="n">t1</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">,</span> <span class="n">t2</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">);</span>
+    <span class="p">}</span>
+    
+    <span class="kt">bool</span> <span class="n">isSymmetric</span><span class="p">(</span><span class="n">TreeNode</span><span class="o">*</span> <span class="n">root</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">isMirror</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">root</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div>
+:ET

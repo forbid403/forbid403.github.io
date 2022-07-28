@@ -1,0 +1,36 @@
+I"x<h2 id="leetcode-remove-duplicate-letters">[leetcode] Remove Duplicate Letters</h2>
+<p><a href="https://leetcode.com/problems/remove-duplicate-letters/">문제 링크</a></p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">string</span> <span class="n">removeDuplicateLetters</span><span class="p">(</span><span class="n">string</span> <span class="n">s</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">map</span> <span class="o">&lt;</span><span class="kt">char</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">count</span><span class="p">;</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">char</span> <span class="n">c</span> <span class="o">:</span> <span class="n">s</span><span class="p">)</span> <span class="n">count</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">++</span><span class="p">;</span>
+        
+        <span class="n">map</span> <span class="o">&lt;</span><span class="kt">char</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;</span> <span class="n">used</span><span class="p">;</span>
+        <span class="n">string</span> <span class="n">ans</span> <span class="o">=</span> <span class="s">""</span><span class="p">;</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">char</span> <span class="n">c</span> <span class="o">:</span> <span class="n">s</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">count</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">--</span><span class="p">;</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">used</span><span class="p">[</span><span class="n">c</span><span class="p">])</span> <span class="k">continue</span><span class="p">;</span>
+            
+            <span class="k">while</span> <span class="p">(</span><span class="n">count</span><span class="p">[</span><span class="n">ans</span><span class="p">.</span><span class="n">back</span><span class="p">()]</span> <span class="o">&amp;&amp;</span> <span class="n">ans</span><span class="p">.</span><span class="n">back</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">c</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">used</span><span class="p">[</span><span class="n">ans</span><span class="p">.</span><span class="n">back</span><span class="p">()]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+                <span class="n">ans</span><span class="p">.</span><span class="n">pop_back</span><span class="p">();</span>
+            <span class="p">}</span>
+            <span class="n">used</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="n">ans</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">c</span><span class="p">);</span>
+        <span class="p">}</span>
+        
+        <span class="k">return</span> <span class="n">ans</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div>
+<ul>
+  <li>stack을 이용한 문제.</li>
+  <li>글자가 몇 개 있는지 count에 저장 해 준다.</li>
+  <li>string의 길이만큼 돌면서 글자들을 더해준다.</li>
+  <li>들어갈 글자가 이미 사용 된 글자라면 다음으로 넘어간다.</li>
+  <li>글자의 마지막이 (<code class="language-plaintext highlighter-rouge">ans.back()</code>) 현재 들어갈 글자보다 알파벳 순으로 더 늦고, 이후에 더 나올 글자라면 (<code class="language-plaintext highlighter-rouge">count[ans.back()]</code>) 글자를 없애준다.</li>
+  <li>들어갈 글자를 넣어주고, 방문 처리 해 준다.</li>
+</ul>
+:ET

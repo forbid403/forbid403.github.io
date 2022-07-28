@@ -1,0 +1,45 @@
+I"o<h1 id="0103-til">0103 TIL</h1>
+
+<p>Created By: 성희 배
+Last Edited: Jan 04, 2020 2:30 AM
+Tags: til</p>
+
+<h3 id="expressjs">Express.js</h3>
+
+<ul>
+  <li>node.js 상에서 동작하는 <strong>웹 프레임 워크</strong></li>
+  <li>가볍고 유연하게 웹 프레임워크를 구성할 수 있음 → Middleware 구조 때문임</li>
+  <li>body-parser : POST 요청의 바디 데이터에 접근하기 위함</li>
+</ul>
+
+<h3 id="socket-통신">Socket 통신</h3>
+
+<ul>
+  <li>TCP/IP를 이용하는 창구 역할</li>
+  <li>응용 프로그램과 소켓 사이의 interface 역할</li>
+</ul>
+
+<p><img src="0103%20TIL/Untitled.png" alt="0103%20TIL/Untitled.png" /></p>
+
+<ul>
+  <li><strong>socket()</strong> 호출으로 소켓 번호와 소켓 주소를 받아온다.</li>
+  <li>받아온 소켓 번호와 소켓 주소를 <strong>bind()</strong>한다.
+    <ul>
+      <li>소켓 번호 : 포트</li>
+      <li>소켓 주소 : 네트워크가 알고있는 주소</li>
+    </ul>
+  </li>
+  <li><strong>listen()</strong>으로 대기</li>
+  <li>클라이언트에서 <strong>connect()</strong>를 요청 하면, <strong>accept()로 연결</strong></li>
+  <li>send(), recv()로 데이터 송수신</li>
+</ul>
+
+<hr />
+
+<h3 id="미들웨어">미들웨어</h3>
+
+<ul>
+  <li>third-party middleware : 다른 사람이 만든 소프트웨어</li>
+  <li>next()로 middleware 순서 제어</li>
+</ul>
+:ET

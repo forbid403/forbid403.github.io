@@ -1,0 +1,103 @@
+I")$<h1 id="점프">점프</h1>
+
+<p>Algorithm: DP
+Created: Feb 24, 2020 11:43 PM
+DoubleChk: No
+Type: 백준
+link: https://www.acmicpc.net/problem/1890</p>
+
+<h2 id="문제">문제</h2>
+
+<p>N×N 게임판에 수가 적혀져 있다. 이 게임의 목표는 가장 왼쪽 위 칸에서 가장 오른쪽 아래 칸으로 규칙에 맞게 점프를 해서 가는 것이다.</p>
+
+<p>각 칸에 적혀있는 수는 현재 칸에서 갈 수 있는 거리를 의미한다. 반드시 오른쪽이나 아래쪽으로만 이동해야 한다. 0은 더 이상 진행을 막는 종착점이며, 항상 현재 칸에 적혀있는 수만큼 오른쪽이나 아래로 가야 한다. 한 번 점프를 할 때, 방향을 바꾸면 안 된다. 즉, 한 칸에서 오른쪽으로 점프를 하거나, 아래로 점프를 하는 두 경우만 존재한다.</p>
+
+<p>가장 왼쪽 위 칸에서 가장 오른쪽 아래 칸으로 규칙에 맞게 이동할 수 있는 경로의 개수를 구하는 프로그램을 작성하시오.</p>
+
+<h2 id="입력">입력</h2>
+
+<p>첫째 줄에 게임 판의 크기 N (4 ≤ N ≤ 100)이 주어진다. 그 다음 N개 줄에는 각 칸에 적혀져 있는 수가 N개씩 주어진다. 칸에 적혀있는 수는 0보다 크거나 같고, 9보다 작거나 같은 정수이며, 가장 오른쪽 아래 칸에는 항상 0이 주어진다.</p>
+
+<h2 id="출력">출력</h2>
+
+<p>가장 왼쪽 위 칸에서 가장 오른쪽 아래 칸으로 문제의 규칙에 맞게 갈 수 있는 경로의 개수를 출력한다. 경로의 개수는 263-1보다 작거나 같다.</p>
+
+<h2 id="예제-입력-1">예제 입력 1</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>4
+2 3 3 1
+1 2 1 3
+1 2 3 1
+3 1 1 0
+</code></pre></div></div>
+
+<h2 id="예제-출력-1">예제 출력 1</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>3
+</code></pre></div></div>
+
+<h2 id="힌트">힌트</h2>
+
+<p><img src="https://www.acmicpc.net/JudgeOnline/upload/201007/d1.PNG" alt="https://www.acmicpc.net/JudgeOnline/upload/201007/d1.PNG" /></p>
+
+<hr />
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span>    <span class="cp">#include</span> <span class="cpf">&lt;algorithm&gt;</span><span class="cp">
+</span>    <span class="cp">#define MAX 1001
+</span>    <span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">;</span>
+    <span class="kt">long</span> <span class="kt">long</span> <span class="kt">int</span> <span class="n">dp</span><span class="p">[</span><span class="n">MAX</span><span class="p">][</span><span class="n">MAX</span><span class="p">];</span>
+    <span class="kt">long</span> <span class="kt">long</span> <span class="kt">int</span> <span class="n">board</span><span class="p">[</span><span class="n">MAX</span><span class="p">][</span><span class="n">MAX</span><span class="p">];</span>
+    <span class="kt">void</span> <span class="nf">input</span><span class="p">(){</span>
+        <span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">n</span><span class="p">;</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">j</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">){</span>
+                <span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">board</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">];</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+    
+        <span class="n">input</span><span class="p">();</span>
+    
+        <span class="n">dp</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    
+        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">j</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">){</span>
+                <span class="kt">long</span> <span class="kt">long</span> <span class="kt">int</span> <span class="n">next_x</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="n">board</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">];</span>
+                <span class="kt">long</span> <span class="kt">long</span> <span class="kt">int</span> <span class="n">next_y</span> <span class="o">=</span> <span class="n">j</span> <span class="o">+</span> <span class="n">board</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">];</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span> <span class="o">==</span> <span class="n">i</span> <span class="o">&amp;&amp;</span> <span class="n">n</span><span class="o">-</span><span class="mi">1</span> <span class="o">==</span> <span class="n">j</span><span class="p">)</span> <span class="k">break</span><span class="p">;</span>
+    
+                <span class="k">if</span><span class="p">(</span><span class="n">next_y</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">next_y</span><span class="p">]</span> <span class="o">=</span> <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">next_y</span><span class="p">];</span>
+                <span class="p">}</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">next_x</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">){</span>
+                    <span class="n">dp</span><span class="p">[</span><span class="n">next_x</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">dp</span><span class="p">[</span><span class="n">next_x</span><span class="p">][</span><span class="n">j</span><span class="p">];</span>
+                <span class="p">}</span>
+    
+            <span class="p">}</span>
+        <span class="p">}</span>
+    
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">dp</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+</code></pre></div></div>
+<ul>
+  <li>
+    <p>문제 풀이</p>
+
+    <p>반복문을 돌면서 다음 점프할 칸을 더해준다. (next_x,  next_y)</p>
+
+    <p>범위가 넘지 않으면 오른쪽 점프와 아래쪽 점프를 업데이트 해 준다.</p>
+
+    <p>만약 끝에 도달하면 break 한다.</p>
+  </li>
+  <li>
+    <p>후기</p>
+
+    <p>계란물 묻힌 식빵과 설탕은 존맛</p>
+  </li>
+</ul>
+:ET

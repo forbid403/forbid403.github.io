@@ -1,0 +1,101 @@
+I",/<h2 id="백준-17281-">[백준 17281] ⚾</h2>
+<p><a href="https://www.acmicpc.net/problem/17281">문제 링크</a></p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">N</span><span class="p">,</span> <span class="n">max_score</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">players</span><span class="p">[</span><span class="mi">51</span><span class="p">][</span><span class="mi">10</span><span class="p">];</span>
+<span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">candidates</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">visit</span><span class="p">[</span><span class="mi">9</span><span class="p">];</span>
+<span class="kt">int</span> <span class="n">field</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>
+<span class="kt">void</span> <span class="nf">input</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">N</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">9</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">players</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">];</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="kt">void</span> <span class="nf">move</span><span class="p">(</span><span class="kt">int</span> <span class="n">cmp</span><span class="p">,</span> <span class="kt">int</span> <span class="o">&amp;</span><span class="n">score</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">3</span><span class="p">;</span> <span class="n">i</span><span class="o">&gt;=</span><span class="mi">1</span><span class="p">;</span> <span class="n">i</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">field</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">cmp</span> <span class="o">&gt;=</span> <span class="mi">4</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// home in</span>
+                <span class="n">score</span><span class="o">++</span><span class="p">;</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="n">field</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">cmp</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="n">field</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">cmp</span> <span class="o">==</span> <span class="mi">4</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">score</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">field</span><span class="p">[</span><span class="n">cmp</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+<span class="p">}</span>
+<span class="kt">void</span> <span class="nf">play</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="kt">int</span> <span class="n">out</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">score</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">inning</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">inning</span> <span class="o">&lt;</span> <span class="n">N</span><span class="p">;</span> <span class="n">inning</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">memset</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">field</span><span class="p">));</span>
+        <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">){</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">idx</span> <span class="o">==</span> <span class="mi">9</span><span class="p">)</span> <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="kt">int</span> <span class="n">cmp</span> <span class="o">=</span> <span class="n">players</span><span class="p">[</span><span class="n">inning</span><span class="p">][</span><span class="n">candidates</span><span class="p">[</span><span class="n">idx</span><span class="p">]];</span>
+
+            <span class="k">if</span><span class="p">(</span><span class="n">cmp</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">out</span><span class="o">++</span><span class="p">;</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">out</span> <span class="o">==</span> <span class="mi">3</span><span class="p">)</span> <span class="p">{</span> <span class="n">idx</span><span class="o">++</span><span class="p">;</span> <span class="k">break</span><span class="p">;</span> <span class="p">}</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="c1">// move</span>
+                <span class="n">move</span><span class="p">(</span><span class="n">cmp</span><span class="p">,</span> <span class="n">score</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="n">idx</span><span class="o">++</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">max_score</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">max_score</span><span class="p">,</span> <span class="n">score</span><span class="p">);</span>   
+
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">dfs</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">candidates</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="mi">8</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">candidates</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">candidates</span><span class="p">.</span><span class="n">begin</span><span class="p">()</span> <span class="o">+</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+        <span class="n">play</span><span class="p">();</span>
+        <span class="n">candidates</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">candidates</span><span class="p">.</span><span class="n">begin</span><span class="p">()</span> <span class="o">+</span> <span class="mi">3</span><span class="p">);</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">9</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">visit</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="p">{</span>
+            <span class="n">visit</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="n">candidates</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+            <span class="n">dfs</span><span class="p">();</span>
+            <span class="n">candidates</span><span class="p">.</span><span class="n">pop_back</span><span class="p">();</span>
+            <span class="n">visit</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="kt">void</span> <span class="nf">solve</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">dfs</span><span class="p">();</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">max_score</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">input</span><span class="p">();</span>
+    <span class="n">solve</span><span class="p">();</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>조합(dfs) + 시뮬레이션 문제</li>
+  <li>0번째를 제외하고 1~8까지의 경우의 수를 모두 구한다. -&gt; 선수들의 순서의 모든 경우의 수가 된다.</li>
+  <li>조합이 완성 될 때마다 4번째에 0번을 넣어 주고 시뮬레이션을 한다.</li>
+  <li>선수의 점수에 따라 주자들을 움직여야 하는데, 이 때 1부터가 아닌 3부터 진행 해야 덮어씌워지지 않는다.</li>
+  <li>모든 이닝을 돈 후 최대 값을 갱신 해 주면 된다.</li>
+</ul>
+:ET

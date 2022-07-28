@@ -1,0 +1,121 @@
+I"[<h1 id="populating-next-right-pointers-in-each-node-ii">Populating Next Right Pointers in Each Node II</h1>
+
+<p>Algorithm: 트리
+level: 2
+link: https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii/</p>
+
+<p>Given a binary tree</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>struct Node {
+  int val;
+  Node *left;
+  Node *right;
+  Node *next;
+}
+</code></pre></div></div>
+
+<p>Populate each next pointer to point to its next right node. If there is no next right node, the next pointer should be set to <code class="language-plaintext highlighter-rouge">NULL</code>.</p>
+
+<p>Initially, all next pointers are set to <code class="language-plaintext highlighter-rouge">NULL</code>.</p>
+
+<p><strong>Follow up:</strong></p>
+
+<ul>
+  <li>You may only use constant extra space.</li>
+  <li>Recursive approach is fine, you may assume implicit stack space does not count as extra space for this problem.</li>
+</ul>
+
+<p><strong>Example 1:</strong></p>
+
+<p><img src="https://assets.leetcode.com/uploads/2019/02/15/117_sample.png" alt="https://assets.leetcode.com/uploads/2019/02/15/117_sample.png" /></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Input: root = [1,2,3,4,5,null,7]
+Output: [1,#,2,3,#,4,5,7,#]
+Explanation: Given the above binary tree (Figure A), 
+your function should populate each next pointer to point to its next right node,
+just like in Figure B.
+The serialized output is in level order as connected by the next pointers,
+with '#' signifying the end of each level.
+</code></pre></div></div>
+
+<p><strong>Constraints:</strong></p>
+
+<ul>
+  <li>The number of nodes in the given tree is less than <code class="language-plaintext highlighter-rouge">6000</code>.</li>
+  <li><code class="language-plaintext highlighter-rouge">-100 &lt;= node.val &lt;= 100</code></li>
+</ul>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">---</span>
+
+    <span class="cm">/*
+    // Definition for a Node.
+    class Node {
+    public:
+        int val;
+        Node* left;
+        Node* right;
+        Node* next;
+    
+        Node() : val(0), left(NULL), right(NULL), next(NULL) {}
+    
+        Node(int _val) : val(_val), left(NULL), right(NULL), next(NULL) {}
+    
+        Node(int _val, Node* _left, Node* _right, Node* _next)
+            : val(_val), left(_left), right(_right), next(_next) {}
+    };
+    */</span>
+    <span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+    <span class="nl">public:</span>
+        <span class="n">Node</span><span class="o">*</span> <span class="n">connect</span><span class="p">(</span><span class="n">Node</span><span class="o">*</span> <span class="n">root</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">Node</span> <span class="o">*</span> <span class="n">prev</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+    
+            <span class="k">if</span><span class="p">(</span><span class="n">root</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="k">return</span> <span class="n">root</span><span class="p">;</span>
+            <span class="n">queue</span> <span class="o">&lt;</span><span class="n">Node</span> <span class="o">*&gt;</span> <span class="n">q</span><span class="p">;</span>
+            <span class="n">q</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">root</span><span class="p">);</span>
+                   
+            
+            <span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="n">q</span><span class="p">.</span><span class="n">empty</span><span class="p">()){</span>
+                
+                <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">q</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+                <span class="n">Node</span> <span class="o">*</span> <span class="n">top</span><span class="p">;</span>
+                <span class="c1">//자식의 갯수 만큼</span>
+                <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+                    <span class="n">top</span> <span class="o">=</span> <span class="n">q</span><span class="p">.</span><span class="n">front</span><span class="p">();</span>
+                    <span class="n">q</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+                    
+                    <span class="k">if</span><span class="p">(</span><span class="n">prev</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">){</span>
+                        <span class="n">prev</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">top</span><span class="p">;</span>
+                    <span class="p">}</span>
+                    <span class="n">prev</span> <span class="o">=</span> <span class="n">top</span><span class="p">;</span>
+                    
+                    <span class="k">if</span><span class="p">(</span><span class="n">top</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">)</span> <span class="n">q</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">top</span><span class="o">-&gt;</span><span class="n">left</span><span class="p">);</span>
+                    <span class="k">if</span><span class="p">(</span><span class="n">top</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">)</span> <span class="n">q</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">top</span><span class="o">-&gt;</span><span class="n">right</span><span class="p">);</span>
+                    
+                <span class="p">}</span>
+                
+                <span class="n">top</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+                <span class="n">prev</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+                          
+                
+            <span class="p">}</span>
+            
+            <span class="k">return</span> <span class="n">root</span><span class="p">;</span>
+            
+        <span class="p">}</span>
+    <span class="p">};</span>
+</code></pre></div></div>
+<ul>
+  <li>
+    <p>문제 풀이</p>
+
+    <p>BFS로 접근했다</p>
+
+    <p>레벨마다 NULL값을 넣어줘야 하기 때문에 자식 PUSH를 모두 한 후에 자식의 갯수만큼 연산을 진행 해 주었다.</p>
+  </li>
+  <li>
+    <p>후기</p>
+
+    <p>오늘 일찍 일어난거 칭찬해 :good:</p>
+  </li>
+</ul>
+:ET

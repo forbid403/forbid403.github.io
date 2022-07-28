@@ -1,0 +1,40 @@
+I"[<p>Created By: 성희 배
+Last Edited: Mar 23, 2020 1:00 AM</p>
+
+<h2 id="windowlocation과-documentlocation의-차이">window.location과 document.location의 차이</h2>
+
+<h3 id="windowlocation">window.location</h3>
+
+<ul>
+  <li>현재 위치를 <strong>object</strong> 값으로 가져옴</li>
+</ul>
+
+<h3 id="documentlocation">document.location</h3>
+
+<ul>
+  <li>현재 URL 값을 string으로 변환해서 가져옴</li>
+</ul>
+
+<p>⇒ 웹사이트 호환성 때문에 document.location보다는 window.location을 추천한다.</p>
+
+<p>⇒ document.location은 document.URL로 직관적이게 바뀌었다.</p>
+
+<hr />
+
+<h2 id="유동-포워딩-고정-포워딩">유동 포워딩, 고정 포워딩</h2>
+
+<h3 id="유동-포워딩">유동 포워딩</h3>
+
+<ul>
+  <li>접속 하는 URL로 주소창에 표기</li>
+  <li>meta 방식으로 포워딩 설정</li>
+</ul>
+
+<h3 id="고정-포워딩">고정 포워딩</h3>
+
+<ul>
+  <li>접속 시 도메인 그대로 주소창에 표기</li>
+  <li>frame 방식으로 포워딩 설정</li>
+  <li>ex ) 페이지를 이동 해도 www.example.co.kr이 그대로 유지</li>
+</ul>
+:ET

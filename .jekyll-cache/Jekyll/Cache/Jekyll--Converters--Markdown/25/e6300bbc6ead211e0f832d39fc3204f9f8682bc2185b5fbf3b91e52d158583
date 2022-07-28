@@ -1,0 +1,33 @@
+I"Z<h2 id="leetcode-best-time-to-buy-and-sell-stock-with-cooldown">[leetcode] Best Time to Buy and Sell Stock with Cooldown</h2>
+<p><a href="https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/">문제 링크</a></p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="kt">int</span> <span class="n">maxProfit</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">prices</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">prices</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">n</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">)</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+        
+        <span class="kt">int</span> <span class="n">sold</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">hold</span> <span class="o">=</span> <span class="n">INT_MIN</span><span class="p">,</span> <span class="n">rest</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        
+        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kt">int</span> <span class="n">prevSold</span> <span class="o">=</span> <span class="n">sold</span><span class="p">;</span>
+            <span class="n">sold</span> <span class="o">=</span> <span class="n">hold</span> <span class="o">+</span> <span class="n">prices</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+            <span class="n">hold</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">hold</span><span class="p">,</span> <span class="n">rest</span> <span class="o">-</span> <span class="n">prices</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+            <span class="n">rest</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">rest</span><span class="p">,</span> <span class="n">prevSold</span><span class="p">);</span>
+        <span class="p">}</span>
+        
+        <span class="k">return</span> <span class="n">max</span><span class="p">(</span><span class="n">sold</span><span class="p">,</span> <span class="n">rest</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<ul>
+  <li>dp + State Machine</li>
+  <li>총 세 가지의 경우의 수가 있다. 팔았거나 (sold), 휴식하거나 (rest), 유지하거나 (held).</li>
+  <li><img src="https://user-images.githubusercontent.com/41617388/96116149-f940a480-0f22-11eb-8440-ad64f6911584.png" alt="image" /></li>
+  <li><code class="language-plaintext highlighter-rouge">sold</code> state는 주식을 판 상태이다. 해당 값을 기존의 값에 더해준다.</li>
+  <li><code class="language-plaintext highlighter-rouge">held</code> state는 대기 상태이다. 휴식 상태 이후에 구매하거나, 대기 상태를 유지하는 경우의 수가 있다.</li>
+  <li><code class="language-plaintext highlighter-rouge">rest</code> state는 휴식 상태이다. 구매 이후에 휴식하거나, 휴식을 유지하는 경우의 수가 있다.</li>
+  <li>해당 state들을 갱신 해 주면서, 최종적인 상태는 판매를 했거나 판매 이후를 비교 해 주면 된다. (더이상의 구매는 불가능하기 때문)</li>
+</ul>
+:ET

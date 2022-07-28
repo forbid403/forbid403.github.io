@@ -1,0 +1,115 @@
+I"O"<h1 id="rank-teams-by-votes">Rank Teams by Votes</h1>
+
+<p>Algorithm: 배열, 정렬
+Created: Mar 04, 2020 3:09 PM
+DoubleChk: No
+Type: LeetCode
+level: 2
+link: https://leetcode.com/problems/rank-teams-by-votes/</p>
+
+<p>In a special ranking system, each voter gives a rank from highest to lowest to all teams participated in the competition.</p>
+
+<p>The ordering of teams is decided by who received the most position-one votes. If two or more teams tie in the first position, we consider the second position to resolve the conflict, if they tie again, we continue this process until the ties are resolved. If two or more teams are still tied after considering all positions, we rank them alphabetically based on their team letter.</p>
+
+<p>Given an array of strings <code class="language-plaintext highlighter-rouge">votes</code> which is the votes of all voters in the ranking systems. Sort all teams according to the ranking system described above.</p>
+
+<p>Return <em>a string of all teams</em> <strong>sorted</strong> by the ranking system.</p>
+
+<p><strong>Example 1:</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Input: votes = ["ABC","ACB","ABC","ACB","ACB"]
+Output: "ACB"
+Explanation: Team A was ranked first place by 5 voters. No other team was voted as first place so team A is the first team.
+Team B was ranked second by 2 voters and was ranked third by 3 voters.
+Team C was ranked second by 3 voters and was ranked third by 2 voters.
+As most of the voters ranked C second, team C is the second team and team B is the third.
+</code></pre></div></div>
+
+<p><strong>Example 2:</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Input: votes = ["WXYZ","XYZW"]
+Output: "XWYZ"
+Explanation: X is the winner due to tie-breaking rule. X has same votes as W for the first position but X has one vote as second position while W doesn't have any votes as second position.
+</code></pre></div></div>
+
+<p><strong>Example 3:</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Input: votes = ["ZMNAGUEDSJYLBOPHRQICWFXTVK"]
+Output: "ZMNAGUEDSJYLBOPHRQICWFXTVK"
+Explanation: Only one voter so his votes are used for the ranking.
+</code></pre></div></div>
+
+<p><strong>Example 4:</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Input: votes = ["BCA","CAB","CBA","ABC","ACB","BAC"]
+Output: "ABC"
+Explanation: 
+Team A was ranked first by 2 voters, second by 2 voters and third by 2 voters.
+Team B was ranked first by 2 voters, second by 2 voters and third by 2 voters.
+Team C was ranked first by 2 voters, second by 2 voters and third by 2 voters.
+There is a tie and we rank teams ascending by their IDs.
+</code></pre></div></div>
+
+<p><strong>Example 5:</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Input: votes = ["M","M","M","M"]
+Output: "M"
+Explanation: Only team M in the competition so it has the first rank.
+</code></pre></div></div>
+
+<p><strong>Constraints:</strong></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">1 &lt;= votes.length &lt;= 1000</code></li>
+  <li><code class="language-plaintext highlighter-rouge">1 &lt;= votes[i].length &lt;= 26</code></li>
+  <li><code class="language-plaintext highlighter-rouge">votes[i].length == votes[j].length</code> for <code class="language-plaintext highlighter-rouge">0 &lt;= i, j &lt; votes.length</code>.</li>
+  <li><code class="language-plaintext highlighter-rouge">votes[i][j]</code> is an English <strong>upper-case</strong> letter.</li>
+  <li>All characters of <code class="language-plaintext highlighter-rouge">votes[i]</code> are unique.</li>
+  <li>All the characters that occur in <code class="language-plaintext highlighter-rouge">votes[0]</code> <strong>also occur</strong> in <code class="language-plaintext highlighter-rouge">votes[j]</code> where <code class="language-plaintext highlighter-rouge">1 &lt;= j &lt; votes.length</code>.</li>
+</ul>
+
+<hr />
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+    <span class="nl">public:</span>
+        <span class="n">string</span> <span class="n">rankTeams</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&amp;</span> <span class="n">votes</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">rank</span><span class="p">(</span><span class="mi">26</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">26</span><span class="p">,</span> <span class="mi">0</span><span class="p">));</span>
+            <span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="n">v</span> <span class="o">:</span> <span class="n">votes</span><span class="p">){</span>
+                <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">v</span><span class="p">.</span><span class="n">length</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+                    <span class="n">rank</span><span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="sc">'A'</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">++</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            
+            <span class="k">auto</span> <span class="n">cmp</span> <span class="o">=</span> <span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="kt">char</span> <span class="n">a</span><span class="p">,</span> <span class="kt">char</span> <span class="n">b</span><span class="p">){</span>
+                <span class="k">return</span> <span class="n">rank</span><span class="p">[</span><span class="n">a</span> <span class="o">-</span> <span class="sc">'A'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">rank</span><span class="p">[</span><span class="n">b</span> <span class="o">-</span> <span class="sc">'A'</span><span class="p">]</span> <span class="o">||</span>
+                    <span class="n">rank</span><span class="p">[</span><span class="n">a</span> <span class="o">-</span> <span class="sc">'A'</span><span class="p">]</span> <span class="o">==</span> <span class="n">rank</span><span class="p">[</span><span class="n">b</span> <span class="o">-</span> <span class="sc">'A'</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="n">a</span> <span class="o">&lt;</span> <span class="n">b</span><span class="p">;</span>
+            <span class="p">};</span>
+            
+            <span class="n">string</span> <span class="n">x</span> <span class="o">=</span> <span class="n">votes</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+            <span class="n">sort</span><span class="p">(</span><span class="n">begin</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">end</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">cmp</span><span class="p">);</span>
+            <span class="k">return</span> <span class="n">x</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+</code></pre></div></div>
+<ul>
+  <li>
+    <p>문제 풀이</p>
+
+    <p>람다식을 이용해서 sorting 하여 푸는 문제.</p>
+
+    <p>일단 각 글자들이 얼마나 나오는지 체크 해 준다.</p>
+
+    <p>그리고 sorting을 해주는데, cmp라는 람다 함수를 비교함수로 사용한다.</p>
+
+    <p>랭킹이 큰 것, 만약 같다면 알파벳 순서가 빠른 순서로 정렬한다.</p>
+  </li>
+  <li>
+    <p>후기</p>
+
+    <p>contest 2회차</p>
+
+    <p>한문제밖에 못풀었는데 랭킹이 올랐다</p>
+
+    <p>랭작 꿀잼</p>
+  </li>
+</ul>
+:ET

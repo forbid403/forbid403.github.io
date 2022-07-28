@@ -1,0 +1,54 @@
+I":<p>Created By: forbid403
+Last Edited: Dec 29, 2019 12:27 AM</p>
+
+<h2 id="try-catch-finally">try-catch-finally</h2>
+
+<ul>
+  <li>throw (발생시키다)
+    <ul>
+      <li>예외를 알린다
+        <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">if</span> <span class="o">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span> <span class="k">throw</span> <span class="k">new</span> <span class="nc">Error</span><span class="o">(</span><span class="err">'</span><span class="n">x는</span> <span class="n">음수가</span> <span class="n">아니어야</span> <span class="n">합니다</span><span class="o">.</span><span class="err">'</span><span class="o">)</span> <span class="o">}</span>
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li>catch (잡아내다)
+    <ul>
+      <li>예외를 처리한다</li>
+    </ul>
+  </li>
+  <li>finally
+    <ul>
+      <li>항상 실행이 보장되어야 함</li>
+      <li>try 블록이 일부라도 실행 되면 finally 블록의 실행은 보장</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<hr />
+
+<h2 id="도커란">도커란?</h2>
+
+<ul>
+  <li>여러 서버를 사용 하면 버젼 관리 등 환경설정을 바꾸거나 해야 한다.</li>
+  <li>
+    <p>DevOps의 발전으로 개발 주기는 빨라지고 관리는 복잡해진다.</p>
+
+    <p>→ 그래서 나온게 컨테이너 기반의 오픈소스 가상화 플랫폼인 <strong>도커</strong>!</p>
+  </li>
+  <li>컨테이너 : 격리된 공간에서 프로세스가 동작하는 기술</li>
+  <li>기존의 가상화 방식 : OS를 가상화 (VirtualWare)</li>
+  <li>layer를 사용해서 유니온 파일 시스템으로 한 개의 파일시스템으로 사용할 수 있음</li>
+</ul>
+
+<h3 id="명령어">명령어</h3>
+
+<ul>
+  <li>–publish : forward traffic incoming on port 8000 to 8080 (호스트의 포트에 맞추어 forward)</li>
+  <li>–detach : 백그라운드에서 도커 run</li>
+  <li>–name : 이름 부여</li>
+</ul>
+
+:ET

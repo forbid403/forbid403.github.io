@@ -1,0 +1,7 @@
+I"<h1 id="thread">Thread</h1>
+<ul>
+  <li>CPU 이용의 기본 단위이다.</li>
+  <li>스레드 ID, Program Counter, 레지스터, 스택으로 이루어져 있다.</li>
+  <li>같은 프로세스에 속한 스레드들은 data, code를 공유한다.</li>
+</ul>
+:ET

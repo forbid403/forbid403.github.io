@@ -1,0 +1,48 @@
+I"<h1 id="0104-til">0104 TIL</h1>
+
+<p>Created By: 성희 배
+Last Edited: Jan 04, 2020 2:52 PM</p>
+
+<h3 id="routing">Routing</h3>
+
+<ul>
+  <li><strong>애플리케이션 엔드 포인트 (URI)</strong> 의 정의</li>
+  <li><strong>URI가 클라이언트 요청에 응답하는 방식</strong>의 정의</li>
+</ul>
+
+<h3 id="라우터">라우터</h3>
+
+<ul>
+  <li>HTTP 메소드 중 하나로부터 파생 → get, post, head, delete…</li>
+  <li>app.route()
+    <ul>
+      <li>라우트 경로에 대하여 체인 가능한 <strong>라우트 핸들러</strong> 작성 가능</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="get-vs-post">GET vs POST</h3>
+
+<ul>
+  <li>GET
+    <ul>
+      <li>서버로부터 <strong>정보를 조회</strong>하기 위해 설계된 메소드</li>
+      <li>데이터를 Body에 담지 않고 쿼리 스트링을 통해 전송</li>
+    </ul>
+  </li>
+  <li>POST
+    <ul>
+      <li>리소스를 <strong>생성/변경</strong>하기 위해 설계</li>
+      <li>Body에 담아서 전송 → 대용량 데이터 전송 가능</li>
+    </ul>
+  </li>
+  <li>GET vs POST?
+    <ul>
+      <li>GET : Idempotent (멱등)</li>
+      <li>POST : Non-dempotent</li>
+      <li>GET은 언제나 똑같은 결과를 return (멱등)</li>
+      <li>POST는 달라질 수 있음</li>
+    </ul>
+  </li>
+</ul>
+:ET

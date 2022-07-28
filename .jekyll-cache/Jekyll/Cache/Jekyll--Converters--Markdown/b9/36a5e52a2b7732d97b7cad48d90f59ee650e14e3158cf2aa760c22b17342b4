@@ -1,0 +1,283 @@
+I"�(<h1 id="프로세스">프로세스</h1>
+<h2 id="프로세스-1">프로세스</h2>
+<ul>
+  <li>job이라고도 부른다.</li>
+  <li>실행 중인 프로그램</li>
+  <li>시분할 시스템에서의 작업의 단위</li>
+</ul>
+
+<h2 id="프로그램">프로그램</h2>
+<ul>
+  <li>명령어 리스트를 내용으로 가진 수동적인 (passive) 존재</li>
+  <li>cf) 프로세스는 다음에 실행할 명령어를 지정하는 Program Counter, 관련 자원의 집합을 가진 능동적인 (active) 존재이다.</li>
+</ul>
+
+<h2 id="프로세스는-독립적이다">프로세스는 독립적이다.</h2>
+<ul>
+  <li>텍스트 세션은 같을지라도 data, heap, stack은 다를 수 있다.</li>
+  <li>ex) chrome 탭은 프로세스인가 스레드인가?
+    <ul>
+      <li>브라우저 프로세스는 chrome이 실행 될 때 한번만 실행이 된다.</li>
+      <li>하나의 탭이 고장난다고 해서 다른 탭이 고장나지 않으므로 프로세스이다. 각각의 탭은 서로 독립적인 존재이다. 각각의 탭마다 렌더러 프로세스가 생성이 된다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="프로세스-상태">프로세스 상태</h2>
+<p><img src="https://user-images.githubusercontent.com/41617388/83322393-3e28af00-a292-11ea-84ca-afe923af3645.png" alt="image" /></p>
+<ul>
+  <li>하나의 처리기엔 하나의 프로세스만 실행중이어야 한다.</li>
+</ul>
+
+<h2 id="pcb-process-control-block">PCB (Process Control Block)</h2>
+<p><img src="https://user-images.githubusercontent.com/41617388/83322414-69ab9980-a292-11ea-9feb-883a88a81876.png" alt="image" /></p>
+
+<ul>
+  <li>각 프로세스는 PCB에 의해 표현된다.</li>
+  <li>프로세스마다 달라지는 모든 정보를 저장한다.</li>
+  <li><code class="language-plaintext highlighter-rouge">Program Counter</code> : 다음 실행 할 명령어의 주소</li>
+</ul>
+
+<p>#</p>
+
+<h1 id="프로세스-스케쥴링">프로세스 스케쥴링</h1>
+<ul>
+  <li>CPU 이용률을 최대화 해야하기 때문에 항상 프로세스가 실행되는 것이 좋다.</li>
+  <li>프로세스 스케쥴러는 process중 하나를 선택한다.</li>
+</ul>
+
+<h2 id="scheduling-queue">Scheduling Queue</h2>
+<ul>
+  <li>새로운 프로세스 생성 시 Job큐에 넣는다.</li>
+  <li>Job 큐는 시스템의 모든 프로세스가 들어있고, 주 메모리에 존재한다.</li>
+  <li>준비 상태가 되면 Ready큐에 저장된다. 이는 연결리스트로 저장된다.</li>
+  <li>CPU에서 자원을 할당 해 주면,
+    <ul>
+      <li>입출력 요청 -&gt; 입출력 큐 -&gt; waiting -&gt; ready 큐로 이동</li>
+      <li>자식 프로세스 생성 후 대기 -&gt; waiting -&gt; ready 큐로 이동</li>
+      <li>인터럽트로 CPU에서 제거</li>
+    </ul>
+  </li>
+  <li>종료되면 큐에서 삭제되고, pcb와 자원 반납</li>
+</ul>
+
+<h2 id="스케쥴러">스케쥴러</h2>
+<ul>
+  <li>장기 스케쥴러
+    <ul>
+      <li>메모리 내부의 프로세스 수 제어</li>
+      <li>new-&gt; ready, running -&gt; terminate</li>
+      <li>메모리와 디스크 사이의 스케쥴링</li>
+    </ul>
+  </li>
+  <li>단기 스케쥴러
+    <ul>
+      <li>실행되는 프로세스들 제어</li>
+      <li>ready -&gt; running -&gt; waiting -&gt; ready</li>
+      <li>메모리와 cpu 사이의 스케쥴링</li>
+    </ul>
+  </li>
+  <li>중기 스케쥴러
+    <ul>
+      <li>다중 프로그래밍의 정도를 완화하기 위해 프로세스를 제거(swap-out)하고 완화된 후 다시 불러옴</li>
+      <li>이를 swapping이라고 함</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="context-switching">Context Switching</h2>
+<ul>
+  <li>인터럽트 이후에 문맥을 복구하는 작업</li>
+  <li>이전의 프로세스 상태를 보관하고 새로운 프로세스의 보관된 상태를 복구하는 작업 필요. -&gt; 순수한 오버헤드이다.</li>
+</ul>
+
+<p>#</p>
+
+<h1 id="프로세스에-대한-연산">프로세스에 대한 연산</h1>
+<h2 id="프로세스-생성">프로세스 생성</h2>
+<ul>
+  <li>부모, 자실 트리형식으로 프로세스 생성</li>
+  <li>pid로 구별</li>
+  <li>프로세스가 자식 프로세스 생성 시
+    <ul>
+      <li>부모, 자식 병행 실행하거나</li>
+      <li>부모가 자식이 끝날 때까지 대기</li>
+    </ul>
+  </li>
+  <li>주소 공간 측면에서는
+    <ul>
+      <li>자식 프로세스는 부모의 복사본이거나</li>
+      <li>자식 프로세스는 새로운 프로그램을 가진다.</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">fork()</code> 새로운 프로세스 생성</li>
+  <li><code class="language-plaintext highlighter-rouge">exec()</code> 실행</li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">wait()</code> 대기</p>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">pid &lt; 0</code> 오류</li>
+  <li><code class="language-plaintext highlighter-rouge">pid == 0</code> 자식</li>
+  <li><code class="language-plaintext highlighter-rouge">pid &gt; 0</code> 부모</li>
+</ul>
+
+<h2 id="프로세스-종료">프로세스 종료</h2>
+<ul>
+  <li>운영체제에 <code class="language-plaintext highlighter-rouge">exit()</code>호출을 사용해 종료 요청</li>
+  <li>상태값, 자원을 return 한다. -&gt; 이 작업은 waiting 시에 실행 됨</li>
+  <li>부모가 자식을 삭제하는 경우
+    <ul>
+      <li>할당된 자원을 초과 사용</li>
+      <li>Task가 불필요해짐</li>
+      <li>부모 exit 후 자식 실행을 os에서 허용하지 않을 경우 -&gt; 연쇄식 종료</li>
+    </ul>
+  </li>
+  <li>wait 호출이 되지 않았는데도 종료된 프로세스를 zombie 프로세스라고 한다.</li>
+  <li>모든 프로세스는 잠깐동안 zombie 프로세스가 된다. (exit-&gt;waiting 시의 갭 때문에)</li>
+  <li>그 외의 경우는 Orphan process(고아 프로세스)라고 한다.</li>
+  <li>이 경우 linux, unix에서는 Init 명령어로 프로세스들을 검사하면서 orphan 프로세스들을 제거한다.</li>
+</ul>
+
+<p>#</p>
+
+<h1 id="프로세스간-통신-interprocess-communication-aka-ipc">프로세스간 통신 (InterProcess Communication) a.k.a. IPC</h1>
+<ul>
+  <li>독립적 or 협력적</li>
+  <li>협력적인 경우
+    <ul>
+      <li>정보 공유가 필요한 경우</li>
+      <li>계산 가속화가 필요한 경우</li>
+      <li>모듈성이 필요한 경우</li>
+      <li>편의성이 필요한 경우 (다중 task 실행)</li>
+    </ul>
+  </li>
+  <li>이런 협력적인 프로세스들은 프로세스간 통신이 필요하다.</li>
+</ul>
+
+<h2 id="공유-메모리-시스템">공유 메모리 시스템</h2>
+<ul>
+  <li>공유 메모리를 구축하여, 프로세스가 이 영역을 공유한다.</li>
+  <li>read, write를 사용하여 통신을 수행한다.</li>
+  <li>메시지 패싱 시스템과 달리 전달이 필요 없기 때문에 성능 측에서 더 낫다.</li>
+  <li>OS의 관여 없이 통신 가능하다.</li>
+  <li>구현이 어렵다는 단점이 있다.</li>
+  <li>동기화 문제를 신경 써줘야 한다!</li>
+  <li>ex) 데이터베이스</li>
+</ul>
+
+<h2 id="메시지-전달-시스템">메시지 전달 시스템</h2>
+<ul>
+  <li>공유되는 메모리 없이 커널을 경유하여 프로세스간 메시지를 전달할 수 있다.</li>
+  <li>동기화가 되어있다.</li>
+  <li>분산 네트워크 환경에서 유용하다.</li>
+  <li>send, receive를 사용하여 통신을 수행한다.</li>
+  <li>구현하기 간단하다.</li>
+  <li>
+    <p>커널을 거치므로, 속도가 느리다는 단점이 있다.</p>
+  </li>
+  <li>통신 연결과 통신 구현 종류는 다음과 같다.
+#
+    <h2 id="명명-naming">명명 (Naming)</h2>
+  </li>
+  <li>간접통신과 직접 통신으로 나뉜다.</li>
+</ul>
+
+<h3 id="간접-통신">간접 통신</h3>
+<ul>
+  <li>Mailbox, Port</li>
+  <li>1:N으로 연결 될 수 있다.</li>
+  <li>
+    <ol>
+      <li>프로세스가 mailbox를 가지는 경우
+        <ul>
+          <li>어떤 프로세스가 메시지를 받는지 신경 써야 한다.</li>
+          <li>메일박스를 가지는 프로세스가 종료 될 경우 다른 프로세스가 삭제되었음을 알아야 한다.</li>
+        </ul>
+      </li>
+    </ol>
+  </li>
+  <li>
+    <ol>
+      <li>운영체제가 mailbox를 가지는 경우
+        <ul>
+          <li>독립적으로 운영된다.</li>
+        </ul>
+      </li>
+    </ol>
+  </li>
+</ul>
+
+<h3 id="직접-통신">직접 통신</h3>
+<ul>
+  <li>수신, 송신자 이름을 명시하여 연결한다.</li>
+  <li>1:1로 연결된다.</li>
+</ul>
+
+<h2 id="동기화">동기화</h2>
+<ul>
+  <li>blocking : 수신, 혹은 송신 완료 때까지 봉쇄</li>
+  <li>non-blocking : 수신, 혹은 송신 완료 시 다른 작업 실행</li>
+</ul>
+
+<h2 id="버퍼링">버퍼링</h2>
+<ul>
+  <li>메시지 큐 구현 방식</li>
+  <li>
+    <ol>
+      <li>무용량
+        <ul>
+          <li>용량이 0이므로 봉쇄형이다.</li>
+          <li>메시지가 들어오면 그 메시지를 pop 할 때까지 다른 메시지가 들어올 수 없음</li>
+        </ul>
+      </li>
+    </ol>
+  </li>
+  <li>
+    <ol>
+      <li>유한 용랑
+        <ul>
+          <li>용량이 n이다.</li>
+          <li>용량이 꽉 차기 전까지는 비봉쇄, 꽉 차면 봉쇄</li>
+        </ul>
+      </li>
+    </ol>
+  </li>
+  <li>
+    <ol>
+      <li>무한 용량
+        <ul>
+          <li>비봉쇄</li>
+        </ul>
+      </li>
+    </ol>
+  </li>
+</ul>
+
+<p>#</p>
+<h1 id="클라이언트-서버-시스템에서의-통신">클라이언트 서버 시스템에서의 통신</h1>
+<h2 id="소켓">소켓</h2>
+<ul>
+  <li>응용 프로그램 2개가 통신 시, 2개의 소켓이 만들어지고 통신 채널 양단에 하나씩 배정 됨</li>
+</ul>
+
+<h2 id="원격-프로시저-호출">원격 프로시저 호출</h2>
+<ul>
+  <li>한 프로세스가 원격지의 프로시저를 호출할 때 사용</li>
+</ul>
+
+<h2 id="파이프">파이프</h2>
+<h3 id="일반-파이프">일반 파이프</h3>
+<ul>
+  <li>생산자 - 소비자 형태</li>
+  <li>단방향 통신만 지원</li>
+  <li>관련된 프로세스만 공유 가능</li>
+</ul>
+
+<h3 id="지명-파이프">지명 파이프</h3>
+<ul>
+  <li>좀 더 강력한 통신</li>
+  <li>부모 - 자식X</li>
+  <li>양방향</li>
+  <li>반이중</li>
+  <li>모든 프로세스 공유 가능</li>
+</ul>
+:ET

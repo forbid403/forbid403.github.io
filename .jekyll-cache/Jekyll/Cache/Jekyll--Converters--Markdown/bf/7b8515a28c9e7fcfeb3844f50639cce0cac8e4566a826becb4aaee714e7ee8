@@ -1,0 +1,45 @@
+I"�<h2 id="javascript-splice">Javascript splice</h2>
+<ul>
+  <li>기존의 배열 요소를 변경한다.</li>
+</ul>
+
+<p><code class="language-plaintext highlighter-rouge">array.splice(start[, deleteCount[, item1[, item2[, ...]]]])</code></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">start</code> : 변경 시작 인덱스</li>
+  <li><code class="language-plaintext highlighter-rouge">deleteCount</code> : 제거할 요소의 수 (optional)</li>
+  <li><code class="language-plaintext highlighter-rouge">item...</code> : 추가할 요소</li>
+</ul>
+
+<p>ex)</p>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 하나도 지우지 않고, 2번째에 drum 추가</span>
+<span class="kd">var</span> <span class="nx">removed</span> <span class="o">=</span> <span class="nx">myFish</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="dl">'</span><span class="s1">drum</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="c1">// 3번 인덱스에서 1개 제거</span>
+<span class="kd">var</span> <span class="nx">removed</span> <span class="o">=</span> <span class="nx">myFish</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</code></pre></div></div>
+
+<hr />
+
+<ul>
+  <li>js30에서 입력받은 것이 secretcode와 일치하는지 확인하는 기능을 구현했다.</li>
+</ul>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">secretcode</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">wesbos</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">pushed</span> <span class="o">=</span> <span class="p">[];</span>
+
+<span class="nb">window</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="dl">'</span><span class="s1">keyup</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span><span class="o">=&gt;</span><span class="p">{</span>
+	<span class="nx">pushed</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">key</span><span class="p">);</span>
+	<span class="nx">pushed</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="o">-</span><span class="nx">secretcode</span><span class="p">.</span><span class="nx">length</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nx">pushed</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="nx">secretcode</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+	<span class="k">if</span><span class="p">(</span><span class="nx">pushed</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="dl">''</span><span class="p">).</span><span class="nx">includes</span><span class="p">(</span><span class="nx">secretcode</span><span class="p">)){</span>
+		<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">Ding Ding!</span><span class="dl">"</span><span class="p">);</span>
+	<span class="p">}</span>
+<span class="p">})</span>
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">-secretcode - 1</code>은 -7이다. 즉 secretcode 이상을 눌렀을 때에, 첫번째 인덱스의 것을 제거한다.</li>
+  <li>splice의 2번째 인자를 1로 하면 늘 1개를 지우기 때문에 두 인자를 빼주어야 한다.</li>
+</ul>
+
+:ET

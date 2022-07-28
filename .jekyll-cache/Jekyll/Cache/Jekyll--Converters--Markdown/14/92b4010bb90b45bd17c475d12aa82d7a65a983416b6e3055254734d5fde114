@@ -1,0 +1,163 @@
+I"F<h1 id="3187-양치기-꿍">[3187] 양치기 꿍</h1>
+
+<p>Algorithm: bfs
+Created: Feb 02, 2020 11:13 PM
+DoubleChk: No
+Type: 백준
+link: https://www.acmicpc.net/problem/3187</p>
+
+<h2 id="문제">문제</h2>
+
+<p>양치기 꿍은 맨날 늑대가 나타났다고 마을 사람들을 속였지만 이젠 더이상 마을 사람들이 속지 않는다. 화가 난 꿍은 복수심에 불타 아예 늑대들을 양들이 있는 울타리안에 마구 집어넣어 양들을 잡아먹게 했다.</p>
+
+<p>하지만 양들은 보통 양들이 아니다. 같은 울타리 영역 안의 양들의 숫자가 늑대의 숫자보다 더 많을 경우 늑대가 전부 잡아먹힌다. 물론 그 외의 경우는 양이 전부 잡아먹히겠지만 말이다.</p>
+
+<p>꿍은 워낙 똑똑했기 때문에 이들의 결과는 이미 알고있다. 만약 빈 공간을 ‘.’(점)으로 나타내고 울타리를 ‘#’, 늑대를 ‘v’, 양을 ‘k’라고 나타낸다면 여러분은 몇 마리의 양과 늑대가 살아남을지 계산할 수 있겠는가?</p>
+
+<p>단, 울타리로 막히지 않은 영역에는 양과 늑대가 없으며 양과 늑대는 대각선으로 이동할 수 없다.</p>
+
+<h2 id="입력">입력</h2>
+
+<p>입력의 첫 번째 줄에는 각각 영역의 세로와 가로의 길이를 나타내는 두 개의 정수 R, C (3 ≤ R, C ≤ 250)가 주어진다.</p>
+
+<p>다음 각 R줄에는 C개의 문자가 주어지며 이들은 위에서 설명한 기호들이다.</p>
+
+<h2 id="출력">출력</h2>
+
+<p>살아남게 되는 양과 늑대의 수를 각각 순서대로 출력한다.</p>
+
+<h2 id="예제-입력-1">예제 입력 1</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>6 6
+...#..
+.##v#.
+#v.#.#
+#.k#.#
+.###.#
+...###
+</code></pre></div></div>
+
+<h2 id="예제-출력-1">예제 출력 1</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0 2
+</code></pre></div></div>
+
+<h2 id="예제-입력-2">예제 입력 2</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>8 8
+.######.
+#..k...#
+#.####.#
+#.#v.#.#
+#.#.k#k#
+#k.##..#
+#.v..v.#
+.######.
+</code></pre></div></div>
+
+<h2 id="예제-출력-2">예제 출력 2</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>3 1
+</code></pre></div></div>
+
+<h2 id="예제-입력-3">예제 입력 3</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>9 12
+.###.#####..
+#.kk#...#v#.
+#..k#.#.#.#.
+#..##k#...#.
+#.#v#k###.#.
+#..#v#....#.
+#...v#v####.
+.####.#vv.k#
+.......####.
+</code></pre></div></div>
+
+<h2 id="예제-출력-3">예제 출력 3</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>3 5
+</code></pre></div></div>
+
+<hr />
+<p>```c++
+    #include <iostream>
+    #include <algorithm>
+    #include <queue>
+    #include <cstring>
+    #include <string.h>
+    #define MAX 303
+    using namespace std;
+    int r, c, sheep, wolf;
+    int ansSheep, ansWolf;
+    char fence[MAX][MAX];
+    int visit[MAX][MAX];
+    queue &lt;pair&lt;int, int&gt;&gt; q;
+    int dx[4] = {0, 0, -1, 1};
+    int dy[4] = {-1, 1, 0, 0};
+    void bfs(int x, int y){</string.h></cstring></queue></algorithm></iostream></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    q.push(make_pair(x, y));
+    visit[x][y] = 1;
+    if(fence[x][y] == 'k') sheep++;
+    if(fence[x][y] == 'v') wolf++;
+
+    while(!q.empty()){
+        int top_x = q.front().first;
+        int top_y = q.front().second;
+        q.pop();
+
+        for(int i=0; i&lt;4; i++){
+            int next_x = top_x + dx[i];
+            int next_y = top_y + dy[i];
+
+            if(visit[next_x][next_y] || next_x &lt; 0 || next_y &lt; 0 || next_x &gt;= r || next_y &gt;= c || fence[next_x][next_y] == '#')
+                continue;
+
+            if(fence[next_x][next_y] == 'k') sheep++;
+            if(fence[next_x][next_y] == 'v') wolf++;
+
+            visit[next_x][next_y] = 1;
+            q.push(make_pair(next_x, next_y));
+        }
+    }
+}
+void input(){
+
+    for(int i=0; i&lt;r; i++){
+        for(int j=0; j&lt;c; j++){
+            cin &gt;&gt; fence[i][j];
+        }
+    }
+}
+void solve(){
+    for(int i=0; i&lt;r; i++){
+        for(int j=0; j&lt;c; j++){
+            if(fence[i][j] != '#' &amp;&amp; !visit[i][j]){
+                wolf = 0; sheep = 0;
+                bfs(i, j);
+
+                if (wolf &lt; sheep)
+                    ansSheep += sheep;
+                else
+                    ansWolf += wolf;
+            }
+        }
+    }
+}
+int main() {
+
+    cin &gt;&gt; r &gt;&gt; c;
+
+    input();
+
+    solve();
+
+    cout &lt;&lt; ansSheep &lt;&lt; ' ' &lt;&lt; ansWolf &lt;&lt; endl;
+
+    return 0;
+
+}
+```
+</code></pre></div></div>
+:ET

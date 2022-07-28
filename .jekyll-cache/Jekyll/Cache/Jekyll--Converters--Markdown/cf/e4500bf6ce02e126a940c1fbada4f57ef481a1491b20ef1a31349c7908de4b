@@ -1,0 +1,98 @@
+I"�<h1 id="라면공장">라면공장</h1>
+
+<p>Created: Apr 16, 2020 1:12 AM
+DoubleChk: No</p>
+
+<h3 id="문제-설명"><strong>문제 설명</strong></h3>
+
+<p>라면 공장에서는 하루에 밀가루를 1톤씩 사용합니다. 원래 밀가루를 공급받던 공장의 고장으로 앞으로 k일 이후에야 밀가루를 공급받을 수 있기 때문에 해외 공장에서 밀가루를 수입해야 합니다.</p>
+
+<p>해외 공장에서는 향후 밀가루를 공급할 수 있는 날짜와 수량을 알려주었고, 라면 공장에서는 운송비를 줄이기 위해 최소한의 횟수로 밀가루를 공급받고 싶습니다.</p>
+
+<p>현재 공장에 남아있는 밀가루 수량 stock, 밀가루 공급 일정(dates)과 해당 시점에 공급 가능한 밀가루 수량(supplies), 원래 공장으로부터 공급받을 수 있는 시점 k가 주어질 때, 밀가루가 떨어지지 않고 공장을 운영하기 위해서 최소한 몇 번 해외 공장으로부터 밀가루를 공급받아야 하는지를 return 하도록 solution 함수를 완성하세요.</p>
+
+<p>dates[i]에는 i번째 공급 가능일이 들어있으며, supplies[i]에는 dates[i] 날짜에 공급 가능한 밀가루 수량이 들어 있습니다.</p>
+
+<h3 id="제한사항">제한사항</h3>
+
+<ul>
+  <li>stock에 있는 밀가루는 오늘(0일 이후)부터 사용됩니다.</li>
+  <li>stock과 k는 2 이상 100,000 이하입니다.</li>
+  <li>dates의 각 원소는 1 이상 k 이하입니다.</li>
+  <li>supplies의 각 원소는 1 이상 1,000 이하입니다.</li>
+  <li>dates와 supplies의 길이는 1 이상 20,000 이하입니다.</li>
+  <li>k일 째에는 밀가루가 충분히 공급되기 때문에 k-1일에 사용할 수량까지만 확보하면 됩니다.</li>
+  <li>dates에 들어있는 날짜는 오름차순 정렬되어 있습니다.</li>
+  <li>dates에 들어있는 날짜에 공급되는 밀가루는 작업 시작 전 새벽에 공급되는 것을 기준으로 합니다. 예를 들어 9일째에 밀가루가 바닥나더라도, 10일째에 공급받으면 10일째에는 공장을 운영할 수 있습니다.</li>
+  <li>밀가루가 바닥나는 경우는 주어지지 않습니다.</li>
+</ul>
+
+<h3 id="입출력-예">입출력 예</h3>
+
+<p><a href="https://www.notion.so/f5265ef9746049468eaafb1d7a7fd568">Untitled</a></p>
+
+<h3 id="입출력-예-설명">입출력 예 설명</h3>
+
+<ul>
+  <li>현재 밀가루가 4톤 남아 있기 때문에 오늘과 1일 후~3일 후까지 사용하고 나면 모든 밀가루를 다 사용합니다. 따라서 4일 후에는 반드시 밀가루를 공급받아야 합니다.</li>
+  <li>4일째 공급받고 나면 15일 이후 아침에는 9톤의 밀가루가 남아있게 되고, 이때 10톤을 더 공급받으면 19톤이 남아있게 됩니다. 15일 이후부터 29일 이후까지 필요한 밀가루는 15톤이므로 더 이상의 공급은 필요 없습니다.</li>
+  <li>따라서 총 2회의 밀가루를 공급받으면 됩니다.</li>
+</ul>
+
+<hr />
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp">
+</span>    <span class="cp">#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp">
+</span>    <span class="cp">#include</span> <span class="cpf">&lt;queue&gt;</span><span class="cp">
+</span>    <span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+    
+    <span class="n">priority_queue</span> <span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">pq</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="nf">solution</span><span class="p">(</span><span class="kt">int</span> <span class="n">stock</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">dates</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">supplies</span><span class="p">,</span> <span class="kt">int</span> <span class="n">k</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">answer</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        
+        <span class="kt">int</span> <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">day</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">){</span>
+            
+            <span class="n">stock</span><span class="o">--</span><span class="p">;</span>
+            <span class="n">day</span><span class="o">++</span><span class="p">;</span>
+            
+            <span class="k">if</span><span class="p">(</span><span class="n">day</span> <span class="o">&gt;=</span> <span class="n">k</span><span class="p">){</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+            
+            <span class="c1">//stock 추가</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">dates</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">==</span> <span class="n">day</span><span class="p">){</span>
+                <span class="n">pq</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">supplies</span><span class="p">[</span><span class="n">idx</span><span class="o">++</span><span class="p">]);</span>
+            <span class="p">}</span>
+            
+            <span class="k">if</span><span class="p">(</span><span class="n">stock</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+                <span class="n">stock</span> <span class="o">+=</span> <span class="n">pq</span><span class="p">.</span><span class="n">top</span><span class="p">();</span>
+                <span class="n">pq</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+                <span class="n">answer</span><span class="o">++</span><span class="p">;</span>
+            <span class="p">}</span>
+            
+        <span class="p">}</span>
+        
+        <span class="k">return</span> <span class="n">answer</span><span class="p">;</span>
+    <span class="p">}</span>
+</code></pre></div></div>
+<ul>
+  <li>
+    <p>문제 풀이</p>
+
+    <p>while문을 돌리고, 루프 마다 stock을 하나씩 빼 주고, day를 하나씩 올려준다.</p>
+
+    <p>한번의 루프 마다 하루가 가는 것이다.</p>
+
+    <p>날짜가 k가 넘게 되면 종료 해 준다.</p>
+
+    <p>만약, dates[idx]가 현재 날짜와 같다면, 즉 공급받을 수 있는 날짜가 되면,</p>
+
+    <p>공급량을 우선순위 큐에 넣어준다.</p>
+
+    <p>우선순위 큐는 max heap이다. 공급량이 제일 많을 때 추가해야 하기 때문이다.</p>
+
+    <p>stock이 떨어질 때마다 우선순위 큐의 top을 더해 주고, 답을 +1 한다.</p>
+  </li>
+</ul>
+:ET

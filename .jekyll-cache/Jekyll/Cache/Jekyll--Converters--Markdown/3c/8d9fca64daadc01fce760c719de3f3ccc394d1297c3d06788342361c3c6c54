@@ -1,0 +1,173 @@
+I"[<h1 id="chapter-1-introduction">Chapter 1. Introduction</h1>
+
+<p>Created By: 성희 배
+Last Edited: Jan 26, 2020 12:12 AM
+Tags: OS</p>
+
+<h3 id="os">OS</h3>
+
+<ul>
+  <li>Manages the computer hardware</li>
+  <li>Provides a basis for application programs</li>
+  <li>Intermediary between the computer and hardware</li>
+</ul>
+
+<h3 id="what-os-do">What OS do?</h3>
+
+<ul>
+  <li>hardware, os, application programs, users</li>
+  <li>Hardware : cpu, memory, i/o device</li>
+  <li>Application Programs : word processor, spreadsheet, compiler</li>
+  <li>OS : 컴퓨터 시스템에서 사용 되는 자원들을 효율적으로 사용하기 위한 방법 제공</li>
+</ul>
+
+<h3 id="definition-of-os">Definition of OS</h3>
+
+<ul>
+  <li>운영체제 : 컴퓨터에서 항상 수행되는 프로그램, <strong>커널</strong> 이라 불림</li>
+</ul>
+
+<h2 id="computer-system-organization">Computer-System Organization</h2>
+
+<h3 id="computer-system-operation">Computer System Operation</h3>
+
+<ul>
+  <li>Bootstrap : 컴퓨터가 시작 할 때 초기화에 필요한 프로그램
+    <ul>
+      <li>Simple 해야 함</li>
+      <li>EEPROM, ROM(펌웨어) 에 저장 됨</li>
+      <li>어떻게 os를 로드하고 시작 하는 지를 알아야 함</li>
+      <li>운영체제의 커널을 찾아 메모리에 적재해야 함</li>
+    </ul>
+  </li>
+  <li>사건이 발생 하면 Interrupt에 의해 신호가 보내짐
+    <ul>
+      <li>하드웨어는 CPU에 system bus를 통해 신호를 보냄</li>
+      <li>소프트웨어는 system call을 통해 신호를 보냄</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="storage-structure">Storage Structure</h3>
+
+<ul>
+  <li>컴퓨터는 대부분의 프로그램을 RAM에서 가져옴</li>
+  <li>ROM : 변하지 않는 읽기 전용 메모리 (게임 카트리지)</li>
+  <li>EEPROM : 자주 변할 수 없음, 대부분의 정적 프로그램 저장 (스마트폰)</li>
+  <li>load, store를 사용 해 메모리 명령 실행</li>
+  <li>폰 노이만 구조에서 실행되는 전형적인 명령-실행 사이클
+    <ul>
+      <li>메모리로부터 명령어 해독</li>
+      <li>명령 레지스터에 저장</li>
+      <li>명령 해독</li>
+      <li>명령 실행</li>
+      <li>결과 메모리에 저장</li>
+    </ul>
+  </li>
+  <li>저장 장치 계층
+    <ul>
+      <li>자기테이프 → 광 디스크 → 자기 디스크 → 반도체 디스크 → 주 메모리 → 캐시 → 레지스터</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="io-structure">I/O Structure</h3>
+
+<ul>
+  <li>DMA(직접 메모리 접근)
+    <ul>
+      <li>CPU의 개입 없이 데이터 블록 전체를 전송</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="computer-system-architecture">Computer System Architecture</h2>
+
+<h3 id="single-processor-system">Single-Processor System</h3>
+
+<ul>
+  <li>하나의 주 CPU를 가짐</li>
+</ul>
+
+<h3 id="multiprocessor-system">Multiprocessor System</h3>
+
+<ol>
+  <li><strong>증가된 처리량 (Increased Throughput)</strong>
+    <ul>
+      <li>여러개의 프로세서를 씀으로서 속도가 증가함</li>
+      <li>하지만 N개의 프로세스를 쓴다고 해서 속도가 N배 증가하지는 않는다. → 오버헤드 때문에</li>
+    </ul>
+  </li>
+  <li><strong>규모의 경제성 (Economy Of Scale)</strong>
+    <ul>
+      <li>주변 장치, 저장장치, 전원 공급 장치를 공유하고 있기 때문에 비용을 절약 할 수 있다.</li>
+    </ul>
+  </li>
+  <li><strong>증가된 신뢰성 (Increased Reliability)</strong>
+    <ul>
+      <li>한 처리기가 고장나더라도 속도만 느려지지 정지가 되지 않는다.</li>
+    </ul>
+  </li>
+</ol>
+
+<ul>
+  <li>비대칭적 다중 처리
+    <ul>
+      <li>하나의 주 처리기가 시스템을 제어</li>
+      <li>처리기끼리 종속 관계</li>
+    </ul>
+  </li>
+  <li>대칭적 다중 처리
+    <ul>
+      <li>각 처리기가 운영체제 내의 모든 작업을 수행</li>
+      <li>레지스터와 캐시는 로컬, 메모리는 공유</li>
+    </ul>
+  </li>
+  <li>멀티 코어 시스템</li>
+</ul>
+
+<h3 id="clustered-system">Clustered System</h3>
+
+<ul>
+  <li>높은 가용성을 제공하기 위해 사용</li>
+  <li>클러스터 내의 컴퓨터가 고장나도 서비스 계속 제공</li>
+  <li>병렬화 사용</li>
+</ul>
+
+<h2 id="운영체제의-구조">운영체제의 구조</h2>
+
+<ul>
+  <li>다중 프로그래밍 → CPU 이용률 증가
+    <ul>
+      <li>여러 작업을 메모리에 적재</li>
+      <li>작업 pool 내에 유지 (메모리 할당 대기)</li>
+      <li>pool 내의 작업 중 하나를 선택해 실행</li>
+    </ul>
+  </li>
+  <li>시분할 시스템 (멀티태스킹)
+    <ul>
+      <li>대화식 컴퓨터 시스템을 필요로 함</li>
+      <li>입출력 장치를 사용해 출력장치의 즉각적인 응답을 대기</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="운영체제-연산">운영체제 연산</h2>
+
+<h3 id="이중-연산-모드">이중 연산 모드</h3>
+
+<ul>
+  <li>사용자 모드, 커널 모드</li>
+  <li>모드 비트 사용</li>
+  <li>모드를 나눔으로서 운영체제 코드와 사용자 코드를 구별</li>
+  <li>트랩, 인터럽트 발생 → 커널 모드 (모드 비트 0)</li>
+  <li>사용자 프로그램으로 제어를 넘김 → 사용자 모드 (모드 비트 1)</li>
+  <li>특권 명령으로 민감한 명령어들을 보호</li>
+</ul>
+
+<h3 id="타이머">타이머</h3>
+
+<ul>
+  <li>무한루프를 방지하기 위해 타이머 사용</li>
+</ul>
+:ET

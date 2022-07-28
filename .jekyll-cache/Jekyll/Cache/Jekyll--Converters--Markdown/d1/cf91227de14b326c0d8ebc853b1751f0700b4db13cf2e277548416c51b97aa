@@ -1,0 +1,75 @@
+I"�!<h2 id="백준-3109-빵집">[백준 3109] 빵집</h2>
+<p><a href="https://www.acmicpc.net/problem/3109">문제 링크</a></p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">"header.h"</span><span class="cp">
+</span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">R</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">answer</span><span class="p">;</span>
+<span class="c1">// 오른쪽 위 대각선, 오른쪽, 오른쪽 아래 대각선</span>
+<span class="kt">int</span> <span class="n">dx</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span> <span class="p">};</span>
+<span class="kt">int</span> <span class="n">dy</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">};</span>
+<span class="kt">char</span> <span class="n">market</span><span class="p">[</span><span class="mi">10001</span><span class="p">][</span><span class="mi">501</span><span class="p">];</span>
+<span class="kt">int</span> <span class="n">visit</span><span class="p">[</span><span class="mi">10001</span><span class="p">][</span><span class="mi">501</span><span class="p">];</span>
+<span class="kt">bool</span> <span class="n">ans</span><span class="p">;</span>
+<span class="c1">//'.'는 빈 칸이고, 'x'는 건물</span>
+<span class="kt">void</span> <span class="nf">input</span><span class="p">(){</span>
+    <span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">R</span> <span class="o">&gt;&gt;</span> <span class="n">C</span><span class="p">;</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">R</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">j</span><span class="o">&lt;</span><span class="n">C</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">){</span>
+            <span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">market</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">];</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="kt">void</span> <span class="nf">dfs</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">){</span>
+    <span class="n">visit</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    
+    <span class="c1">//기저 조건</span>
+    <span class="c1">//오른쪽 끝에 도달함</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">y</span> <span class="o">==</span> <span class="n">C</span><span class="o">-</span><span class="mi">1</span><span class="p">){</span>
+        <span class="n">ans</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="n">answer</span><span class="o">++</span><span class="p">;</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">//아니라면 대각선 탐색</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">3</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+        <span class="kt">int</span> <span class="n">nx</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">dx</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        <span class="kt">int</span> <span class="n">ny</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="n">dy</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">visit</span><span class="p">[</span><span class="n">nx</span><span class="p">][</span><span class="n">ny</span><span class="p">]</span> <span class="o">||</span> <span class="n">market</span><span class="p">[</span><span class="n">nx</span><span class="p">][</span><span class="n">ny</span><span class="p">]</span> <span class="o">==</span> <span class="sc">'x'</span> <span class="o">||</span> <span class="n">nx</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">ny</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">nx</span> <span class="o">&gt;=</span> <span class="n">R</span> <span class="o">||</span> <span class="n">ny</span> <span class="o">&gt;=</span> <span class="n">C</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
+        
+        <span class="n">dfs</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">ans</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+<span class="kt">void</span> <span class="nf">solve</span><span class="p">(){</span>
+
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">R</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+        <span class="n">ans</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="n">dfs</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">input</span><span class="p">();</span>
+    <span class="n">solve</span><span class="p">();</span>
+
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">answer</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<ul>
+  <li>처음에는 끝에 도달 했을 시에, 다음 dfs를 바로 돌렸는데, 그렇게 하니 무한 루프가 돌았다.</li>
+  <li>
+    <p>방문 처리를 해주고, dfs 처리 후, 다시 방문 처리를 없앴는데, 중복으로 방문을 하다 보니 무한 루프가 돈 것 같다.</p>
+  </li>
+  <li>오른쪽으로 이동 할 시에, <strong>오른쪽 상단, 오른쪽, 오른쪽 아래</strong> 순으로 탐색을 하면 경로가 막히지 않는다.</li>
+  <li>최단 경로가 보장이 되기 때문에 방문처리를 철회할 필요도 없다.</li>
+  <li>R만큼 돌면서 dfs를 돌린다.</li>
+  <li>끝에 방문 시에는 더이상 탐색 할 필요가 없으므로 flag를 두어 return을 하고, 다음 인덱스 dfs를 돌린다.</li>
+</ul>
+:ET

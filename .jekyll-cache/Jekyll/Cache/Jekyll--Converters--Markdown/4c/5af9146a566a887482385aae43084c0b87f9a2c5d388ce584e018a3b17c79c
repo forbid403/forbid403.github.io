@@ -1,0 +1,46 @@
+I"B<h2 id="leetcode-valid-parenthesis-string">[leetcode] Valid Parenthesis String</h2>
+<p><a href="https://leetcode.com/problems/valid-parenthesis-string/">문제 링크</a></p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">stack</span> <span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span> <span class="n">open</span><span class="p">;</span>
+    <span class="n">stack</span> <span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span> <span class="n">star</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">checkValidString</span><span class="p">(</span><span class="n">string</span> <span class="n">s</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">s</span><span class="p">.</span><span class="n">length</span><span class="p">())</span> <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+        
+        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">s</span><span class="p">.</span><span class="n">length</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">'*'</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">star</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">'('</span><span class="p">){</span>
+                <span class="n">open</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">open</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="n">open</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+                <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">star</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="n">star</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+                <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">open</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        
+        <span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="n">open</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">star</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">open</span><span class="p">.</span><span class="n">top</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">star</span><span class="p">.</span><span class="n">top</span><span class="p">())</span> <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+            <span class="n">open</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+            <span class="n">star</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+        <span class="p">}</span>
+        
+        <span class="k">return</span> <span class="n">open</span><span class="p">.</span><span class="n">empty</span><span class="p">();</span>
+        
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div>
+<ul>
+  <li>stack 2개로 접근 한 문제</li>
+  <li>처음에는 인덱스가 아닌 char자체를 넣었는데 오답이었다. 인덱스를 넣게 되면 언제 들어갔는지 확인 할 수 있어서 답을 도출 해 낼 수 있다.</li>
+  <li>열리는 브라켓과 별모양은 바로 push 해 주고, 닫히는 브라켓일 경우에
+    <ul>
+      <li>열리는 브라켓에서 팝 -&gt; 스타에서 팝 -&gt; 비어있다면 false</li>
+      <li>순으로 체크 해 줘야 한다.</li>
+    </ul>
+  </li>
+  <li>반복문이 끝난 후에는 둘 중 하나가 빌 때까지 pop 해주는데, 이 때 open의 인덱스가 star의 인덱스보다 크다면, 그 브라켓은 닫을 수 없기 때문에 false이다.</li>
+  <li>dp로 푸는 방법도 있던데 따로 인강이 없어서 패스 &gt;&lt;~</li>
+</ul>
+:ET

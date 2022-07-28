@@ -1,0 +1,78 @@
+I"s&<h2 id="leetcode-add-two-numbers-ii">[leetcode] Add Two Numbers II</h2>
+<p><a href="https://leetcode.com/problems/add-two-numbers-ii/">문제 링크</a></p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">ListNode</span><span class="o">*</span> <span class="n">addTwoNumbers</span><span class="p">(</span><span class="n">ListNode</span><span class="o">*</span> <span class="n">l1</span><span class="p">,</span> <span class="n">ListNode</span><span class="o">*</span> <span class="n">l2</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">stack</span> <span class="o">&lt;</span><span class="n">ListNode</span><span class="o">*&gt;</span> <span class="n">st1</span><span class="p">;</span>
+        <span class="n">stack</span> <span class="o">&lt;</span><span class="n">ListNode</span><span class="o">*&gt;</span> <span class="n">st2</span><span class="p">;</span>
+        
+        <span class="n">ListNode</span> <span class="o">*</span><span class="n">cur</span> <span class="o">=</span> <span class="n">l1</span><span class="p">;</span>
+        <span class="k">while</span><span class="p">(</span><span class="n">cur</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">st1</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">cur</span><span class="p">);</span>
+            <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+        <span class="p">}</span>
+        
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">l2</span><span class="p">;</span>
+        <span class="k">while</span><span class="p">(</span><span class="n">cur</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">st2</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">cur</span><span class="p">);</span>
+            <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+        <span class="p">}</span>
+        
+        <span class="n">stack</span> <span class="o">&lt;</span><span class="n">ListNode</span> <span class="o">*&gt;</span> <span class="n">ret</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">flag</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="n">st1</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">st2</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="p">{</span>
+            <span class="kt">int</span> <span class="n">val</span> <span class="o">=</span> <span class="n">st1</span><span class="p">.</span><span class="n">top</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">val</span> <span class="o">+</span> <span class="n">st2</span><span class="p">.</span><span class="n">top</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">val</span> <span class="o">+</span> <span class="n">flag</span><span class="p">;</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">val</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">val</span> <span class="o">-=</span> <span class="mi">10</span><span class="p">;</span>
+                <span class="n">flag</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="n">flag</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            
+            <span class="n">ret</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="k">new</span> <span class="n">ListNode</span><span class="p">(</span><span class="n">val</span><span class="p">));</span>
+            <span class="n">st1</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+            <span class="n">st2</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+        <span class="p">}</span>
+        
+        
+        <span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="n">st1</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="p">{</span>
+            <span class="kt">int</span> <span class="n">val</span> <span class="o">=</span> <span class="n">st1</span><span class="p">.</span><span class="n">top</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">val</span> <span class="o">+</span> <span class="n">flag</span><span class="p">;</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">val</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">val</span> <span class="o">-=</span> <span class="mi">10</span><span class="p">;</span>
+                <span class="n">flag</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="n">flag</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            
+            <span class="n">ret</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="k">new</span> <span class="n">ListNode</span><span class="p">(</span><span class="n">val</span><span class="p">));</span>
+            <span class="n">st1</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+        <span class="p">}</span>
+        
+        <span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="n">st2</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="p">{</span>
+            <span class="kt">int</span> <span class="n">val</span> <span class="o">=</span> <span class="n">st2</span><span class="p">.</span><span class="n">top</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">val</span> <span class="o">+</span> <span class="n">flag</span><span class="p">;</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">val</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">val</span> <span class="o">-=</span> <span class="mi">10</span><span class="p">;</span>
+                <span class="n">flag</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="n">flag</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+            <span class="n">ret</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="k">new</span> <span class="n">ListNode</span><span class="p">(</span><span class="n">val</span><span class="p">));</span>
+            <span class="n">st2</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+        <span class="p">}</span>
+        
+        <span class="k">if</span><span class="p">(</span><span class="n">flag</span><span class="p">)</span> <span class="n">ret</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="k">new</span> <span class="n">ListNode</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
+
+        <span class="n">ListNode</span> <span class="o">*</span><span class="n">head</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ListNode</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">head</span><span class="p">;</span>
+        <span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="n">ret</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="p">{</span>
+            <span class="n">cur</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">ret</span><span class="p">.</span><span class="n">top</span><span class="p">();</span>
+            <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+            <span class="n">ret</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+        <span class="p">}</span>
+        
+        <span class="k">return</span> <span class="n">head</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div>
+<ul>
+  <li>맨 처음에는 똑같은 방식인데 노드를 반대 방향으로 정렬 후에 진행 하였다.</li>
+  <li>조건에 반대로 정렬 하면 안된다는 것을 뒤늦게 봐서.. 스택으로 풀었다.</li>
+  <li>더한 값이 10 이상이 되는 경우를 주의해서 풀면 된다.</li>
+</ul>
+:ET

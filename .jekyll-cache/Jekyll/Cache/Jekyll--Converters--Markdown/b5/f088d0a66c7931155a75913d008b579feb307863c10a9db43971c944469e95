@@ -1,0 +1,50 @@
+I"2<h2 id="leetcode-search-in-rotated-sorted-array">[leetcode] Search in Rotated Sorted Array</h2>
+<p><a href="https://leetcode.com/problems/search-in-rotated-sorted-array/">문제 링크</a></p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="kt">int</span> <span class="n">search</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">arr</span><span class="p">,</span> <span class="kt">int</span> <span class="n">target</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">left</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">right</span> <span class="o">=</span> <span class="n">arr</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+        
+        <span class="k">while</span><span class="p">(</span><span class="n">left</span> <span class="o">&lt;=</span> <span class="n">right</span><span class="p">){</span>
+            <span class="kt">int</span> <span class="n">mid</span> <span class="o">=</span> <span class="n">left</span> <span class="o">+</span> <span class="p">(</span><span class="n">right</span> <span class="o">-</span> <span class="n">left</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+            
+            <span class="k">if</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span> <span class="o">==</span> <span class="n">target</span><span class="p">)</span> <span class="k">return</span> <span class="n">mid</span><span class="p">;</span>
+            <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">arr</span><span class="p">[</span><span class="n">right</span><span class="p">])</span> <span class="p">{</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">target</span> <span class="o">&amp;&amp;</span> <span class="n">target</span> <span class="o">&lt;=</span> <span class="n">arr</span><span class="p">[</span><span class="n">right</span><span class="p">])</span> <span class="n">left</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+                <span class="k">else</span> <span class="n">right</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">target</span> <span class="o">&amp;&amp;</span> <span class="n">target</span> <span class="o">&gt;=</span> <span class="n">arr</span><span class="p">[</span><span class="n">left</span><span class="p">])</span> <span class="n">right</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+                <span class="k">else</span> <span class="n">left</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<ul>
+  <li>엄청 헷갈리는 문제라서 제대로 정리하기 위해 기록한다.</li>
+  <li>이분탐색으로 접근하면 되는 문제이다.
+<img width="729" alt="ex1" src="https://user-images.githubusercontent.com/41617388/99877171-8623ff80-2c3f-11eb-9786-b0503962fe91.png" />
+<img width="721" alt="ex2" src="https://user-images.githubusercontent.com/41617388/99877173-88865980-2c3f-11eb-809a-7b33ab8b6cfe.png" /></li>
+  <li>첫 번째 배열과 두 번째 배열로 나뉠 것이다.
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">4,5,6,7,1,2,3</code>이라면, <code class="language-plaintext highlighter-rouge">4,5,6,7</code>은 첫 번째 배열, <code class="language-plaintext highlighter-rouge">1,2,3</code>을 두 번째 배열이라고 하자.</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">arr[mid] &lt;= arr[right]</code>일 때, (mid-&gt;right으로 오름차순으로 배열된 배열)
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">arr[mid] &lt; target &lt;= arr[right]</code> 이라면, target과 mid가 같은 배열에 있기 때문에 left를 mid+1로 옮겨서 범위를 좁혀준다.</li>
+      <li>이외의 경우에는 target과 mid가 다른 배열에 있기 때문에 right을 mid-1로 옮겨준다.</li>
+    </ul>
+  </li>
+  <li>이외의 경우일 때, (섞인 배열)
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">arr[left] &lt;= target &lt; arr[mid]</code> 이라면, target과 mid가 다른 배열에 있기 때문에 right = mid-1이 된다.</li>
+      <li>이하 같다.</li>
+    </ul>
+  </li>
+</ul>
+:ET

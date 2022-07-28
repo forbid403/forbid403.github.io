@@ -1,0 +1,38 @@
+I"<h2 id="프로그래머스-전화번호-목록">[프로그래머스] 전화번호 목록</h2>
+<p><a href="https://programmers.co.kr/learn/courses/30/lessons/42577">문제 링크</a></p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">"header.h"</span><span class="cp">
+</span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="kt">bool</span> <span class="nf">cmp</span><span class="p">(</span><span class="n">string</span> <span class="n">a</span><span class="p">,</span> <span class="n">string</span> <span class="n">b</span><span class="p">){</span>
+    <span class="k">return</span> <span class="n">a</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">b</span><span class="p">.</span><span class="n">length</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="kt">bool</span> <span class="nf">solution</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">phone_book</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="n">sort</span><span class="p">(</span><span class="n">phone_book</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">phone_book</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">cmp</span><span class="p">);</span>
+
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">phone_book</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+        <span class="n">string</span> <span class="n">target</span> <span class="o">=</span> <span class="n">phone_book</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span> <span class="n">j</span><span class="o">&lt;</span><span class="n">phone_book</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">j</span><span class="o">++</span><span class="p">){</span>
+            <span class="n">string</span> <span class="n">cmp</span> <span class="o">=</span> <span class="n">phone_book</span><span class="p">[</span><span class="n">j</span><span class="p">];</span>
+            <span class="kt">int</span> <span class="n">flag</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">k</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">k</span><span class="o">&lt;</span><span class="n">target</span><span class="p">.</span><span class="n">length</span><span class="p">();</span> <span class="n">k</span><span class="o">++</span><span class="p">){</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">cmp</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">!=</span> <span class="n">target</span><span class="p">[</span><span class="n">k</span><span class="p">]){</span>
+                    <span class="n">flag</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">flag</span><span class="p">)</span> <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<ul>
+  <li>leetcode에서 비슷한 문제를 풀어봐서 그때랑 똑같이 풀었다.</li>
+  <li>가장 짧은 순서대로 정렬 한 다음에, 하나씩 다음 전화번호랑 비교한다.</li>
+  <li>하나라도 같지 않으면 flag = 0 해 주고 바로 break</li>
+  <li>flag가 1이라면 false를 리턴한다. (찾은 경우)</li>
+</ul>
+:ET

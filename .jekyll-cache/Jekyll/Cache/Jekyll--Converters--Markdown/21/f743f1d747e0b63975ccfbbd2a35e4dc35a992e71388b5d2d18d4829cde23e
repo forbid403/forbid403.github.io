@@ -1,0 +1,81 @@
+I"<h2 id="리액트-생명주기">리액트 생명주기</h2>
+
+<p><img src="https://user-images.githubusercontent.com/41617388/84238259-be260300-ab35-11ea-9e6f-901087740b2c.png" alt="image" /></p>
+
+<hr />
+
+<p>리액트의 생명주기는 크게 <code class="language-plaintext highlighter-rouge">마운트, 업데이트, 언마운트</code>로 나뉘어져 있다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">마운트</code> : 컴포넌트가 페이지에 생성 될 때 실행<br />
+<code class="language-plaintext highlighter-rouge">업데이트</code> : 컴포넌트가 리렌더링 될 때 실행<br />
+<code class="language-plaintext highlighter-rouge">언마운트</code> : 컴포넌트가 페이지에서 사라질 때 실행</p>
+
+<h3 id="마운트">마운트</h3>
+<ul>
+  <li>컴포넌트가 페이지에 생성 될 때 실행된다.
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">constructor</code></li>
+      <li><code class="language-plaintext highlighter-rouge">getDerivedStateFromProps</code>
+        <ul>
+          <li>props를 state로 변경 할 때 사용</li>
+        </ul>
+      </li>
+      <li><code class="language-plaintext highlighter-rouge">render</code></li>
+      <li><code class="language-plaintext highlighter-rouge">componentDidMount</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="업데이트">업데이트</h3>
+<ul>
+  <li>리렌더링 되는 요인은 다음과 같다.
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">props</code>가 변경</li>
+      <li><code class="language-plaintext highlighter-rouge">state</code>가 변경</li>
+      <li>부모 컴포넌트가 리렌더링</li>
+      <li><code class="language-plaintext highlighter-rouge">this.forceUpdate</code>로 강제 렌더링</li>
+    </ul>
+  </li>
+  <li>컴포넌트가 리렌더링 될 때 실행된다.
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">getDerivedStateFromProps</code></li>
+      <li><code class="language-plaintext highlighter-rouge">shouldComponentUpdate</code>
+        <ul>
+          <li>boolean 값을 반환 해야한다.</li>
+          <li>true일 시 render, false일 시 취소한다.</li>
+          <li>이 과정에서 컴포넌트 렌더링 성능을 개선할 수 있다.</li>
+        </ul>
+      </li>
+      <li><code class="language-plaintext highlighter-rouge">render</code></li>
+      <li><code class="language-plaintext highlighter-rouge">getSnapshotBeforeUpdate</code>
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">render</code>의 결과물이 브라우저에 적용되기 전에 실행된다.</li>
+          <li><code class="language-plaintext highlighter-rouge">componentDidUpdate</code>에서 3번째 인자 값으로 받을 수 있다.</li>
+          <li>업데이트 직전의 값을 참고할 일이 있을 때 사용한다.</li>
+          <li>ex) 스크롤바 위치 유지</li>
+        </ul>
+      </li>
+      <li><code class="language-plaintext highlighter-rouge">componentDidUpdate</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="언마운트">언마운트</h3>
+<ul>
+  <li>컴포넌트가 DOM에서 사라질 때 실행된다.
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">componentWillUnmount</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="오류-제어">오류 제어</h3>
+<ul>
+  <li>컴포넌트에서 오류 발생 시 실행된다.</li>
+  <li><code class="language-plaintext highlighter-rouge">componentDidCatch</code>
+    <ul>
+      <li>어떤 에러가 어디에서 생기는지 알 수 있다.</li>
+    </ul>
+  </li>
+</ul>
+:ET
