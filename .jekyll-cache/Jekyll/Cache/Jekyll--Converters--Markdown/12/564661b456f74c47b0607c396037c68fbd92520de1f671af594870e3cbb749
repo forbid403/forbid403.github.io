@@ -1,2 +1,0 @@
-I"�<p>React 개발 환경 설정 시 CRA로만 진행했었다. 멘토님께서 CRA는 불필요한 것들이 많으니 직접 customizing을 해 가는게 좋다고 해주셨다. React 공식 documentation에 나와있는 해당 <a href="https://blog.usejournal.com/creating-a-react-app-from-scratch-f3c693b84658">article</a>을 보며 React 개발 환경을 기초부터 진행 해 봤다. 이 과정에서 webpack.config.js에 있는 환경변수들의 의미를 살필 수 있었다.</p>
-:ET

@@ -20,7 +20,7 @@ tag_dir: tag/
 minimal_mistakes_skin    : "air" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
 
 # Site Settings
-locale                   : "en-US"
+locale                   : "ko"
 title                    : "Forbid403 개발 블로그"
 title_separator          : "-"
 subtitle                 : # site tagline that appears below site title in masthead
@@ -260,7 +260,6 @@ compress_html:
 
 # Defaults
 defaults:
-  # _posts : 날짜 기반 블로그 글들
   - scope:
       path: ""
       type: posts
@@ -268,9 +267,8 @@ defaults:
       layout: single
       author_profile: true
       read_time: true
+      show_date: true
       comments: true
       share: true
       related: true
 remote_theme : mmistakes/minimal-mistakes
-
-#_pages : 날짜가 필요 없는 페이지들 (블로그 정보 등)

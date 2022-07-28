@@ -1,9 +1,0 @@
-I"q<h2 id="파라미터">파라미터</h2>
-<p><code class="language-plaintext highlighter-rouge">priority_queue&lt;T, Container, Compare&gt;</code></p>
-<ul>
-  <li><code class="language-plaintext highlighter-rouge">T</code> : 우선순위 큐에 들어가는 원소들의 타입 명시</li>
-  <li><code class="language-plaintext highlighter-rouge">Container</code> : <code class="language-plaintext highlighter-rouge">T</code>에 선언 된 타입을 담는 형식을 명시, 이 때 순회가 가능 해야 하고, O(1) 시간복잡도로 원소에 접근 가능 해야 한다. ex) <code class="language-plaintext highlighter-rouge">vector</code>, <code class="language-plaintext highlighter-rouge">deque</code></li>
-  <li><code class="language-plaintext highlighter-rouge">Compare</code> : 비교 함수</li>
-  <li>가장 큰 원소가 top인 max heap이 기본값이다.</li>
-</ul>
-:ET
