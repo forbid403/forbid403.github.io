@@ -6,6 +6,7 @@
 ```
 _posts/
     algorithm/
+    FE/
     graphql/
     os/
     react/
